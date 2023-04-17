@@ -9,11 +9,11 @@ public abstract class JDBC {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
     private static final String location = "//localhost/";
-    private static final String databaseName = "client_schedule";
+    private static final String databaseName = "client_appointments"; // Replace with VM databaseName when done testing
     private static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER"; // LOCAL
     private static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
-    private static final String userName = "sqlUser"; // Username
-    private static String password = "Passw0rd!"; // Password
+    private static final String userName = "root"; // Username -> Replace with VM username when done testing
+    private static String password = "[Chang3ItUp!]"; // Password -> Replace with VM password when done testing
     private static Connection connection = null;  // Connection Interface
     private static PreparedStatement preparedStatement;
     public static void makeConnection() {

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainViewController">
    <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -34,26 +34,16 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Button layoutX="675.0" layoutY="21.0" mnemonicParsing="false" text="Button" />
-                        <Button layoutX="741.0" layoutY="21.0" mnemonicParsing="false" text="Button" />
-                        <Button layoutX="804.0" layoutY="21.0" mnemonicParsing="false" text="Button" />
-                        <Button layoutX="675.0" layoutY="308.0" mnemonicParsing="false" text="Button" />
-                        <Button layoutX="741.0" layoutY="308.0" mnemonicParsing="false" text="Button" />
-                        <Button layoutX="804.0" layoutY="308.0" mnemonicParsing="false" text="Button" />
+                        <Button layoutX="675.0" layoutY="21.0" mnemonicParsing="false" text="Add" />
+                        <Button layoutX="734.0" layoutY="21.0" mnemonicParsing="false" text="Update" />
+                        <Button layoutX="804.0" layoutY="21.0" mnemonicParsing="false" text="Delete" />
+                        <Button layoutX="675.0" layoutY="308.0" mnemonicParsing="false" text="Add" />
+                        <Button layoutX="734.0" layoutY="308.0" mnemonicParsing="false" text="Update" />
+                        <Button layoutX="804.0" layoutY="308.0" mnemonicParsing="false" text="Delete" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Appointments by Week">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </Tab>
-            <Tab text="Appointments by Type">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
             <Tab text="Reports">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />

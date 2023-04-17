@@ -1,4 +1,4 @@
-package sample;
+package controller;
 
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;

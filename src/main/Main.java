@@ -1,4 +1,4 @@
-package sample;
+package main;
 
 import helper.JDBC;
 import javafx.application.Application;
@@ -12,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/sample/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/LoginView.fxml"));
         primaryStage.setTitle("Appointment Management System");
         primaryStage.setScene(new Scene(root, 360, 154));
         primaryStage.show();

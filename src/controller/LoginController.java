@@ -1,4 +1,4 @@
-package sample;
+package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +37,7 @@ public class LoginController implements Initializable {
     public void onActionDisplayMainView(ActionEvent actionEvent) throws IOException {
         System.out.println("Clicked Login.");
         stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
         stage.setScene(new Scene(scene));
     }
 }

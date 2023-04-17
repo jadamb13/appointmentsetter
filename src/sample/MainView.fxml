@@ -24,12 +24,12 @@
                             <TableColumn prefWidth="75.0" text="C2" />
                           </columns>
                         </TableView>
-                        <Label layoutX="381.0" layoutY="23.0" text="Appointments">
+                        <Label layoutX="392.0" layoutY="24.0" text="Appointments">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="381.0" layoutY="310.0" text="Customers">
+                        <Label layoutX="392.0" layoutY="311.0" text="Customers">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

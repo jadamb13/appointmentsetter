@@ -4,52 +4,150 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
-   <children>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="All Appointments">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView layoutX="382.0" layoutY="49.0" prefHeight="240.0" prefWidth="482.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
-                        <TableView layoutX="382.0" layoutY="337.0" prefHeight="240.0" prefWidth="483.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
-                        <Label layoutX="392.0" layoutY="24.0" text="Appointments">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="1052.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+    <children>
+        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Appointments">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="1052.0">
+                            <children>
+                                <TableView layoutX="20.0" layoutY="64.0" prefHeight="286.0" prefWidth="1008.0">
+                                    <columns>
+                                        <TableColumn prefWidth="63.0" text="Appt. ID" />
+                                        <TableColumn prefWidth="117.0" text="Title" />
+                                        <TableColumn prefWidth="135.0" text="Description" />
+                                        <TableColumn prefWidth="102.0" text="Location" />
+                                        <TableColumn prefWidth="116.0" text="Contact" />
+                                        <TableColumn prefWidth="114.0" text="Type" />
+                                        <TableColumn prefWidth="118.0" text="Start" />
+                                        <TableColumn prefWidth="110.0" text="End" />
+                                        <TableColumn prefWidth="76.0" text="Customer ID" />
+                                        <TableColumn prefWidth="56.0" text="User ID" />
+                                    </columns>
+                                </TableView>
+                                <Label layoutX="456.0" layoutY="27.0" text="Appointments">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button layoutX="410.0" layoutY="372.0" mnemonicParsing="false" text="Add">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font></Button>
+                                <Button layoutX="484.0" layoutY="372.0" mnemonicParsing="false" text="Update">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font></Button>
+                                <Button fx:id="apptsDelBtn" layoutX="578.0" layoutY="372.0" mnemonicParsing="false" text="Delete">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font></Button>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Customers">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="996.0">
+                            <children>
+                                <TableView layoutX="20.0" layoutY="64.0" prefHeight="285.0" prefWidth="1007.0">
+                                    <columns>
+                                        <TableColumn prefWidth="83.0" text="Customer ID" />
+                                        <TableColumn prefWidth="126.0" text="Name" />
+                                        <TableColumn prefWidth="125.0" text="Address" />
+                                        <TableColumn prefWidth="77.0" text="Postal Code" />
+                                        <TableColumn prefWidth="130.0" text="Phone" />
+                                        <TableColumn prefWidth="121.0" text="Date Created" />
+                                        <TableColumn prefWidth="78.0" text="Created By" />
+                                        <TableColumn prefWidth="107.0" text="Last Update" />
+                                        <TableColumn prefWidth="83.0" text="Updated By" />
+                                        <TableColumn prefWidth="76.0" text="Division ID" />
+                                    </columns>
+                                </TableView>
+                                <Label layoutX="472.0" layoutY="26.0" text="Customers">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button layoutX="409.0" layoutY="371.0" mnemonicParsing="false" text="Add">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font></Button>
+                                <Button layoutX="484.0" layoutY="371.0" mnemonicParsing="false" text="Update">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font></Button>
+                                <Button layoutX="577.0" layoutY="371.0" mnemonicParsing="false" text="Delete">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font></Button>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Reports">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="1052.0">
+                            <children>
+                                <TableView layoutX="20.0" layoutY="64.0" prefHeight="143.0" prefWidth="1008.0">
+                                    <columns>
+                                        <TableColumn prefWidth="63.0" text="Appt. ID" />
+                                        <TableColumn prefWidth="178.0" text="Title" />
+                                        <TableColumn prefWidth="234.0" text="Description" />
+                                        <TableColumn prefWidth="157.0" text="Type" />
+                                        <TableColumn prefWidth="146.0" text="Start" />
+                                        <TableColumn prefWidth="148.0" text="End" />
+                                        <TableColumn prefWidth="81.0" text="Customer ID" />
+                                        <TableColumn prefWidth="75.0" text="Column X" />
+                                    </columns>
+                                </TableView>
+                                <Label layoutX="420.0" layoutY="23.0" text="Appointment Schedule">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                        <ComboBox layoutX="99.0" layoutY="28.0" prefWidth="150.0" />
+                        <Label layoutX="34.0" layoutY="31.0" text="Contact:">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="392.0" layoutY="311.0" text="Customers">
+                        <TableView layoutX="21.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
+                          <columns>
+                            <TableColumn prefWidth="183.0" text="By Type" />
+                            <TableColumn prefWidth="43.0" text="#" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="139.0" layoutY="222.0" text="Total Number of Appointments">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Button layoutX="675.0" layoutY="21.0" mnemonicParsing="false" text="Add" />
-                        <Button layoutX="734.0" layoutY="21.0" mnemonicParsing="false" text="Update" />
-                        <Button layoutX="804.0" layoutY="21.0" mnemonicParsing="false" text="Delete" />
-                        <Button layoutX="675.0" layoutY="308.0" mnemonicParsing="false" text="Add" />
-                        <Button layoutX="734.0" layoutY="308.0" mnemonicParsing="false" text="Update" />
-                        <Button layoutX="804.0" layoutY="308.0" mnemonicParsing="false" text="Delete" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-            <Tab text="Reports">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-   </children>
+                        <TableView layoutX="263.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
+                          <columns>
+                            <TableColumn prefWidth="183.0" text="By Month" />
+                            <TableColumn prefWidth="43.0" text="#" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="775.0" layoutY="226.0" text="Custom Report">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <TableView layoutX="635.0" layoutY="255.0" prefHeight="160.0" prefWidth="392.0">
+                          <columns>
+                            <TableColumn prefWidth="95.0" text="C1" />
+                            <TableColumn prefWidth="88.0" text="C2" />
+                              <TableColumn prefWidth="111.0" text="Column X" />
+                              <TableColumn prefWidth="97.0" text="Column X" />
+                          </columns>
+                        </TableView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </StackPane>

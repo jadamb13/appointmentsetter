@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="521.0" prefWidth="372.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddAppointment">
+    <children>
+        <ComboBox layoutX="99.0" layoutY="248.0" prefHeight="25.0" prefWidth="174.0" />
+        <Label layoutX="17.0" layoutY="253.0" text="Contact:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <TextField disable="true" layoutX="129.0" layoutY="50.0" prefHeight="25.0" prefWidth="44.0" />
+        <Label layoutX="19.0" layoutY="53.0" text="Appointment ID:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <TextField layoutX="99.0" layoutY="99.0" prefHeight="25.0" prefWidth="174.0" />
+        <TextField layoutX="99.0" layoutY="218.0" prefHeight="25.0" prefWidth="174.0" />
+        <TextArea layoutX="99.0" layoutY="130.0" prefHeight="80.0" prefWidth="174.0" />
+        <DatePicker layoutX="99.0" layoutY="319.0" />
+        <DatePicker layoutX="99.0" layoutY="352.0" />
+        <ComboBox layoutX="99.0" layoutY="387.0" prefHeight="25.0" prefWidth="174.0" />
+        <ComboBox layoutX="99.0" layoutY="421.0" prefHeight="25.0" prefWidth="174.0" />
+        <Label layoutX="19.0" layoutY="14.0" text="Update Appointment">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="16.0" layoutY="101.0" text="Title:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="16.0" layoutY="130.0" text="Description:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="16.0" layoutY="220.0" text="Location:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="19.0" layoutY="287.0" text="Type:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="20.0" layoutY="321.0" text="Start date:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="20.0" layoutY="354.0" text="End date:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="22.0" layoutY="389.0" text="Start time:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="24.0" layoutY="423.0" text="End time:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Button layoutX="292.0" layoutY="476.0" mnemonicParsing="false" text="Save">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button layoutX="216.0" layoutY="476.0" mnemonicParsing="false" text="Cancel">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+      <ComboBox layoutX="98.0" layoutY="285.0" prefHeight="25.0" prefWidth="174.0" />
+    </children>
+</AnchorPane>

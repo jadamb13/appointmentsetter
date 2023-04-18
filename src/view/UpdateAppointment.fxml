@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="521.0" prefWidth="372.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddAppointment">
+<AnchorPane prefHeight="521.0" prefWidth="372.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateAppointmentController">
     <children>
         <ComboBox layoutX="99.0" layoutY="248.0" prefHeight="25.0" prefWidth="174.0" />
         <Label layoutX="17.0" layoutY="253.0" text="Contact:">
@@ -12,8 +12,8 @@
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField disable="true" layoutX="129.0" layoutY="50.0" prefHeight="25.0" prefWidth="44.0" />
-        <Label layoutX="19.0" layoutY="53.0" text="Appointment ID:">
+        <TextField disable="true" layoutX="123.0" layoutY="50.0" prefHeight="25.0" prefWidth="44.0" />
+        <Label layoutX="15.0" layoutY="53.0" text="Appointment ID:">
             <font>
                 <Font size="14.0" />
             </font>

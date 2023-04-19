@@ -4,26 +4,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="1094.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="1133.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
     <children>
         <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab closable="false" text="Appointments">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="1052.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="428.0" prefWidth="1312.0">
                             <children>
-                                <TableView layoutX="20.0" layoutY="64.0" prefHeight="286.0" prefWidth="1052.0">
+                                <TableView fx:id="appointmentsTable" layoutX="20.0" layoutY="64.0" prefHeight="286.0" prefWidth="1090.0">
                                     <columns>
-                                        <TableColumn prefWidth="63.0" text="Appt. ID" />
-                                        <TableColumn prefWidth="117.0" text="Title" />
-                                        <TableColumn prefWidth="135.0" text="Description" />
-                                        <TableColumn prefWidth="113.0" text="Location" />
-                                        <TableColumn prefWidth="132.0" text="Contact" />
-                                        <TableColumn prefWidth="127.0" text="Type" />
-                                        <TableColumn prefWidth="119.0" text="Start" />
-                                        <TableColumn prefWidth="108.0" text="End" />
-                                        <TableColumn prefWidth="82.0" text="Customer ID" />
-                                        <TableColumn prefWidth="55.0" text="User ID" />
+                                        <TableColumn fx:id="apptIdCol" prefWidth="63.0" text="Appt ID" />
+                                        <TableColumn fx:id="apptTitleCol" prefWidth="84.0" text="Title" />
+                                        <TableColumn fx:id="apptDescriptionCol" prefWidth="104.0" text="Description" />
+                                        <TableColumn fx:id="apptLocationCol" prefWidth="95.0" text="Location" />
+                                        <TableColumn fx:id="apptContactCol" prefWidth="111.0" text="Contact" />
+                                        <TableColumn fx:id="apptTypeCol" prefWidth="153.0" text="Type" />
+                                        <TableColumn fx:id="apptStartCol" prefWidth="143.0" text="Start" />
+                                        <TableColumn fx:id="apptEndCol" prefWidth="130.0" text="End" />
+                                        <TableColumn fx:id="apptCustomerIdCol" minWidth="0.0" prefWidth="87.0" text="Customer ID" />
+                              <TableColumn fx:id="apptContactIdCol" minWidth="0.0" prefWidth="66.0" text="Contact ID" />
+                                        <TableColumn fx:id="apptUserIdCol" prefWidth="52.0" text="User ID" />
                                     </columns>
                                 </TableView>
                                 <Label layoutX="485.0" layoutY="28.0" text="Appointments">

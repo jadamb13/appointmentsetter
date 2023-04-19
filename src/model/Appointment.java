@@ -12,12 +12,13 @@ public class Appointment {
     private String title;
     private String description;
     private String location;
-    private ArrayList<String> appointmentTypeList;
+    private String contact;
+    private String type;
     private Timestamp start;
     private Timestamp end;
 
     public Appointment(int appointmentId, int customerId, int contactId, int userId, String title, String description,
-                       String location, ArrayList<String> appointmentTypeList, Timestamp start, Timestamp end) {
+                       String location, String contact, String type, Timestamp start, Timestamp end) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.contactId = contactId;
@@ -25,7 +26,8 @@ public class Appointment {
         this.title = title;
         this.description = description;
         this.location = location;
-        this.appointmentTypeList = appointmentTypeList;
+        this.contact = contact;
+        this.type = type;
         this.start = start;
         this.end = end;
     }
@@ -86,12 +88,20 @@ public class Appointment {
         this.location = location;
     }
 
-    public ArrayList<String> getAppointmentTypeList() {
-        return appointmentTypeList;
+    public String getContact() {
+        return contact;
     }
 
-    public void setAppointmentTypeList(ArrayList<String> appointmentTypeList) {
-        this.appointmentTypeList = appointmentTypeList;
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Timestamp getStart() {

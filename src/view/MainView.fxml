@@ -39,10 +39,13 @@
                                     <font>
                                         <Font size="14.0" />
                                     </font></Button>
-                                <Button fx:id="apptsDelBtn" layoutX="607.0" layoutY="372.0" mnemonicParsing="false" text="Delete">
+                                <Button fx:id="apptsDelBtn" layoutX="607.0" layoutY="372.0" mnemonicParsing="false" onAction="#deleteSelectedAppointment" text="Delete">
                                     <font>
                                         <Font size="14.0" />
                                     </font></Button>
+                        <RadioButton fx:id="allAppointmentsRBtn" layoutX="27.0" layoutY="33.0" mnemonicParsing="false" onAction="#displayAllAppointments" text="All Appointments" />
+                        <RadioButton fx:id="currentWeekRBtn" layoutX="168.0" layoutY="33.0" mnemonicParsing="false" onAction="#displayCurrentWeekAppointments" text="Current Week" />
+                        <RadioButton fx:id="currentMonthRBtn" layoutX="295.0" layoutY="33.0" mnemonicParsing="false" onAction="#displayCurrentMonthAppointments" text="Current Month" />
                             </children>
                         </AnchorPane>
                     </content>

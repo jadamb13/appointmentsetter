@@ -7,9 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
+import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,6 +17,10 @@ import java.util.ResourceBundle;
 /** A Controller class for the MainView. */
 public class MainViewController implements Initializable {
 
+    public RadioButton currentMonthRBtn;
+    public RadioButton currentWeekRBtn;
+    public RadioButton allAppointmentsRBtn;
+    public Button apptsDelBtn;
     //Stage stage;
     //Parent scene;
     @FXML
@@ -86,5 +88,17 @@ public class MainViewController implements Initializable {
         } catch (IOException e) {
             System.out.println(e);
         }
+    }
+
+    public void displayAllAppointments(ActionEvent actionEvent) {
+    }
+
+    public void displayCurrentWeekAppointments(ActionEvent actionEvent) {
+    }
+
+    public void displayCurrentMonthAppointments(ActionEvent actionEvent) {
+    }
+
+    public void deleteSelectedAppointment(ActionEvent actionEvent) {
     }
 }

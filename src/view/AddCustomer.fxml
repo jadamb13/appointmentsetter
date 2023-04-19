@@ -6,16 +6,16 @@
 
 <AnchorPane prefHeight="350.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
     <children>
-        <TextField disable="true" layoutX="99.0" layoutY="51.0" prefHeight="25.0" prefWidth="44.0" />
+        <TextField fx:id="customerIdTxt" disable="true" layoutX="99.0" layoutY="51.0" prefHeight="25.0" prefWidth="44.0" />
         <Label layoutX="15.0" layoutY="53.0" text="Customer ID:">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <TextField layoutX="123.0" layoutY="98.0" prefHeight="25.0" prefWidth="194.0" />
-        <TextField layoutX="123.0" layoutY="259.0" prefHeight="25.0" prefWidth="95.0" />
-        <TextField layoutX="123.0" layoutY="163.0" prefHeight="25.0" prefWidth="194.0" />
-        <ComboBox layoutX="123.0" layoutY="194.0" prefHeight="25.0" prefWidth="194.0" />
+        <TextField fx:id="nameTxt" layoutX="123.0" layoutY="98.0" prefHeight="25.0" prefWidth="194.0" />
+        <TextField fx:id="postalCodeTxt" layoutX="123.0" layoutY="259.0" prefHeight="25.0" prefWidth="95.0" />
+        <TextField fx:id="phoneNumberTxt" layoutX="123.0" layoutY="163.0" prefHeight="25.0" prefWidth="194.0" />
+        <ComboBox fx:id="countryCb" layoutX="123.0" layoutY="194.0" prefHeight="25.0" prefWidth="194.0" />
         <Label layoutX="15.0" layoutY="14.0" text="Add Customer">
             <font>
                 <Font name="System Bold" size="18.0" />
@@ -41,17 +41,17 @@
                 <Font size="14.0" />
             </font>
         </Label>
-        <Button layoutX="297.0" layoutY="304.0" mnemonicParsing="false" text="Save">
+        <Button layoutX="297.0" layoutY="304.0" mnemonicParsing="false" onAction="#saveNewCustomer" text="Save">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button layoutX="220.0" layoutY="304.0" mnemonicParsing="false" text="Cancel">
+        <Button layoutX="220.0" layoutY="304.0" mnemonicParsing="false" onAction="#displayCustomerTab" text="Cancel">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-      <ComboBox layoutX="123.0" layoutY="226.0" prefHeight="25.0" prefWidth="194.0" />
+      <ComboBox fx:id="divisionCb" layoutX="123.0" layoutY="226.0" prefHeight="25.0" prefWidth="194.0" />
       <Label layoutX="16.0" layoutY="196.0" text="Country:">
          <font>
             <Font size="14.0" />
@@ -62,6 +62,6 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField layoutX="123.0" layoutY="129.0" prefHeight="25.0" prefWidth="194.0" />
+      <TextField fx:id="addressTxt" layoutX="123.0" layoutY="129.0" prefHeight="25.0" prefWidth="194.0" />
     </children>
 </AnchorPane>

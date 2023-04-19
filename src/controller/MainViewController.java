@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Tab;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,7 +22,8 @@ public class MainViewController implements Initializable {
     public RadioButton currentWeekRBtn;
     public RadioButton allAppointmentsRBtn;
     public Button apptsDelBtn;
-    //Stage stage;
+    public Tab customerTab;
+    static Stage mainViewStage;
     //Parent scene;
     @FXML
     private Button btn;
@@ -34,7 +36,7 @@ public class MainViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        allAppointmentsRBtn.setSelected(true);
         System.out.println("MainView Initialized.");
     }
 
@@ -42,10 +44,10 @@ public class MainViewController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddAppointment.fxml"));
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Add Appointment");
-            stage.setScene(new Scene(root));
-            stage.show();
+            mainViewStage = new Stage();
+            mainViewStage.setTitle("Add Appointment");
+            mainViewStage.setScene(new Scene(root));
+            mainViewStage.show();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -55,10 +57,10 @@ public class MainViewController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateAppointment.fxml"));
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Update Appointment");
-            stage.setScene(new Scene(root));
-            stage.show();
+            mainViewStage = new Stage();
+            mainViewStage.setTitle("Update Appointment");
+            mainViewStage.setScene(new Scene(root));
+            mainViewStage.show();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -68,10 +70,10 @@ public class MainViewController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddCustomer.fxml"));
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Update Appointment");
-            stage.setScene(new Scene(root));
-            stage.show();
+            mainViewStage = new Stage();
+            mainViewStage.setTitle("Update Appointment");
+            mainViewStage.setScene(new Scene(root));
+            mainViewStage.show();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -81,10 +83,10 @@ public class MainViewController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateCustomer.fxml"));
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Update Appointment");
-            stage.setScene(new Scene(root));
-            stage.show();
+            mainViewStage = new Stage();
+            mainViewStage.setTitle("Update Appointment");
+            mainViewStage.setScene(new Scene(root));
+            mainViewStage.show();
         } catch (IOException e) {
             System.out.println(e);
         }

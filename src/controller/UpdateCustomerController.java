@@ -23,6 +23,7 @@ public class UpdateCustomerController implements Initializable {
     }
 
     public void displayCustomerTab(ActionEvent actionEvent) {
+        MainViewController.mainViewStage.close();
     }
 
     public void saveUpdatedCustomer(ActionEvent actionEvent) {

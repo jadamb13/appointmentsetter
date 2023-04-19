@@ -18,15 +18,78 @@ import java.util.ResourceBundle;
 /** A Controller class for the MainView. */
 public class MainViewController implements Initializable {
 
-    public RadioButton currentMonthRBtn;
-    public RadioButton currentWeekRBtn;
-    public RadioButton allAppointmentsRBtn;
-    public Button apptsDelBtn;
-    public Tab customerTab;
-    static Stage mainViewStage;
+    @FXML
+    private RadioButton currentMonthRBtn;
+    @FXML
+    private RadioButton currentWeekRBtn;
+    @FXML
+    private RadioButton allAppointmentsRBtn;
+    @FXML
+    private Button apptsDelBtn;
+    @FXML
+    private Tab customerTab;
+
+    @FXML
+    private static Stage mainViewStage;
     //Parent scene;
     @FXML
     private Button btn;
+
+    public RadioButton getCurrentMonthRBtn() {
+        return currentMonthRBtn;
+    }
+
+    public void setCurrentMonthRBtn(RadioButton currentMonthRBtn) {
+        this.currentMonthRBtn = currentMonthRBtn;
+    }
+
+    public RadioButton getCurrentWeekRBtn() {
+        return currentWeekRBtn;
+    }
+
+    public void setCurrentWeekRBtn(RadioButton currentWeekRBtn) {
+        this.currentWeekRBtn = currentWeekRBtn;
+    }
+
+    public RadioButton getAllAppointmentsRBtn() {
+        return allAppointmentsRBtn;
+    }
+
+    public void setAllAppointmentsRBtn(RadioButton allAppointmentsRBtn) {
+        this.allAppointmentsRBtn = allAppointmentsRBtn;
+    }
+
+    public Button getApptsDelBtn() {
+        return apptsDelBtn;
+    }
+
+    public void setApptsDelBtn(Button apptsDelBtn) {
+        this.apptsDelBtn = apptsDelBtn;
+    }
+
+    public Tab getCustomerTab() {
+        return customerTab;
+    }
+
+    public void setCustomerTab(Tab customerTab) {
+        this.customerTab = customerTab;
+    }
+
+    public static Stage getMainViewStage() {
+        return mainViewStage;
+    }
+
+    public void setMainViewStage(Stage mainViewStage) {
+        MainViewController.mainViewStage = mainViewStage;
+    }
+
+    public Button getBtn() {
+        return btn;
+    }
+
+    public void setBtn(Button btn) {
+        this.btn = btn;
+    }
 
     /**
      Initializes MainView.
@@ -91,6 +154,8 @@ public class MainViewController implements Initializable {
             System.out.println(e);
         }
     }
+
+
 
     public void displayAllAppointments(ActionEvent actionEvent) {
     }

@@ -39,6 +39,86 @@ public class AddAppointmentController implements Initializable {
     Stage stage;
     Parent scene;
 
+    public TextField getTitleTxt() {
+        return titleTxt;
+    }
+
+    public void setTitleTxt(TextField titleTxt) {
+        this.titleTxt = titleTxt;
+    }
+
+    public TextField getAppointmentIdTxt() {
+        return appointmentIdTxt;
+    }
+
+    public void setAppointmentIdTxt(TextField appointmentIdTxt) {
+        this.appointmentIdTxt = appointmentIdTxt;
+    }
+
+    public ComboBox<?> getContactCb() {
+        return contactCb;
+    }
+
+    public void setContactCb(ComboBox<?> contactCb) {
+        this.contactCb = contactCb;
+    }
+
+    public TextField getLocationTxt() {
+        return locationTxt;
+    }
+
+    public void setLocationTxt(TextField locationTxt) {
+        this.locationTxt = locationTxt;
+    }
+
+    public TextArea getDescriptionTxt() {
+        return descriptionTxt;
+    }
+
+    public void setDescriptionTxt(TextArea descriptionTxt) {
+        this.descriptionTxt = descriptionTxt;
+    }
+
+    public DatePicker getStartDateDp() {
+        return startDateDp;
+    }
+
+    public void setStartDateDp(DatePicker startDateDp) {
+        this.startDateDp = startDateDp;
+    }
+
+    public DatePicker getEndDateDp() {
+        return endDateDp;
+    }
+
+    public void setEndDateDp(DatePicker endDateDp) {
+        this.endDateDp = endDateDp;
+    }
+
+    public ComboBox<?> getStartTimeCb() {
+        return startTimeCb;
+    }
+
+    public void setStartTimeCb(ComboBox<?> startTimeCb) {
+        this.startTimeCb = startTimeCb;
+    }
+
+    public ComboBox<?> getEndTimeCb() {
+        return endTimeCb;
+    }
+
+    public void setEndTimeCb(ComboBox<?> endTimeCb) {
+        this.endTimeCb = endTimeCb;
+    }
+
+    public ComboBox<?> getTypeCb() {
+        return typeCb;
+    }
+
+    public void setTypeCb(ComboBox<?> typeCb) {
+        this.typeCb = typeCb;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("AddAppointment Initialized.");
@@ -50,6 +130,6 @@ public class AddAppointmentController implements Initializable {
     public void displayMainView(ActionEvent actionEvent) throws IOException {
 
         // On "Cancel" button being clicked
-        MainViewController.mainViewStage.close();
+        MainViewController.getMainViewStage().close();
     }
 }

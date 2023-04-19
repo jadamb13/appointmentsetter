@@ -12,10 +12,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Contact;
 import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
@@ -102,6 +104,14 @@ public class MainViewController implements Initializable {
         this.allAppointmentsRBtn = allAppointmentsRBtn;
     }
 
+    public TableView<Appointment> getAppointmentsTable() {
+        return appointmentsTable;
+    }
+
+    public void setAppointmentsTable(TableView<Appointment> appointmentsTable) {
+        this.appointmentsTable = appointmentsTable;
+    }
+
     public Button getApptsDelBtn() {
         return apptsDelBtn;
     }
@@ -159,6 +169,7 @@ public class MainViewController implements Initializable {
         apptContactIdCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
+
         // Set values in Customers Table
         customerTable.setItems(DBCustomer.getAllCustomers());
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -169,12 +180,8 @@ public class MainViewController implements Initializable {
         divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
 
 
-        //populateAppointmentFields();
-
     }
 
-    private void populateAppointmentFields() {
-    }
 
     public void displayAddAppointmentWindow(ActionEvent actionEvent) {
         try {
@@ -183,11 +190,13 @@ public class MainViewController implements Initializable {
             mainViewStage = new Stage();
             mainViewStage.setTitle("Add Appointment");
             mainViewStage.setScene(new Scene(root));
-            mainViewStage.show();
+            mainViewStage.showAndWait();
+            appointmentsTable.setItems(DBAppointment.getAllAppointments());
         } catch (IOException e) {
             System.out.println(e);
         }
     }
+
 
     public void displayUpdateAppointmentWindow(ActionEvent actionEvent) {
         try {

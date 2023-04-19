@@ -1,5 +1,8 @@
 package model;
 
+import DBAccess.DBContact;
+import DBAccess.DBCustomer;
+
 public class Contact {
     private int contactId;
     private String contactName;
@@ -33,5 +36,15 @@ public class Contact {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public static int getContactIdByName(String name){
+        for (Contact c : DBContact.getAllContacts()){
+            if(c.contactName.equals(name)){
+                return c.getContactId();
+            }
+
+        }
+        return -1;
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import DBAccess.DBCustomer;
+
 public class Customer {
     private int customerId;
     private String customerName;
@@ -64,5 +66,15 @@ public class Customer {
 
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
+    }
+
+    public static int getCustomerIdByName(String name){
+        for (Customer c : DBCustomer.getAllCustomers()){
+            if(c.customerName.equals(name)){
+                return c.getCustomerId();
+            }
+
+        }
+        return -1;
     }
 }

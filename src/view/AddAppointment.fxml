@@ -12,7 +12,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="appointmentIdTxt" disable="true" layoutX="123.0" layoutY="50.0" prefHeight="25.0" prefWidth="44.0" />
+      <TextField fx:id="appointmentIdTxt" disable="true" layoutX="123.0" layoutY="50.0" prefHeight="25.0" prefWidth="129.0" promptText="Auto Gen - Disabled" />
       <Label layoutX="15.0" layoutY="53.0" text="Appointment ID:">
          <font>
             <Font size="14.0" />

@@ -50,30 +50,58 @@ public class DBAppointment {
         return appointmentList;
     }
 
+    public static ObservableList<String> getAppointmentTypes(){
+        ObservableList<String> appointmentTypes = FXCollections.observableArrayList();
+        appointmentTypes.add("De-Briefing");
+        appointmentTypes.add("Planning Session");
+        appointmentTypes.add("Strategy Session");
+        appointmentTypes.add("Brainstorm Session");
+        appointmentTypes.add("Other");
+        return appointmentTypes;
+    }
+
     public static void createAppointment(int customerId, int contactId, int userId, String title, String description,
-                                         String location, String type, Timestamp start, Timestamp end) throws SQLException {
-        String sql = "INSERT INTO appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Timestamp createDate = new Timestamp(System.currentTimeMillis());
-        String createdBy = "script";
-        String lastUpdatedBy = "script";
-        Timestamp lastUpdate = new Timestamp(System.currentTimeMillis());
-        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-        ps.setString(1, title);
-        ps.setString(2, description);
-        ps.setString(3, location);
-        ps.setString(4, type);
-        ps.setTimestamp(5, start);
-        ps.setTimestamp(6, end);
-        ps.setTimestamp(7, createDate);
-        ps.setString(8, createdBy);
-        ps.setTimestamp(9, lastUpdate);
-        ps.setString(10, lastUpdatedBy);
-        ps.setInt(11, customerId);
-        ps.setInt(12, userId);
-        ps.setInt(13, contactId);
+                                         String location, String type, Timestamp start, Timestamp end) {
+        try {
+            // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
+            String max_sql = "SELECT MAX(Appointment_ID) as MAX FROM appointments";
+            PreparedStatement maxPs = JDBC.getConnection().prepareStatement(max_sql);
+            ResultSet rs = maxPs.executeQuery();
+            rs.next();
+            int appointmentId = rs.getInt("MAX") + 1;
 
-        ps.execute();
+            // Prepared statement to insert new Appointment into DB
+            String sql = "INSERT INTO appointments VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+            // Same every time
+            Timestamp createDate = new Timestamp(System.currentTimeMillis());
+            String createdBy = "script";
+            String lastUpdatedBy = "script";
+            Timestamp lastUpdate = new Timestamp(System.currentTimeMillis());
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, appointmentId);
+            ps.setString(2, title);
+            ps.setString(3, description);
+            ps.setString(4, location);
+            ps.setString(5, type);
+            ps.setTimestamp(6, start);
+            ps.setTimestamp(7, end);
+            ps.setTimestamp(8, createDate);
+            ps.setString(9, createdBy);
+            ps.setTimestamp(10, lastUpdate);
+            ps.setString(11, lastUpdatedBy);
+            ps.setInt(12, customerId);
+            ps.setInt(13, userId);
+            ps.setInt(14, contactId);
+
+            ps.execute();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
+
+
 }

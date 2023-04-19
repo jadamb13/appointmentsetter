@@ -42,6 +42,7 @@ public class UpdateAppointmentController implements Initializable {
     Stage stage;
     Parent scene;
 
+    // Getters and Setters
     public DatePicker getStartDateDp() {
         return startDateDp;
     }

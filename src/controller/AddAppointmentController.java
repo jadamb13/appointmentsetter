@@ -39,6 +39,7 @@ public class AddAppointmentController implements Initializable {
     Stage stage;
     Parent scene;
 
+    // Getters and Setters
     public TextField getTitleTxt() {
         return titleTxt;
     }

@@ -35,6 +35,7 @@ public class MainViewController implements Initializable {
     @FXML
     private Button btn;
 
+    // Getters and Setters
     public RadioButton getCurrentMonthRBtn() {
         return currentMonthRBtn;
     }

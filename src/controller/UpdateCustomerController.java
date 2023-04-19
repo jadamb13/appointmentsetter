@@ -27,6 +27,7 @@ public class UpdateCustomerController implements Initializable {
     @FXML
     private TextField addressTxt;
 
+    // Getters and Setters
     public TextField getCustomerIdTxt() {
         return customerIdTxt;
     }

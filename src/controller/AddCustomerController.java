@@ -35,6 +35,7 @@ public class AddCustomerController implements Initializable {
     Stage stage;
     Parent scene;
 
+    // Getters and Setters
     public TextField getCustomerIdTxt() {
         return customerIdTxt;
     }

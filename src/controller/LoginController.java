@@ -39,5 +39,6 @@ public class LoginController implements Initializable {
         stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
         stage.setScene(new Scene(scene));
+        stage.centerOnScreen();
     }
 }

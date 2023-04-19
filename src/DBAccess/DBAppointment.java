@@ -1,10 +1,10 @@
 package DBAccess;
 
 import helper.JDBC;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.Contact;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,5 +48,32 @@ public class DBAppointment {
             e.printStackTrace();
         }
         return appointmentList;
+    }
+
+    public static void createAppointment(int customerId, int contactId, int userId, String title, String description,
+                                         String location, String type, Timestamp start, Timestamp end) throws SQLException {
+        String sql = "INSERT INTO appointments VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Timestamp createDate = new Timestamp(System.currentTimeMillis());
+        String createdBy = "script";
+        String lastUpdatedBy = "script";
+        Timestamp lastUpdate = new Timestamp(System.currentTimeMillis());
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ps.setString(1, title);
+        ps.setString(2, description);
+        ps.setString(3, location);
+        ps.setString(4, type);
+        ps.setTimestamp(5, start);
+        ps.setTimestamp(6, end);
+        ps.setTimestamp(7, createDate);
+        ps.setString(8, createdBy);
+        ps.setTimestamp(9, lastUpdate);
+        ps.setString(10, lastUpdatedBy);
+        ps.setInt(11, customerId);
+        ps.setInt(12, userId);
+        ps.setInt(13, contactId);
+
+        ps.execute();
+
+
     }
 }

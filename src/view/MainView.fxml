@@ -55,18 +55,14 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="996.0">
                             <children>
-                                <TableView layoutX="20.0" layoutY="64.0" prefHeight="285.0" prefWidth="1049.0">
+                                <TableView fx:id="customerTable" layoutX="20.0" layoutY="64.0" prefHeight="285.0" prefWidth="1049.0">
                                     <columns>
-                                        <TableColumn prefWidth="83.0" text="Customer ID" />
-                                        <TableColumn prefWidth="136.0" text="Name" />
-                                        <TableColumn prefWidth="147.0" text="Address" />
-                                        <TableColumn prefWidth="78.0" text="Postal Code" />
-                                        <TableColumn prefWidth="129.0" text="Phone" />
-                                        <TableColumn prefWidth="119.0" text="Date Created" />
-                                        <TableColumn prefWidth="78.0" text="Created By" />
-                                        <TableColumn prefWidth="112.0" text="Last Update" />
-                                        <TableColumn prefWidth="84.0" text="Updated By" />
-                                        <TableColumn prefWidth="82.0" text="Division ID" />
+                                        <TableColumn fx:id="customerIdCol" prefWidth="110.0" text="Customer ID" />
+                                        <TableColumn fx:id="nameCol" prefWidth="229.0" text="Name" />
+                                        <TableColumn fx:id="addressCol" prefWidth="357.0" text="Address" />
+                                        <TableColumn fx:id="postalCodeCol" prefWidth="114.0" text="Postal Code" />
+                                        <TableColumn fx:id="phoneCol" prefWidth="151.0" text="Phone" />
+                                        <TableColumn fx:id="divisionIdCol" prefWidth="86.0" text="Division ID" />
                                     </columns>
                                 </TableView>
                                 <Label layoutX="505.0" layoutY="27.0" text="Customers">

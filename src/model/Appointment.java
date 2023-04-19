@@ -1,7 +1,7 @@
 package model;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
+
 
 public class Appointment {
 
@@ -12,13 +12,15 @@ public class Appointment {
     private String title;
     private String description;
     private String location;
-    private String contact;
+    private String contactName;
     private String type;
     private Timestamp start;
     private Timestamp end;
 
+
+
     public Appointment(int appointmentId, int customerId, int contactId, int userId, String title, String description,
-                       String location, String contact, String type, Timestamp start, Timestamp end) {
+                       String location, String contactName, String type, Timestamp start, Timestamp end) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.contactId = contactId;
@@ -26,12 +28,14 @@ public class Appointment {
         this.title = title;
         this.description = description;
         this.location = location;
-        this.contact = contact;
+        this.contactName = contactName;
         this.type = type;
         this.start = start;
         this.end = end;
+
     }
 
+    // Getters and Setters
     public int getAppointmentId() {
         return appointmentId;
     }
@@ -89,11 +93,11 @@ public class Appointment {
     }
 
     public String getContact() {
-        return contact;
+        return contactName;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setContact(String contactName) {
+        this.contactName = contactName;
     }
 
     public String getType() {

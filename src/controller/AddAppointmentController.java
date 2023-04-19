@@ -126,6 +126,8 @@ public class AddAppointmentController implements Initializable {
     }
 
     public void saveNewAppointment(ActionEvent actionEvent) {
+
+
     }
 
     public void displayMainView(ActionEvent actionEvent) throws IOException {

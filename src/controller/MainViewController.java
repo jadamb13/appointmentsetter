@@ -1,6 +1,7 @@
 package controller;
 
 import DBAccess.DBAppointment;
+import DBAccess.DBCustomer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +22,20 @@ import java.util.ResourceBundle;
 /** A Controller class for the MainView. */
 public class MainViewController implements Initializable {
 
+    @FXML
+    private TableView<Customer> customerTable;
+    @FXML
+    private TableColumn<Customer,Integer> customerIdCol;
+    @FXML
+    private TableColumn<Customer,String> nameCol;
+    @FXML
+    private TableColumn<Customer,String> addressCol;
+    @FXML
+    private TableColumn<Customer,String> postalCodeCol;
+    @FXML
+    private TableColumn<Customer,String> phoneCol;
+    @FXML
+    private TableColumn<Customer,Integer> divisionIdCol;
     @FXML
     private TableView<Appointment> appointmentsTable;
     @FXML
@@ -129,6 +145,7 @@ public class MainViewController implements Initializable {
         allAppointmentsRBtn.setSelected(true);
         System.out.println("MainView Initialized.");
 
+        // Set values in Appointments Table
         appointmentsTable.setItems(DBAppointment.getAllAppointments());
         apptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
@@ -141,6 +158,16 @@ public class MainViewController implements Initializable {
         apptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptContactIdCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+
+        // Set values in Customers Table
+        customerTable.setItems(DBCustomer.getAllCustomers());
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
+        divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+
 
         //populateAppointmentFields();
 

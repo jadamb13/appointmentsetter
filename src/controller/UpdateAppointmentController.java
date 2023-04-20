@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** A Controller class for the UpdateAppointment view. */
 public class UpdateAppointmentController implements Initializable {
 
     @FXML
@@ -42,103 +43,33 @@ public class UpdateAppointmentController implements Initializable {
     Stage stage;
     Parent scene;
 
-    // Getters and Setters
-    public DatePicker getStartDateDp() {
-        return startDateDp;
-    }
+    /**
+     Initializes UpdateAppointment view.
 
-    public void setStartDateDp(DatePicker startDateDp) {
-        this.startDateDp = startDateDp;
-    }
-
-    public ComboBox<?> getContactCb() {
-        return contactCb;
-    }
-
-    public void setContactCb(ComboBox<?> contactCb) {
-        this.contactCb = contactCb;
-    }
-
-    public TextField getAppointmentIdTxt() {
-        return appointmentIdTxt;
-    }
-
-    public void setAppointmentIdTxt(TextField appointmentIdTxt) {
-        this.appointmentIdTxt = appointmentIdTxt;
-    }
-
-    public TextField getTitleTxt() {
-        return titleTxt;
-    }
-
-    public void setTitleTxt(TextField titleTxt) {
-        this.titleTxt = titleTxt;
-    }
-
-    public TextField getLocationTxt() {
-        return locationTxt;
-    }
-
-    public void setLocationTxt(TextField locationTxt) {
-        this.locationTxt = locationTxt;
-    }
-
-    public TextArea getDescriptionTxt() {
-        return descriptionTxt;
-    }
-
-    public void setDescriptionTxt(TextArea descriptionTxt) {
-        this.descriptionTxt = descriptionTxt;
-    }
-
-    public DatePicker getEndDateDp() {
-        return endDateDp;
-    }
-
-    public void setEndDateDp(DatePicker endDateDp) {
-        this.endDateDp = endDateDp;
-    }
-
-    public ComboBox<?> getStartTimeCb() {
-        return startTimeCb;
-    }
-
-    public void setStartTimeCb(ComboBox<?> startTimeCb) {
-        this.startTimeCb = startTimeCb;
-    }
-
-    public ComboBox<?> getEndTimeCb() {
-        return endTimeCb;
-    }
-
-    public void setEndTimeCb(ComboBox<?> endTimeCb) {
-        this.endTimeCb = endTimeCb;
-    }
-
-    public ComboBox<?> getTypeCb() {
-        return typeCb;
-    }
-
-    public void setTypeCb(ComboBox<?> typeCb) {
-        this.typeCb = typeCb;
-    }
-
-    public Button getUpdateAppointmentBtn() {
-        return updateAppointmentBtn;
-    }
-
-    public void setUpdateAppointmentBtn(Button updateAppointmentBtn) {
-        this.updateAppointmentBtn = updateAppointmentBtn;
-    }
-
+     @param url location information
+     @param resourceBundle resource information
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("UpdateAppointment Initialized.");
     }
 
-    public void saveUpdatedAppointment(ActionEvent actionEvent) {
-    }
+    /**
+     Checks the user input for validity, creates a new Appointment object, and updates the Appointment in DB before returning
+     the user to the MainView.
 
+     @param actionEvent object containing information about the page where user clicks Save button
+     //@exception IOException thrown if FXMLLoader.load() resource is Null
+     //@exception SQLException thrown in case of invalid SQL statement
+     */
+    public void saveUpdatedAppointment(ActionEvent actionEvent) { }
+
+    /**
+     Returns user to the MainView.
+
+     @param actionEvent ActionEvent object holding information about page where user clicks Cancel button
+     @exception IOException thrown if FXMLLoader.load() resource is Null
+     */
     public void displayMainView(ActionEvent actionEvent) throws IOException {
 
         // On "Cancel" button being clicked

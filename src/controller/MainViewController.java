@@ -80,69 +80,10 @@ public class MainViewController implements Initializable {
     private Button btn;
 
     // Getters and Setters
-    public RadioButton getCurrentMonthRBtn() {
-        return currentMonthRBtn;
-    }
-
-    public void setCurrentMonthRBtn(RadioButton currentMonthRBtn) {
-        this.currentMonthRBtn = currentMonthRBtn;
-    }
-
-    public RadioButton getCurrentWeekRBtn() {
-        return currentWeekRBtn;
-    }
-
-    public void setCurrentWeekRBtn(RadioButton currentWeekRBtn) {
-        this.currentWeekRBtn = currentWeekRBtn;
-    }
-
-    public RadioButton getAllAppointmentsRBtn() {
-        return allAppointmentsRBtn;
-    }
-
-    public void setAllAppointmentsRBtn(RadioButton allAppointmentsRBtn) {
-        this.allAppointmentsRBtn = allAppointmentsRBtn;
-    }
-
-    public TableView<Appointment> getAppointmentsTable() {
-        return appointmentsTable;
-    }
-
-    public void setAppointmentsTable(TableView<Appointment> appointmentsTable) {
-        this.appointmentsTable = appointmentsTable;
-    }
-
-    public Button getApptsDelBtn() {
-        return apptsDelBtn;
-    }
-
-    public void setApptsDelBtn(Button apptsDelBtn) {
-        this.apptsDelBtn = apptsDelBtn;
-    }
-
-    public Tab getCustomerTab() {
-        return customerTab;
-    }
-
-    public void setCustomerTab(Tab customerTab) {
-        this.customerTab = customerTab;
-    }
-
     public static Stage getMainViewStage() {
         return mainViewStage;
     }
 
-    public void setMainViewStage(Stage mainViewStage) {
-        MainViewController.mainViewStage = mainViewStage;
-    }
-
-    public Button getBtn() {
-        return btn;
-    }
-
-    public void setBtn(Button btn) {
-        this.btn = btn;
-    }
 
     /**
      Initializes MainView.
@@ -182,7 +123,11 @@ public class MainViewController implements Initializable {
 
     }
 
+    /**
+     Displays overlay window/stage of the AddAppointment view.
 
+     @param actionEvent represents user click Add button under Appointments Table
+     */
     public void displayAddAppointmentWindow(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddAppointment.fxml"));
@@ -197,7 +142,12 @@ public class MainViewController implements Initializable {
         }
     }
 
+    /**
+     Displays overlay window/stage of the UpdateAppointment view.
 
+     @param actionEvent represents user click Update button under Appointments Table
+
+     */
     public void displayUpdateAppointmentWindow(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateAppointment.fxml"));
@@ -211,6 +161,20 @@ public class MainViewController implements Initializable {
         }
     }
 
+    /**
+     Deletes Appointment object selected from the DB and tableView
+
+     @param actionEvent represents user clicking Delete button under Appointments table
+
+     */
+    public void deleteSelectedAppointment(ActionEvent actionEvent) {
+    }
+
+    /**
+     Displays overlay window/stage of the AddCustomer view.
+
+     @param actionEvent represents user click Add button under Customers Table
+     */
     public void displayAddCustomerWindow(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddCustomer.fxml"));
@@ -224,6 +188,12 @@ public class MainViewController implements Initializable {
         }
     }
 
+    /**
+     Displays overlay window/stage of the UpdateCustomer view.
+
+     @param actionEvent represents user click Update button under Customers Table
+
+     */
     public void displayUpdateCustomerWindow(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateCustomer.fxml"));
@@ -237,17 +207,38 @@ public class MainViewController implements Initializable {
         }
     }
 
+    /**
+     Deletes Customer object selected from the DB and tableView
 
+     @param actionEvent represents user clicking Delete button under Customers table
 
-    public void displayAllAppointments(ActionEvent actionEvent) {
+     */
+    public void deleteSelectedCustomer(ActionEvent actionEvent) {
     }
 
-    public void displayCurrentWeekAppointments(ActionEvent actionEvent) {
-    }
+    /**
+     Updates Appointments tableView to show all appointments
 
-    public void displayCurrentMonthAppointments(ActionEvent actionEvent) {
-    }
+     @param actionEvent represents user clicking "All Appointments" Radio Button
 
-    public void deleteSelectedAppointment(ActionEvent actionEvent) {
-    }
+     */
+    public void displayAllAppointments(ActionEvent actionEvent) { }
+
+    /**
+     Updates Appointments tableView to show only appointments this week (filter)
+
+     @param actionEvent represents user clicking "Current Week" Radio Button
+
+     */
+    public void displayCurrentWeekAppointments(ActionEvent actionEvent) { }
+
+    /**
+     Updates Appointments tableView to show appointments for the current month (filter)
+
+     @param actionEvent represents user clicking "Current Month" Radio Button
+
+     */
+    public void displayCurrentMonthAppointments(ActionEvent actionEvent) { }
+
+
 }

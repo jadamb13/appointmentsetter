@@ -13,8 +13,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/** A Controller class for the AddCustomer view. */
 public class AddCustomerController implements Initializable {
 
     @FXML
@@ -26,81 +28,44 @@ public class AddCustomerController implements Initializable {
     @FXML
     private TextField phoneNumberTxt;
     @FXML
-    private ComboBox<?> countryCb;
+    private ComboBox<String> countryCb;
     @FXML
-    private ComboBox<?> divisionCb;
+    private ComboBox<Integer> divisionCb;
     @FXML
     private TextField addressTxt;
 
     Stage stage;
     Parent scene;
 
-    // Getters and Setters
-    public TextField getCustomerIdTxt() {
-        return customerIdTxt;
-    }
 
-    public void setCustomerIdTxt(TextField customerIdTxt) {
-        this.customerIdTxt = customerIdTxt;
-    }
+    /**
+     Initializes AddCustomer view.
 
-    public TextField getNameTxt() {
-        return nameTxt;
-    }
-
-    public void setNameTxt(TextField nameTxt) {
-        this.nameTxt = nameTxt;
-    }
-
-    public TextField getPostalCodeTxt() {
-        return postalCodeTxt;
-    }
-
-    public void setPostalCodeTxt(TextField postalCodeTxt) {
-        this.postalCodeTxt = postalCodeTxt;
-    }
-
-    public TextField getPhoneNumberTxt() {
-        return phoneNumberTxt;
-    }
-
-    public void setPhoneNumberTxt(TextField phoneNumberTxt) {
-        this.phoneNumberTxt = phoneNumberTxt;
-    }
-
-    public ComboBox<?> getCountryCb() {
-        return countryCb;
-    }
-
-    public void setCountryCb(ComboBox<?> countryCb) {
-        this.countryCb = countryCb;
-    }
-
-    public ComboBox<?> getDivisionCb() {
-        return divisionCb;
-    }
-
-    public void setDivisionCb(ComboBox<?> divisionCb) {
-        this.divisionCb = divisionCb;
-    }
-
-    public TextField getAddressTxt() {
-        return addressTxt;
-    }
-
-    public void setAddressTxt(TextField addressTxt) {
-        this.addressTxt = addressTxt;
-    }
-
+     @param url location information
+     @param resourceBundle resource information
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("AddCustomer Initialized.");
     }
 
+    /**
+     Returns user to the MainView.
+
+     @param actionEvent ActionEvent object holding information about page where user clicks Cancel button
+     @exception IOException thrown if FXMLLoader.load() resource is Null
+     */
     public void displayCustomerTab(ActionEvent actionEvent) throws IOException {
         MainViewController.getMainViewStage().close();
     }
 
-    public void saveNewCustomer(ActionEvent actionEvent) {
-    }
+    /**
+     Checks the user input for validity, creates a new Customer object, and adds the Customer to DB before returning
+     the user to the MainView.
+
+     @param actionEvent object containing information about the page where user clicks Save button
+     //@exception IOException thrown if FXMLLoader.load() resource is Null
+     //@exception SQLException thrown in case of invalid SQL statement during createAppointment()
+     */
+    public void saveNewCustomer(ActionEvent actionEvent) { }
 }

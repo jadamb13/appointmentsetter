@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
+/** A Controller class for the AddAppointment view. */
 public class AddAppointmentController implements Initializable {
 
     @FXML
@@ -48,87 +49,12 @@ public class AddAppointmentController implements Initializable {
     Stage stage;
     Parent scene;
 
-    // Getters and Setters
-    public TextField getTitleTxt() {
-        return titleTxt;
-    }
+    /**
+     Initializes AddAppointment view.
 
-    public void setTitleTxt(TextField titleTxt) {
-        this.titleTxt = titleTxt;
-    }
-
-    public TextField getAppointmentIdTxt() {
-        return appointmentIdTxt;
-    }
-
-    public void setAppointmentIdTxt(TextField appointmentIdTxt) {
-        this.appointmentIdTxt = appointmentIdTxt;
-    }
-
-    public ComboBox<?> getContactCb() {
-        return contactCb;
-    }
-
-    public void setContactCb(ComboBox<String> contactCb) {
-        this.contactCb = contactCb;
-    }
-
-    public TextField getLocationTxt() {
-        return locationTxt;
-    }
-
-    public void setLocationTxt(TextField locationTxt) {
-        this.locationTxt = locationTxt;
-    }
-
-    public TextArea getDescriptionTxt() {
-        return descriptionTxt;
-    }
-
-    public void setDescriptionTxt(TextArea descriptionTxt) {
-        this.descriptionTxt = descriptionTxt;
-    }
-
-    public DatePicker getStartDateDp() {
-        return startDateDp;
-    }
-
-    public void setStartDateDp(DatePicker startDateDp) {
-        this.startDateDp = startDateDp;
-    }
-
-    public DatePicker getEndDateDp() {
-        return endDateDp;
-    }
-
-    public void setEndDateDp(DatePicker endDateDp) {
-        this.endDateDp = endDateDp;
-    }
-
-    public ComboBox<?> getStartTimeCb() {
-        return startTimeCb;
-    }
-
-    public void setStartTimeCb(ComboBox<Timestamp> startTimeCb) {
-        this.startTimeCb = startTimeCb;
-    }
-
-    public ComboBox<Timestamp> getEndTimeCb() {
-        return endTimeCb;
-    }
-
-    public void setEndTimeCb(ComboBox<Timestamp> endTimeCb) {
-        this.endTimeCb = endTimeCb;
-    }
-
-    public ComboBox<String> getTypeCb() {
-        return typeCb;
-    }
-
-    public void setTypeCb(ComboBox<String> typeCb) {
-        this.typeCb = typeCb;
-    }
-
+     @param url location information
+     @param resourceBundle resource information
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("AddAppointment Initialized.");
@@ -136,10 +62,17 @@ public class AddAppointmentController implements Initializable {
         typeCb.setItems(DBAppointment.getAppointmentTypes());
     }
 
+    /**
+     Checks the user input for validity, creates a new Appointment object, and adds the Appointment to DB before returning
+     the user to the MainView.
+
+     @param actionEvent object containing information about the page where user clicks Save button
+     @exception IOException thrown if FXMLLoader.load() resource is Null
+     @exception SQLException thrown in case of invalid SQL statement during createAppointment()
+     */
     public void saveNewAppointment(ActionEvent actionEvent) throws SQLException, IOException {
 
         // Form data
-
         String title = titleTxt.getText();
         String description = descriptionTxt.getText();
         String location = locationTxt.getText();
@@ -151,18 +84,19 @@ public class AddAppointmentController implements Initializable {
         int contactId = Contact.getContactIdByName(contactName);
         int userId = 1; // need to get user ID of currently logged in user
 
+        // Use createAppointment() and data from form to insert new Appointment into DB
         DBAppointment.createAppointment(customerId, contactId, userId, title, description, location, type, start, end);
 
+        // Close AddAppointment view and show MainView
         MainViewController.getMainViewStage().close();
-        /*
-        stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.centerOnScreen(); */
-
     }
 
+    /**
+     Returns user to the MainView.
 
+     @param actionEvent ActionEvent object holding information about page where user clicks Cancel button
+     @exception IOException thrown if FXMLLoader.load() resource is Null
+     */
     public void displayMainView(ActionEvent actionEvent) throws IOException {
 
         // On "Cancel" button being clicked

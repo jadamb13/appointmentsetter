@@ -6,9 +6,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** A Controller class for the UpdateCustomer view. */
 public class UpdateCustomerController implements Initializable {
 
     @FXML
@@ -27,73 +29,38 @@ public class UpdateCustomerController implements Initializable {
     @FXML
     private TextField addressTxt;
 
-    // Getters and Setters
-    public TextField getCustomerIdTxt() {
-        return customerIdTxt;
-    }
 
-    public void setCustomerIdTxt(TextField customerIdTxt) {
-        this.customerIdTxt = customerIdTxt;
-    }
+    /**
+     Initializes UpdateCustomer view.
 
-    public TextField getNameTxt() {
-        return nameTxt;
-    }
-
-    public void setNameTxt(TextField nameTxt) {
-        this.nameTxt = nameTxt;
-    }
-
-    public TextField getPostalCodeCb() {
-        return postalCodeCb;
-    }
-
-    public void setPostalCodeCb(TextField postalCodeCb) {
-        this.postalCodeCb = postalCodeCb;
-    }
-
-    public TextField getPhoneNumberTxt() {
-        return phoneNumberTxt;
-    }
-
-    public void setPhoneNumberTxt(TextField phoneNumberTxt) {
-        this.phoneNumberTxt = phoneNumberTxt;
-    }
-
-    public ComboBox<?> getCountryCb() {
-        return countryCb;
-    }
-
-    public void setCountryCb(ComboBox<?> countryCb) {
-        this.countryCb = countryCb;
-    }
-
-    public ComboBox<?> getDivisionCb() {
-        return divisionCb;
-    }
-
-    public void setDivisionCb(ComboBox<?> divisionCb) {
-        this.divisionCb = divisionCb;
-    }
-
-    public TextField getAddressTxt() {
-        return addressTxt;
-    }
-
-    public void setAddressTxt(TextField addressTxt) {
-        this.addressTxt = addressTxt;
-    }
-
+     @param url location information
+     @param resourceBundle resource information
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("UpdateCustomer Initialized.");
     }
 
+    /**
+     Checks the user input for validity, creates a new Customer object, and updates the Customer in DB before returning
+     the user to the MainView.
+
+     @param actionEvent object containing information about the page where user clicks Save button
+     //@exception IOException thrown if FXMLLoader.load() resource is Null
+     //@exception SQLException thrown in case of invalid SQL statement
+     */
+    public void saveUpdatedCustomer(ActionEvent actionEvent) { }
+
+    /**
+     Returns user to the MainView.
+
+     @param actionEvent ActionEvent object holding information about page where user clicks Cancel button
+     @exception IOException thrown if FXMLLoader.load() resource is Null
+     */
     public void displayCustomerTab(ActionEvent actionEvent) {
         MainViewController.getMainViewStage().close();
     }
 
-    public void saveUpdatedCustomer(ActionEvent actionEvent) {
-    }
+
 
 }

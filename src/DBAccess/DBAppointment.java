@@ -4,15 +4,21 @@ import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
-import model.Contact;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+/** A class to communicate with the DB about Appointments. */
 public class DBAppointment {
 
+    /**
+     Queries DB to gather data and create Appointment objects to be added to ObservableList.
+
+     @return appointmentList list of Appointment objects representing data in the DB
+
+     */
     public static ObservableList<Appointment> getAllAppointments(){
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
@@ -50,16 +56,11 @@ public class DBAppointment {
         return appointmentList;
     }
 
-    public static ObservableList<String> getAppointmentTypes(){
-        ObservableList<String> appointmentTypes = FXCollections.observableArrayList();
-        appointmentTypes.add("De-Briefing");
-        appointmentTypes.add("Planning Session");
-        appointmentTypes.add("Strategy Session");
-        appointmentTypes.add("Brainstorm Session");
-        appointmentTypes.add("Other");
-        return appointmentTypes;
-    }
 
+    /**
+     Gathers data entered by user and combines with generated fields to insert new Appointments into DB.
+
+     */
     public static void createAppointment(int customerId, int contactId, int userId, String title, String description,
                                          String location, String type, Timestamp start, Timestamp end) {
         try {
@@ -102,6 +103,5 @@ public class DBAppointment {
         }
 
     }
-
 
 }

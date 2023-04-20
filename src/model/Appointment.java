@@ -1,7 +1,8 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.sql.Timestamp;
-
 
 public class Appointment {
 
@@ -16,8 +17,6 @@ public class Appointment {
     private String type;
     private Timestamp start;
     private Timestamp end;
-
-
 
     public Appointment(int appointmentId, int customerId, int contactId, int userId, String title, String description,
                        String location, String contactName, String type, Timestamp start, Timestamp end) {
@@ -123,4 +122,21 @@ public class Appointment {
     public void setEnd(Timestamp end) {
         this.end = end;
     }
+
+    /**
+     Sets "Type" of Appointment that can be selected for new or updated Appointments.
+
+     @return appointmentTypes list of String objects representing types of Appointments
+
+     */
+    public static ObservableList<String> getAppointmentTypes(){
+        ObservableList<String> appointmentTypes = FXCollections.observableArrayList();
+        appointmentTypes.add("De-Briefing");
+        appointmentTypes.add("Planning Session");
+        appointmentTypes.add("Strategy Session");
+        appointmentTypes.add("Brainstorm Session");
+        appointmentTypes.add("Other");
+        return appointmentTypes;
+    }
+
 }

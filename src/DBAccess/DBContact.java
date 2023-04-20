@@ -17,7 +17,7 @@ public class DBContact {
 
         try{
             // SQL statement
-            String sql = "SELECT * FROM client_appointments.contacts";
+            String sql = "SELECT * FROM client_schedule.contacts";
 
             // Create a PreparedStatement
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);

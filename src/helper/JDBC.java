@@ -9,7 +9,7 @@ public abstract class JDBC {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
     private static final String location = "//localhost/";
-    private static final String databaseName = "client_appointments"; // Replace with VM databaseName when done testing
+    private static final String databaseName = "client_schedule"; // Replace with VM databaseName when done testing
     private static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER"; // LOCAL
     private static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
     private static final String userName = "root"; // Username -> Replace with VM username when done testing

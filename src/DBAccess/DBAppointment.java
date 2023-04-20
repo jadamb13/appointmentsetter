@@ -19,7 +19,7 @@ public class DBAppointment {
         try{
             // SQL statement
             String sql = "SELECT Appointment_ID, Title, Description, Location, Contact_Name, Type, Start, End, Customer_ID, User_ID, appointments.Contact_ID\n" +
-                    "FROM client_appointments.appointments JOIN contacts WHERE appointments.Contact_ID = contacts.Contact_ID;";
+                    "FROM client_schedule.appointments JOIN contacts WHERE appointments.Contact_ID = contacts.Contact_ID;";
 
             // Create a PreparedStatement
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);

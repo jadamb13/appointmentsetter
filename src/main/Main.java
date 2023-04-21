@@ -1,5 +1,6 @@
 package main;
 
+import DBAccess.DBAppointment;
 import helper.JDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

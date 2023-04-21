@@ -2,6 +2,8 @@ package model;
 
 import DBAccess.DBContact;
 import DBAccess.DBCustomer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Contact {
     private int contactId;
@@ -26,6 +28,21 @@ public class Contact {
         return contactName;
     }
 
+    /**
+     Creates list of names representing all Contact objects.
+
+     @return contactNames list of String objects representing names of all Contacts
+
+     */
+    public static ObservableList<String> getAllContactNames(){
+        ObservableList<String> contactNames = FXCollections.observableArrayList();
+        for (Contact c : DBContact.getAllContacts()){
+            contactNames.add(c.getContactName());
+        }
+        return contactNames;
+    }
+
+
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
@@ -46,5 +63,14 @@ public class Contact {
 
         }
         return -1;
+    }
+
+    public static String getContactNameById(int id){
+        for (Contact c : DBContact.getAllContacts()){
+            if(c.getContactId() == id){
+                return c.getContactName();
+            }
+        }
+        return "";
     }
 }

@@ -1,7 +1,6 @@
 package controller;
 
 import DBAccess.DBAppointment;
-import DBAccess.DBContact;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -52,7 +52,7 @@ public class AddAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("AddAppointment Initialized.");
-        contactCb.setItems(DBContact.getContactNames());
+        contactCb.setItems(Contact.getAllContactNames());
         typeCb.setItems(Appointment.getAppointmentTypes());
     }
 
@@ -62,7 +62,7 @@ public class AddAppointmentController implements Initializable {
 
      @param actionEvent object containing information about the page where user clicks Save button
      @exception IOException thrown if FXMLLoader.load() resource is Null
-     @exception SQLException thrown in case of invalid SQL statement during createAppointment()
+     @exception SQLException thrown in case of invalid SQL statement during insertAppointment()
      */
     public void saveNewAppointment(ActionEvent actionEvent) throws SQLException, IOException {
 
@@ -71,15 +71,15 @@ public class AddAppointmentController implements Initializable {
         String description = descriptionTxt.getText();
         String location = locationTxt.getText();
         Timestamp start = new Timestamp(System.currentTimeMillis()); // Figure out how to parse datepicker data
-        Timestamp end = new Timestamp(System.currentTimeMillis() + 900);  // Figure out how to parse datepicker data
+        Timestamp end = new Timestamp(System.currentTimeMillis() + (15*60*1000));  // Figure out how to parse datepicker data
         String contactName = contactCb.getSelectionModel().getSelectedItem();
         String type = typeCb.getSelectionModel().getSelectedItem();
         int customerId = 1; //Customer.getCustomerIdByName(customerName);
         int contactId = Contact.getContactIdByName(contactName);
         int userId = 1; // need to get user ID of currently logged in user
 
-        // Use createAppointment() and data from form to insert new Appointment into DB
-        DBAppointment.createAppointment(customerId, contactId, userId, title, description, location, type, start, end);
+        // Use insertAppointment() and data from form to insert new Appointment into DB
+        DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end);
 
         // Close AddAppointment view and show MainView
         MainViewController.getMainViewStage().close();

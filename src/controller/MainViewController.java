@@ -16,6 +16,7 @@ import model.Customer;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /** A Controller class for the MainView. */
@@ -76,11 +77,16 @@ public class MainViewController implements Initializable {
     @FXML
     private Button btn;
 
+    private static Appointment selectedAppointment;
+
     // Getters and Setters
     public static Stage getMainViewStage() {
         return mainViewStage;
     }
 
+    public static Appointment getSelectedAppointment(){
+        return selectedAppointment;
+    }
 
     /**
      Initializes MainView.
@@ -94,7 +100,7 @@ public class MainViewController implements Initializable {
         System.out.println("MainView Initialized.");
 
         // Set values in Appointments Table
-        appointmentsTable.setItems(DBAppointment.getAllAppointments());
+        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
         apptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
         apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
@@ -133,7 +139,7 @@ public class MainViewController implements Initializable {
             mainViewStage.setTitle("Add Appointment");
             mainViewStage.setScene(new Scene(root));
             mainViewStage.showAndWait();
-            appointmentsTable.setItems(DBAppointment.getAllAppointments());
+            appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -146,15 +152,18 @@ public class MainViewController implements Initializable {
 
      */
     public void displayUpdateAppointmentWindow(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateAppointment.fxml"));
-            Parent root = loader.load();
-            mainViewStage = new Stage();
-            mainViewStage.setTitle("Update Appointment");
-            mainViewStage.setScene(new Scene(root));
-            mainViewStage.show();
-        } catch (IOException e) {
-            System.out.println(e);
+        selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
+        if(!Objects.isNull(selectedAppointment)) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateAppointment.fxml"));
+                Parent root = loader.load();
+                mainViewStage = new Stage();
+                mainViewStage.setTitle("Update Appointment");
+                mainViewStage.setScene(new Scene(root));
+                mainViewStage.show();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
         }
     }
 
@@ -219,7 +228,9 @@ public class MainViewController implements Initializable {
      @param actionEvent represents user clicking "All Appointments" Radio Button
 
      */
-    public void displayAllAppointments(ActionEvent actionEvent) { }
+    public void displayAllAppointments(ActionEvent actionEvent) {
+        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+    }
 
     /**
      Updates Appointments tableView to show only appointments this week (filter)
@@ -227,7 +238,9 @@ public class MainViewController implements Initializable {
      @param actionEvent represents user clicking "Current Week" Radio Button
 
      */
-    public void displayCurrentWeekAppointments(ActionEvent actionEvent) { }
+    public void displayCurrentWeekAppointments(ActionEvent actionEvent) {
+
+    }
 
     /**
      Updates Appointments tableView to show appointments for the current month (filter)
@@ -235,7 +248,9 @@ public class MainViewController implements Initializable {
      @param actionEvent represents user clicking "Current Month" Radio Button
 
      */
-    public void displayCurrentMonthAppointments(ActionEvent actionEvent) { }
+    public void displayCurrentMonthAppointments(ActionEvent actionEvent) {
+
+    }
 
 
 }

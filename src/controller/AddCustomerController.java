@@ -65,7 +65,7 @@ public class AddCustomerController implements Initializable {
 
      @param actionEvent object containing information about the page where user clicks Save button
      //@exception IOException thrown if FXMLLoader.load() resource is Null
-     //@exception SQLException thrown in case of invalid SQL statement during createAppointment()
+     //@exception SQLException thrown in case of invalid SQL statement during insertAppointment()
      */
     public void saveNewCustomer(ActionEvent actionEvent) { }
 }

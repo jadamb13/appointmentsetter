@@ -164,6 +164,10 @@ public class MainViewController implements Initializable {
             } catch (IOException e) {
                 System.out.println(e);
             }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You must select an Appointment to Update.");
+            alert.show();
         }
     }
 

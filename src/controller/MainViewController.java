@@ -16,11 +16,14 @@ import model.Customer;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 /** A Controller class for the MainView. */
 public class MainViewController implements Initializable {
+
 
     @FXML
     private TableView<Customer> customerTable;
@@ -51,13 +54,15 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<Appointment, String> apptTypeCol;
     @FXML
-    private TableColumn<Appointment, Timestamp> apptStartCol;
+    private TableColumn<Appointment, String> apptStartDateCol;
     @FXML
-    private TableColumn<Appointment, Timestamp> apptEndCol;
+    private TableColumn<Appointment, String> apptStartTimeCol;
+    @FXML
+    private TableColumn<Appointment, String> apptEndDateCol;
+    @FXML
+    private TableColumn<Appointment, String> apptEndTimeCol;
     @FXML
     private TableColumn<Appointment, Integer>  apptCustomerIdCol;
-    @FXML
-    private TableColumn<Appointment, Integer>  apptContactIdCol;
     @FXML
     private TableColumn<Appointment, Integer>  apptUserIdCol;
     @FXML
@@ -100,17 +105,18 @@ public class MainViewController implements Initializable {
         System.out.println("MainView Initialized.");
 
         // Set values in Appointments Table
-        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+        appointmentsTable.setItems(DBAppointment.getAppointmentsList());
         apptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
         apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
         apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
         apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
-        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("Start"));
-        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("End"));
+        apptStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        apptEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        apptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
         apptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        apptContactIdCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
 
@@ -162,7 +168,7 @@ public class MainViewController implements Initializable {
                 mainViewStage.setScene(new Scene(root));
                 mainViewStage.show();
             } catch (IOException e) {
-                System.out.println(e);
+                System.out.println(e.getCause() + "\n" + e.getStackTrace());
             }
         }else{
             Alert alert = new Alert(Alert.AlertType.WARNING);

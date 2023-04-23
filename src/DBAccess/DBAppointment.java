@@ -10,6 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /** A class to communicate with the DB about Appointments. */
 public class DBAppointment {
@@ -22,8 +26,8 @@ public class DBAppointment {
      @return appointmentList list of Appointment objects representing data in the DB
 
      */
-    public static ObservableList<Appointment> getAllAppointmentsFromDb(){
-        appointmentList = FXCollections.observableArrayList();
+    public static <LcalDate> ObservableList<Appointment> getAllAppointmentsFromDb(){
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
             // SQL statement
             String sql = "SELECT Appointment_ID, Title, Description, Location, Contact_Name, Type, Start, End, Customer_ID, User_ID, appointments.Contact_ID\n" +
@@ -49,7 +53,19 @@ public class DBAppointment {
                 Timestamp start = rs.getTimestamp("Start");
                 Timestamp end = rs.getTimestamp("End");
 
-                Appointment a = new Appointment(appointmentId, customerId, contactId, userId, title, description, location, contact, type, start, end);
+                // Convert Timestamp to LocalDate and LocalTime
+                LocalDate startDate = start.toLocalDateTime().toLocalDate();
+                LocalDate endDate = end.toLocalDateTime().toLocalDate();
+                LocalTime startTime = start.toLocalDateTime().toLocalTime();
+                LocalTime endTime = end.toLocalDateTime().toLocalTime();
+
+                // Convert LD and LT to DateTimeFormatter strings for display in UI
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+
+                Appointment a = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
+                        contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
+                        timeFormatter.format(startTime), timeFormatter.format(endTime));
                 appointmentList.add(a);
             }
         }catch(SQLException e){
@@ -107,7 +123,6 @@ public class DBAppointment {
     }
 
 
-
     /**
      Gathers data entered by user and combines with generated fields to update Appointment in DB.
 
@@ -147,10 +162,25 @@ public class DBAppointment {
         }catch (SQLException e){
             e.printStackTrace();
         }
-        Appointment updatedAppointment = new Appointment(appointmentId, customerId, contactId, userId, title,
-                description, location, Contact.getContactNameById(contactId), type, start, end);
+        String contact = Contact.getContactNameById(contactId);
+
+        // Convert Timestamp to LocalDate and LocalTime
+        LocalDate startDate = start.toLocalDateTime().toLocalDate();
+        LocalDate endDate = end.toLocalDateTime().toLocalDate();
+        LocalTime startTime = start.toLocalDateTime().toLocalTime();
+        LocalTime endTime = end.toLocalDateTime().toLocalTime();
+
+        // Convert LD and LT to DateTimeFormatter strings for display in UI
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+
+        Appointment updatedAppointment = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
+                contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
+                timeFormatter.format(startTime), timeFormatter.format(endTime));
         updateAppointmentInAppointmentList(updatedAppointment);
     }
+
+
     public static ObservableList<Appointment> getCurrentWeekAppointments(){
         ObservableList<Appointment> weeklyAppointmentList = FXCollections.observableArrayList();
 
@@ -179,7 +209,19 @@ public class DBAppointment {
                 Timestamp start = rs.getTimestamp("Start");
                 Timestamp end = rs.getTimestamp("End");
 
-                Appointment a = new Appointment(appointmentId, customerId, contactId, userId, title, description, location, contact, type, start, end);
+                // Convert Timestamp to LocalDate and LocalTime
+                LocalDate startDate = start.toLocalDateTime().toLocalDate();
+                LocalDate endDate = end.toLocalDateTime().toLocalDate();
+                LocalTime startTime = start.toLocalDateTime().toLocalTime();
+                LocalTime endTime = end.toLocalDateTime().toLocalTime();
+
+                // Convert LD and LT to DateTimeFormatter strings for display in UI
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+
+                Appointment a = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
+                        contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
+                        timeFormatter.format(startTime), timeFormatter.format(endTime));
                 weeklyAppointmentList.add(a);
             }
         }catch(SQLException e){
@@ -195,6 +237,11 @@ public class DBAppointment {
 
     public static ObservableList<Appointment> getAppointmentsList(){
         return appointmentList;
+    }
+
+    public static ObservableList<Appointment> getformattedAppointmentList(){
+        ObservableList<Appointment> formattedAppointmentList = FXCollections.observableArrayList();
+        return formattedAppointmentList;
     }
 
 }

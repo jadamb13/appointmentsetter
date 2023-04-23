@@ -13,7 +13,9 @@ import model.Contact;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -21,7 +23,7 @@ import java.util.ResourceBundle;
 public class UpdateAppointmentController implements Initializable {
 
     @FXML
-    private DatePicker startDateDp;
+    private String startDateDp;
     @FXML
     private ComboBox<String> contactCb;
     @FXML
@@ -33,7 +35,7 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private TextArea descriptionTxt;
     @FXML
-    private DatePicker endDateDp;
+    private String endDateDp;
     @FXML
     private ComboBox<String> startTimeCb;
     @FXML
@@ -56,13 +58,8 @@ public class UpdateAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("UpdateAppointment Initialized.");
         Appointment selected = MainViewController.getSelectedAppointment();
-
-        // Convert timestamp to LDT and add formatting for easier readability
-        LocalDateTime startLdt = selected.getStart().toLocalDateTime();
-        LocalDateTime endLdt = selected.getEnd().toLocalDateTime();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-        String start = startLdt.format(formatter);
-        String end = endLdt.format(formatter);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM DD YYYY");
 
         // Populate form data from selected Appointment
         appointmentIdTxt.setText(String.valueOf(selected.getAppointmentId()));
@@ -73,11 +70,12 @@ public class UpdateAppointmentController implements Initializable {
         contactCb.setValue(selected.getContact());
         typeCb.setItems(Appointment.getAppointmentTypes());
         typeCb.setValue(selected.getType());
-        startDateDp.setValue(selected.getStart().toLocalDateTime().toLocalDate());
-        endDateDp.setValue(selected.getEnd().toLocalDateTime().toLocalDate());
-        startTimeCb.setValue(start);
-        endTimeCb.setValue(end);
-
+/*
+        startDateDp.setValue(selected.getStartDate());
+        endDateDp.setValue(selected.getEndDate());
+        startTimeCb.setValue(timeFormatter.format(selected.getStartTime()));
+        endTimeCb.setValue(timeFormatter.format(selected.getEndTime()));
+*/
 
     }
 
@@ -95,16 +93,27 @@ public class UpdateAppointmentController implements Initializable {
         String title = titleTxt.getText();
         String description = descriptionTxt.getText();
         String location = locationTxt.getText();
-        Timestamp start = new Timestamp(System.currentTimeMillis());
-        Timestamp end = new Timestamp(System.currentTimeMillis() + (15*60*1000));
         String contactName = contactCb.getSelectionModel().getSelectedItem();
         String type = typeCb.getSelectionModel().getSelectedItem();
+
+        // Set start date as now; end date in 15 minutes -> UPDATE WHEN Available Appointments list created
+        Timestamp start = new Timestamp(System.currentTimeMillis());
+        Timestamp end = new Timestamp(System.currentTimeMillis() + (15*60*1000));
+
         int customerId = 10;
         int contactId = Contact.getContactIdByName(contactName);
         int userId = 10; // need to get user ID of currently logged in user
 
+        // Convert timestamp to LDT and add formatting for easier readability
+        LocalDateTime startLdt = start.toLocalDateTime();
+        LocalDateTime endLdt = end.toLocalDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        String startString = startLdt.format(formatter);
+        String endString = endLdt.format(formatter);
+
         // Use insertAppointment() and data from form to insert new Appointment into DB
-        DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location, type, start, end);
+        DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location,
+                type, start, end);
 
         // Close AddAppointment view and show MainView
         MainViewController.getMainViewStage().close();

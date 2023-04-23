@@ -3,6 +3,10 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
 
@@ -15,11 +19,14 @@ public class Appointment {
     private String location;
     private String contactName;
     private String type;
-    private Timestamp start;
-    private Timestamp end;
+    private String startDate;
+    private String endDate;
+    private String startTime;
+    private String endTime;
 
     public Appointment(int appointmentId, int customerId, int contactId, int userId, String title, String description,
-                       String location, String contactName, String type, Timestamp start, Timestamp end) {
+                       String location, String contactName, String type, String startDate, String endDate,
+                       String startTime, String endTime) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.contactId = contactId;
@@ -29,9 +36,10 @@ public class Appointment {
         this.location = location;
         this.contactName = contactName;
         this.type = type;
-        this.start = start;
-        this.end = end;
-
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     // Getters and Setters
@@ -107,20 +115,37 @@ public class Appointment {
         this.type = type;
     }
 
-    public Timestamp getStart() {
-        return start;
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public void setStart(Timestamp start) {
-        this.start = start;
+    public String getStartDate(){
+        return startDate;
     }
 
-    public Timestamp getEnd() {
-        return end;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    public void setEnd(Timestamp end) {
-        this.end = end;
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     /**

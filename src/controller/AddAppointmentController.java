@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 /** A Controller class for the AddAppointment view. */
@@ -35,7 +39,7 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TextField locationTxt;
     @FXML
-    private TextField descriptionTxt;
+    private TextArea descriptionTxt;
     @FXML
     private DatePicker startDateDp;
     @FXML
@@ -50,20 +54,7 @@ public class AddAppointmentController implements Initializable {
     Stage stage;
     Parent scene;
 
-    public static ObservableList<String> getAppointmentTimes() {
-        ObservableList<String> appointmentTimes = FXCollections.observableArrayList();
 
-        String[] times = {"8:00 am", "8:15 am", "8:30 am", "8:45 am", "9:00 am", "9:15 am", "9:30 am", "10:00 am",
-                "10:15 am", "10:30 am", "10:45 am", "11:00 am", "11:15 am", "11:30 am", "11:45 am", "12:00 pm", "12:15 pm", "12:30 pm", "12:45 pm",
-                "1:00 pm", "1:15 pm", "1:30 pm", "1:45 pm", "2:00 pm", "2:15 pm", "2:30 pm", "2:45 pm", "3:00 pm", "3:15 pm", "3:30 pm", "3:45 pm",
-                "4:00 pm", "4:15 pm", "4:30 pm", "4:45 pm", "5:00 pm", "5:15 pm", "5:30 pm", "5:45 pm", "6:00 pm", "6:15 pm", "6:30 pm", "6:45 pm,",
-                "7:00 pm", "7:15 pm", "7:30 pm", "7:45 pm", "8:00 pm", "8:15 pm", "8:30 pm", "8:45 pm", "9:00 pm", "9:15 pm", "9:30 pm", "9:45 pm", "10:00 pm"};
-        for (int i = 0; i < times.length; i++){
-            System.out.println("Loop");
-            appointmentTimes.add(times[i]);
-        }
-        return appointmentTimes;
-    }
 
     /**
      Initializes AddAppointment view.
@@ -81,8 +72,8 @@ public class AddAppointmentController implements Initializable {
         contactCb.setItems(Contact.getAllContactNames());
         typeCb.setItems(Appointment.getAppointmentTypes());
         customerCb.setItems(Customer.getAllCustomerNames());
-        startTimeCb.setItems(getAppointmentTimes());
-        endTimeCb.setItems(getAppointmentTimes());
+        startTimeCb.setItems(Appointment.getAppointmentTimes());
+        endTimeCb.setItems(Appointment.getAppointmentTimes());
     }
 
 
@@ -97,17 +88,33 @@ public class AddAppointmentController implements Initializable {
      */
     public void saveNewAppointment(ActionEvent actionEvent) throws SQLException, IOException {
 
-        // Form data
+        // Form data (not including times and dates)
         String title = titleTxt.getText();
         String description = descriptionTxt.getText();
         String location = locationTxt.getText();
-        Timestamp start = new Timestamp(System.currentTimeMillis()); // Figure out how to parse datepicker data
-        Timestamp end = new Timestamp(System.currentTimeMillis() + (15*60*1000));  // Figure out how to parse datepicker data
         String contactName = contactCb.getSelectionModel().getSelectedItem();
         String type = typeCb.getSelectionModel().getSelectedItem();
-        int customerId = 1; //Customer.getCustomerIdByName(customerName);
+        String customerName = customerCb.getSelectionModel().getSelectedItem();
+        int customerId = Customer.getCustomerIdByName(customerName);
         int contactId = Contact.getContactIdByName(contactName);
         int userId = LoginController.getProgramUserId();
+
+        // Get selected/entered times and dates from Add Appointment Form
+        String startTime = startTimeCb.getValue();
+        String endTime = endTimeCb.getValue();
+        LocalDate startDate = startDateDp.getValue();
+        LocalDate endDate = endDateDp.getValue();
+
+        // Create LocalDate and LocalTime objects to create LocalDateTimes
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+        LocalTime ltStartTime = LocalTime.parse(startTime, formatter);
+        LocalTime ltEndTime = LocalTime.parse(endTime, formatter);
+        LocalDateTime ldtStart = LocalDateTime.of(startDate, ltStartTime);
+        LocalDateTime ldtEnd = LocalDateTime.of(endDate, ltEndTime);
+
+        // Turn LDTs into Timestamps for entry into the DB
+        Timestamp start = Timestamp.valueOf(ldtStart);
+        Timestamp end = Timestamp.valueOf(ldtEnd);
 
         // Use insertAppointment() and data from form to insert new Appointment into DB
         DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end);

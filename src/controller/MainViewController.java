@@ -105,7 +105,6 @@ public class MainViewController implements Initializable {
         System.out.println("MainView Initialized.");
 
         // Set values in Appointments Table
-        appointmentsTable.setItems(DBAppointment.getAppointmentsList());
         apptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
         apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
@@ -118,7 +117,10 @@ public class MainViewController implements Initializable {
         apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
         apptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
 
+        // Sort Appointments Table by Appointment ID
+        appointmentsTable.getSortOrder().add(apptIdCol);
 
         // Set values in Customers Table
         customerTable.setItems(DBCustomer.getAllCustomers());
@@ -128,8 +130,6 @@ public class MainViewController implements Initializable {
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
         divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
-
-
     }
 
     /**
@@ -166,9 +166,10 @@ public class MainViewController implements Initializable {
                 mainViewStage = new Stage();
                 mainViewStage.setTitle("Update Appointment");
                 mainViewStage.setScene(new Scene(root));
-                mainViewStage.show();
+                mainViewStage.showAndWait();
+                appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
             } catch (IOException e) {
-                System.out.println(e.getCause() + "\n" + e.getStackTrace());
+                System.out.println("Caught you: " + e.getMessage());
             }
         }else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -184,6 +185,9 @@ public class MainViewController implements Initializable {
 
      */
     public void deleteSelectedAppointment(ActionEvent actionEvent) {
+        Appointment selected = appointmentsTable.getSelectionModel().getSelectedItem();
+        DBAppointment.deleteAppointmentInDb(selected.getAppointmentId());
+        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
     }
 
     /**

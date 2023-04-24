@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
+import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +28,11 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private ComboBox<String> contactCb;
     @FXML
+    private ComboBox<String> customerCb;
+    @FXML
     private TextField appointmentIdTxt;
+    @FXML
+    private TextField userIdTxt;
     @FXML
     private TextField titleTxt;
     @FXML
@@ -56,32 +61,37 @@ public class UpdateAppointmentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("UpdateAppointment Initialized.");
-        Appointment selected = MainViewController.getSelectedAppointment();
+        try {
+            System.out.println("UpdateAppointment Initialized.");
+            Appointment selected = MainViewController.getSelectedAppointment();
 
+            // Convert String Dates into LocalDate to use with DatePicker boxes
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+            LocalDate startDate = LocalDate.parse(selected.getStartDate(), dateFormatter);
+            LocalDate endDate = LocalDate.parse(selected.getEndDate(), dateFormatter);
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-        LocalDate startDate = LocalDate.parse(selected.getStartDate(), dateFormatter);
-        LocalDate endDate = LocalDate.parse(selected.getEndDate(), dateFormatter);
+            // Populate form data from selected Appointment
+            appointmentIdTxt.setText(String.valueOf(selected.getAppointmentId()));
+            userIdTxt.setText(String.valueOf(selected.getUserId()));
+            customerCb.setItems(Customer.getAllCustomerNames());
+            customerCb.setValue(Customer.getCustomerNameById(selected.getCustomerId()));
+            titleTxt.setText(selected.getTitle());
+            descriptionTxt.setText(selected.getDescription());
+            locationTxt.setText(selected.getLocation());
+            contactCb.setItems(Contact.getAllContactNames());
+            contactCb.setValue(selected.getContact());
+            typeCb.setItems(Appointment.getAppointmentTypes());
+            typeCb.setValue(selected.getType());
+            startTimeCb.setItems(Appointment.getAppointmentTimes());
+            startTimeCb.setValue(selected.getStartTime());
+            endTimeCb.setItems(Appointment.getAppointmentTimes());
+            endTimeCb.setValue(selected.getEndTime());
+            startDateDp.setValue(startDate);
+            endDateDp.setValue(endDate);
 
-        // Populate form data from selected Appointment
-        appointmentIdTxt.setText(String.valueOf(selected.getAppointmentId()));
-        titleTxt.setText(selected.getTitle());
-        descriptionTxt.setText(selected.getDescription());
-        locationTxt.setText(selected.getLocation());
-        contactCb.setItems(Contact.getAllContactNames());
-        contactCb.setValue(selected.getContact());
-        typeCb.setItems(Appointment.getAppointmentTypes());
-        typeCb.setValue(selected.getType());
-
-        startTimeCb.setValue(selected.getStartTime());
-        endTimeCb.setValue(selected.getEndTime());
-
-        startDateDp.setValue(startDate);
-        endDateDp.setValue(endDate);
-
-
-
+        } catch (Exception e){
+            System.out.println("Caught ya: " + e.getMessage());
+        }
     }
 
     /**
@@ -93,33 +103,43 @@ public class UpdateAppointmentController implements Initializable {
      //@exception SQLException thrown in case of invalid SQL statement
      */
     public void saveUpdatedAppointment(ActionEvent actionEvent) {
-        // Form data
-        int appointmentId = Integer.parseInt(appointmentIdTxt.getText());
-        String title = titleTxt.getText();
-        String description = descriptionTxt.getText();
-        String location = locationTxt.getText();
-        String contactName = contactCb.getSelectionModel().getSelectedItem();
-        String type = typeCb.getSelectionModel().getSelectedItem();
+        try {
+            // Form data
+            int appointmentId = Integer.parseInt(appointmentIdTxt.getText());
+            int userId = Integer.parseInt(userIdTxt.getText());
+            String contactName = contactCb.getSelectionModel().getSelectedItem();
+            int contactId = Contact.getContactIdByName(contactName);
+            String customer = customerCb.getSelectionModel().getSelectedItem();
+            int customerId = Customer.getCustomerIdByName(customer);
+            String title = titleTxt.getText();
+            String description = descriptionTxt.getText();
+            String location = locationTxt.getText();
+            String type = typeCb.getSelectionModel().getSelectedItem();
 
-        // Set start date as now; end date in 15 minutes -> UPDATE WHEN Available Appointments list created
-        Timestamp start = new Timestamp(System.currentTimeMillis());
-        Timestamp end = new Timestamp(System.currentTimeMillis() + (15*60*1000));
+            // Get selected/entered times and dates from Add Appointment Form
+            String startTime = startTimeCb.getValue();
+            String endTime = endTimeCb.getValue();
+            LocalDate startDate = startDateDp.getValue();
+            LocalDate endDate = endDateDp.getValue();
 
-        int customerId = 10;
-        int contactId = Contact.getContactIdByName(contactName);
-        int userId = 10; // need to get user ID of currently logged in user
+            // Create LocalDate and LocalTime objects to create LocalDateTimes
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+            LocalTime ltStartTime = LocalTime.parse(startTime, formatter);
+            LocalTime ltEndTime = LocalTime.parse(endTime, formatter);
+            LocalDateTime ldtStart = LocalDateTime.of(startDate, ltStartTime);
+            LocalDateTime ldtEnd = LocalDateTime.of(endDate, ltEndTime);
 
-        // Convert timestamp to LDT and add formatting for easier readability
-        LocalDateTime startLdt = start.toLocalDateTime();
-        LocalDateTime endLdt = end.toLocalDateTime();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-        String startString = startLdt.format(formatter);
-        String endString = endLdt.format(formatter);
+            // Turn LDTs into Timestamps for entry into the DB
+            Timestamp start = Timestamp.valueOf(ldtStart);
+            Timestamp end = Timestamp.valueOf(ldtEnd);
 
-        // Use insertAppointment() and data from form to insert new Appointment into DB
-        DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location,
-                type, start, end);
 
+            // Use insertAppointment() and data from form to insert new Appointment into DB
+            DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location,
+                    type, start, end);
+        }catch(Exception e){
+            System.out.println("Caught ye: " + e.getMessage());
+        }
         // Close AddAppointment view and show MainView
         MainViewController.getMainViewStage().close();
     }

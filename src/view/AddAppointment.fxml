@@ -4,94 +4,94 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="426.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
+<AnchorPane prefHeight="357.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentController">
    <children>
-      <ComboBox fx:id="contactCb" layoutX="99.0" layoutY="220.0" prefHeight="25.0" prefWidth="174.0" />
-      <Label layoutX="18.0" layoutY="223.0" text="Contact:">
+      <ComboBox fx:id="contactCb" layoutX="86.0" layoutY="103.0" prefHeight="25.0" prefWidth="174.0" />
+      <Label layoutX="16.0" layoutY="105.0" text="Contact:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="appointmentIdTxt" disable="true" layoutX="495.0" layoutY="72.0" prefHeight="25.0" prefWidth="33.0" />
-      <Label layoutX="386.0" layoutY="75.0" text="Appointment ID:">
+      <TextField fx:id="appointmentIdTxt" disable="true" layoutX="495.0" layoutY="50.0" prefHeight="25.0" prefWidth="33.0" />
+      <Label layoutX="386.0" layoutY="52.0" text="Appointment ID:">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="titleTxt" layoutX="99.0" layoutY="105.0" prefHeight="25.0" prefWidth="174.0" />
-      <TextField fx:id="locationTxt" layoutX="99.0" layoutY="187.0" prefHeight="25.0" prefWidth="174.0" />
-      <DatePicker fx:id="startDateDp" layoutX="99.0" layoutY="288.0" />
-      <DatePicker fx:id="endDateDp" layoutX="354.0" layoutY="288.0" />
-      <ComboBox fx:id="startTimeCb" layoutX="99.0" layoutY="323.0" prefHeight="25.0" prefWidth="174.0" />
-      <ComboBox fx:id="endTimeCb" layoutX="354.0" layoutY="323.0" prefHeight="25.0" prefWidth="174.0" />
+      <TextField fx:id="titleTxt" layoutX="86.0" layoutY="134.0" prefHeight="25.0" prefWidth="174.0" />
+      <TextField fx:id="locationTxt" layoutX="87.0" layoutY="165.0" prefHeight="25.0" prefWidth="174.0" />
+      <DatePicker fx:id="startDateDp" layoutX="87.0" layoutY="229.0" />
+      <DatePicker fx:id="endDateDp" layoutX="353.0" layoutY="230.0" />
+      <ComboBox fx:id="startTimeCb" layoutX="87.0" layoutY="262.0" prefHeight="25.0" prefWidth="174.0" />
+      <ComboBox fx:id="endTimeCb" layoutX="354.0" layoutY="262.0" prefHeight="25.0" prefWidth="174.0" />
       <Label layoutX="19.0" layoutY="14.0" text="Add Appointment">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="21.0" layoutY="107.0" text="Title:">
+      <Label layoutX="16.0" layoutY="136.0" text="Title:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="17.0" layoutY="141.0" text="Description:">
+      <Label layoutX="273.0" layoutY="136.0" text="Description:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="18.0" layoutY="190.0" text="Location:">
+      <Label layoutX="17.0" layoutY="166.0" text="Location:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="19.0" layoutY="257.0" text="Type:">
+      <Label layoutX="18.0" layoutY="198.0" text="Type:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="19.0" layoutY="289.0" text="Start date:">
+      <Label layoutX="19.0" layoutY="232.0" text="Start date:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="288.0" layoutY="291.0" text="End date:">
+      <Label layoutX="276.0" layoutY="233.0" text="End date:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="19.0" layoutY="326.0" text="Start time:">
+      <Label layoutX="19.0" layoutY="265.0" text="Start time:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="288.0" layoutY="326.0" text="End time:">
+      <Label layoutX="277.0" layoutY="265.0" text="End time:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button layoutX="305.0" layoutY="376.0" mnemonicParsing="false" onAction="#saveNewAppointment" text="Save">
+      <Button layoutX="305.0" layoutY="309.0" mnemonicParsing="false" onAction="#saveNewAppointment" text="Save">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="227.0" layoutY="376.0" mnemonicParsing="false" onAction="#displayMainView" text="Cancel">
+      <Button layoutX="231.0" layoutY="309.0" mnemonicParsing="false" onAction="#displayMainView" text="Cancel">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <ComboBox fx:id="typeCb" layoutX="99.0" layoutY="253.0" prefHeight="25.0" prefWidth="174.0" />
-      <ComboBox fx:id="customerCb" layoutX="99.0" layoutY="72.0" prefHeight="25.0" prefWidth="174.0" />
-      <Label layoutX="20.0" layoutY="74.0" text="Customer:">
+      <ComboBox fx:id="typeCb" layoutX="87.0" layoutY="197.0" prefHeight="25.0" prefWidth="174.0" />
+      <ComboBox fx:id="customerCb" layoutX="86.0" layoutY="72.0" prefHeight="25.0" prefWidth="174.0" />
+      <Label layoutX="15.0" layoutY="74.0" text="Customer:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="descriptionTxt" layoutX="99.0" layoutY="139.0" prefHeight="41.0" prefWidth="174.0" />
-      <Label layoutX="440.0" layoutY="107.0" text="User ID:">
+      <Label layoutX="440.0" layoutY="84.0" text="User ID:">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="userIdTxt" disable="true" layoutX="495.0" layoutY="105.0" prefHeight="25.0" prefWidth="33.0" />
+      <TextField fx:id="userIdTxt" disable="true" layoutX="495.0" layoutY="83.0" prefHeight="25.0" prefWidth="33.0" />
+      <TextArea fx:id="descriptionTxt" layoutX="354.0" layoutY="136.0" prefHeight="86.0" prefWidth="174.0" />
    </children>
 </AnchorPane>

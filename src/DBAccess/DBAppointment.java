@@ -26,7 +26,7 @@ public class DBAppointment {
      @return appointmentList list of Appointment objects representing data in the DB
 
      */
-    public static <LcalDate> ObservableList<Appointment> getAllAppointmentsFromDb(){
+    public static ObservableList<Appointment> getAllAppointmentsFromDb(){
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
         try{
             // SQL statement
@@ -159,9 +159,7 @@ public class DBAppointment {
             ps.setInt(15, appointmentId);
             ps.execute();
 
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+
         String contact = Contact.getContactNameById(contactId);
 
         // Convert Timestamp to LocalDate and LocalTime
@@ -174,12 +172,23 @@ public class DBAppointment {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
-        Appointment updatedAppointment = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
-                contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
-                timeFormatter.format(startTime), timeFormatter.format(endTime));
-        updateAppointmentInAppointmentList(updatedAppointment);
+       }catch (SQLException e){
+           System.out.println("Caught ye boi: " + e.getMessage());;
+       }
     }
 
+    public static void deleteAppointmentInDb(int appointmentId){
+        try {
+            // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
+            String sql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, appointmentId);
+            ps.execute();
+
+        }catch(SQLException e){
+            System.out.println("Caught yas.");
+        }
+    }
 
     public static ObservableList<Appointment> getCurrentWeekAppointments(){
         ObservableList<Appointment> weeklyAppointmentList = FXCollections.observableArrayList();
@@ -230,14 +239,7 @@ public class DBAppointment {
         return weeklyAppointmentList;
     }
 
-    public static void updateAppointmentInAppointmentList(Appointment newAppointment){
-        int index = newAppointment.getAppointmentId() - 1;
-        appointmentList.set(index, newAppointment);
-    }
 
-    public static ObservableList<Appointment> getAppointmentsList(){
-        return appointmentList;
-    }
 
     public static int getNextAppointmentId(){
         int nextAppointmentId = -1;

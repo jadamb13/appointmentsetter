@@ -160,4 +160,16 @@ public class Appointment {
         return appointmentTypes;
     }
 
+    public static ObservableList<String> getAppointmentTimes() {
+        ObservableList<String> appointmentTimes = FXCollections.observableArrayList();
+
+        // Logic to determine which appointments are available based on the current local time compared to EST
+        // Also cross-reference appointments already assigned to this customer and update list based on customer selected
+        // or just allow the time to show but show error on selection/save
+        appointmentTimes.add("8:00 AM");
+        appointmentTimes.add("8:30 AM");
+
+        return appointmentTimes;
+    }
+
 }

@@ -81,6 +81,15 @@ public class Customer {
         return -1;
     }
 
+    public static String getCustomerNameById(int id){
+        for (Customer c : DBCustomer.getAllCustomers()){
+            if(c.getCustomerId() == id){
+                return c.getCustomerName();
+            }
+        }
+        return "";
+    }
+
     /**
      Creates list of names representing all Customer objects.
 

@@ -1,6 +1,9 @@
 package model;
 
+import DBAccess.DBContact;
 import DBAccess.DBCustomer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Customer {
     private int customerId;
@@ -77,4 +80,19 @@ public class Customer {
         }
         return -1;
     }
+
+    /**
+     Creates list of names representing all Customer objects.
+
+     @return customerNames list of String objects representing names of all Customers
+
+     */
+    public static ObservableList<String> getAllCustomerNames(){
+        ObservableList<String> customerNames = FXCollections.observableArrayList();
+        for (Customer c : DBCustomer.getAllCustomers()){
+            customerNames.add(c.getCustomerName());
+        }
+        return customerNames;
+    }
+
 }

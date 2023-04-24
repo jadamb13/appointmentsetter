@@ -35,7 +35,15 @@ public class LoginController implements Initializable {
     Stage stage;
     Parent scene;
     ZoneId zone = ZoneId.systemDefault();
+    private static int programUserId = 0;
 
+    public static int getProgramUserId() {
+        return programUserId;
+    }
+
+    public void setProgramUserId(int programUserId) {
+        LoginController.programUserId = programUserId;
+    }
 
     /**
      * Initializes LoginView.
@@ -56,9 +64,8 @@ public class LoginController implements Initializable {
      * @param actionEvent represents user clicking on "Login" button
      */
     public void onActionDisplayMainView(ActionEvent actionEvent) throws IOException {
-        /*System.out.println("Clicked Login.");
-        ObservableList<User> userList = FXCollections.observableArrayList();
-        userList = DBUser.getAllUsers();
+        System.out.println("Clicked Login.");
+        ObservableList<User> userList =  DBUser.getAllUsers();
         boolean userFound = false;
 
         for (User u : userList){
@@ -72,14 +79,13 @@ public class LoginController implements Initializable {
 
             if (un.equals(inputUn) && pw.equals(inputPw)){
                 userFound = true;
-                setUserId(u.getUserId());
+                setProgramUserId(u.getUserId());
 
-        */
         stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
-        /*
+
             }
         }
         if (!userFound){
@@ -90,7 +96,7 @@ public class LoginController implements Initializable {
 
         }
 
-         */
+
     }
 
     }

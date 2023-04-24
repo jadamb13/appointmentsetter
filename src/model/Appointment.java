@@ -2,11 +2,6 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class Appointment {
 
@@ -46,6 +41,7 @@ public class Appointment {
     public int getAppointmentId() {
         return appointmentId;
     }
+
 
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;

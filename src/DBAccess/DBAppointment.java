@@ -61,7 +61,7 @@ public class DBAppointment {
 
                 // Convert LD and LT to DateTimeFormatter strings for display in UI
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
                 Appointment a = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
                         contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
@@ -172,7 +172,7 @@ public class DBAppointment {
 
         // Convert LD and LT to DateTimeFormatter strings for display in UI
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
         Appointment updatedAppointment = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
                 contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
@@ -217,7 +217,7 @@ public class DBAppointment {
 
                 // Convert LD and LT to DateTimeFormatter strings for display in UI
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM-dd-yyyy");
 
                 Appointment a = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
                         contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
@@ -239,9 +239,18 @@ public class DBAppointment {
         return appointmentList;
     }
 
-    public static ObservableList<Appointment> getformattedAppointmentList(){
-        ObservableList<Appointment> formattedAppointmentList = FXCollections.observableArrayList();
-        return formattedAppointmentList;
+    public static int getNextAppointmentId(){
+        int nextAppointmentId = -1;
+        try{
+            // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
+            String max_sql = "SELECT MAX(Appointment_ID) as MAX FROM appointments";
+            PreparedStatement maxPs = JDBC.getConnection().prepareStatement(max_sql);
+            ResultSet rs = maxPs.executeQuery();
+            rs.next();
+            nextAppointmentId = rs.getInt("MAX") + 1;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return nextAppointmentId;
     }
-
 }

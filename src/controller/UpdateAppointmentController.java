@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 public class UpdateAppointmentController implements Initializable {
 
     @FXML
-    private String startDateDp;
+    private DatePicker startDateDp;
     @FXML
     private ComboBox<String> contactCb;
     @FXML
@@ -35,7 +35,7 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private TextArea descriptionTxt;
     @FXML
-    private String endDateDp;
+    private DatePicker endDateDp;
     @FXML
     private ComboBox<String> startTimeCb;
     @FXML
@@ -58,8 +58,11 @@ public class UpdateAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("UpdateAppointment Initialized.");
         Appointment selected = MainViewController.getSelectedAppointment();
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM DD YYYY");
+
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        LocalDate startDate = LocalDate.parse(selected.getStartDate(), dateFormatter);
+        LocalDate endDate = LocalDate.parse(selected.getEndDate(), dateFormatter);
 
         // Populate form data from selected Appointment
         appointmentIdTxt.setText(String.valueOf(selected.getAppointmentId()));
@@ -70,12 +73,14 @@ public class UpdateAppointmentController implements Initializable {
         contactCb.setValue(selected.getContact());
         typeCb.setItems(Appointment.getAppointmentTypes());
         typeCb.setValue(selected.getType());
-/*
-        startDateDp.setValue(selected.getStartDate());
-        endDateDp.setValue(selected.getEndDate());
-        startTimeCb.setValue(timeFormatter.format(selected.getStartTime()));
-        endTimeCb.setValue(timeFormatter.format(selected.getEndTime()));
-*/
+
+        startTimeCb.setValue(selected.getStartTime());
+        endTimeCb.setValue(selected.getEndTime());
+
+        startDateDp.setValue(startDate);
+        endDateDp.setValue(endDate);
+
+
 
     }
 

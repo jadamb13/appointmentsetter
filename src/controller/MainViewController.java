@@ -123,13 +123,17 @@ public class MainViewController implements Initializable {
         appointmentsTable.getSortOrder().add(apptIdCol);
 
         // Set values in Customers Table
-        customerTable.setItems(DBCustomer.getAllCustomers());
+
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
         divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+        customerTable.setItems(DBCustomer.getAllCustomersFromDb());
+
+        // Sort Appointments Table by Appointment ID
+        customerTable.getSortOrder().add(customerIdCol);
     }
 
     /**
@@ -202,7 +206,8 @@ public class MainViewController implements Initializable {
             mainViewStage = new Stage();
             mainViewStage.setTitle("Update Appointment");
             mainViewStage.setScene(new Scene(root));
-            mainViewStage.show();
+            mainViewStage.showAndWait();
+            customerTable.setItems(DBCustomer.getAllCustomersFromDb());
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -234,6 +239,16 @@ public class MainViewController implements Initializable {
 
      */
     public void deleteSelectedCustomer(ActionEvent actionEvent) {
+
+        Customer selected = customerTable.getSelectionModel().getSelectedItem();
+        for(Appointment a : DBAppointment.getAllAppointmentsFromDb()){
+            if(a.getCustomerId() == selected.getCustomerId()){
+                DBAppointment.deleteAppointmentInDb(a.getAppointmentId());
+                appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+            }
+        }
+        DBCustomer.deleteCustomerInDb(selected.getCustomerId());
+        customerTable.setItems(DBCustomer.getAllCustomersFromDb());
     }
 
     /**

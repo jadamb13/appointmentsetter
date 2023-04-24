@@ -1,5 +1,10 @@
 package model;
 
+import DBAccess.DBCountry;
+import DBAccess.DBDivision;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Division {
     private int divisionId;
     private String division;
@@ -33,5 +38,13 @@ public class Division {
 
     public void setCountryId(int countryId) {
         this.countryId = countryId;
+    }
+
+    public static ObservableList<String> getAllDivisionNames(){
+        ObservableList<String> divisionNames = FXCollections.observableArrayList();
+        for (Division d : DBDivision.getAllDivisionsFromDb()){
+            divisionNames.add(d.getDivision());
+        }
+        return divisionNames;
     }
 }

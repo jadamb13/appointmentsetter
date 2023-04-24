@@ -79,7 +79,7 @@
                                     <font>
                                         <Font size="14.0" />
                                     </font></Button>
-                                <Button layoutX="606.0" layoutY="372.0" mnemonicParsing="false" text="Delete">
+                                <Button layoutX="606.0" layoutY="372.0" mnemonicParsing="false" onAction="#deleteSelectedCustomer" text="Delete">
                                     <font>
                                         <Font size="14.0" />
                                     </font></Button>

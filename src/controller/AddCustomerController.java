@@ -1,5 +1,8 @@
 package controller;
 
+import DBAccess.DBCountry;
+import DBAccess.DBCustomer;
+import DBAccess.DBDivision;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Country;
+import model.Division;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,7 +35,7 @@ public class AddCustomerController implements Initializable {
     @FXML
     private ComboBox<String> countryCb;
     @FXML
-    private ComboBox<Integer> divisionCb;
+    private ComboBox<String> divisionCb;
     @FXML
     private TextField addressTxt;
 
@@ -46,7 +51,30 @@ public class AddCustomerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("AddCustomer Initialized.");
+        try {
+            System.out.println("AddCustomer Initialized.");
+            customerIdTxt.setText(String.valueOf(DBCustomer.getNextCustomerId()));
+            countryCb.setItems(Country.getAllCountryNames());
+            // Set up listener for countryCb
+            countryCb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    // Populate divisionCb based on the selected country
+                    String selectedCountry = newValue.toString();
+                    // Populate divisionCb
+                    if(selectedCountry.equals("U.S")){
+                        divisionCb.setItems(DBDivision.getAllUnitedStatesDivisionNames());
+                    }
+                    if(selectedCountry.equals("UK")){
+                        divisionCb.setItems(DBDivision.getAllUnitedKingdomDivisionNames());
+                    }
+                    if(selectedCountry.equals("Canada")){
+                        divisionCb.setItems(DBDivision.getAllCanadaDivisionNames());
+                    }
+                }
+            });
+        }catch(Exception e){
+            System.out.println("Caught ye AddCustomerController: " + e.getMessage());
+        }
     }
 
     /**
@@ -57,6 +85,7 @@ public class AddCustomerController implements Initializable {
      */
     public void displayCustomerTab(ActionEvent actionEvent) throws IOException {
         MainViewController.getMainViewStage().close();
+
     }
 
     /**
@@ -67,5 +96,25 @@ public class AddCustomerController implements Initializable {
      //@exception IOException thrown if FXMLLoader.load() resource is Null
      //@exception SQLException thrown in case of invalid SQL statement during insertAppointment()
      */
-    public void saveNewCustomer(ActionEvent actionEvent) { }
+    public void saveNewCustomer(ActionEvent actionEvent) {
+        try {
+            int customerId = Integer.parseInt(customerIdTxt.getText());
+            String customerName = nameTxt.getText();
+            String address = addressTxt.getText();
+            String postalCode = postalCodeTxt.getText();
+            String phone = phoneNumberTxt.getText();
+            String countryName = countryCb.getSelectionModel().getSelectedItem();
+            String divisionName = divisionCb.getSelectionModel().getSelectedItem();
+            int divisionId = DBDivision.getDivisionIdByName(divisionName);
+
+            // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
+            DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);
+
+            // Close AddCustomer view and show MainView
+            MainViewController.getMainViewStage().close();
+
+        }catch (Exception e){
+            System.out.println("Caught ye saveNewCustomer: " + e.getMessage());
+        }
+    }
 }

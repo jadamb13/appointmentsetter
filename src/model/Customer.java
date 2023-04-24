@@ -72,7 +72,7 @@ public class Customer {
     }
 
     public static int getCustomerIdByName(String name){
-        for (Customer c : DBCustomer.getAllCustomers()){
+        for (Customer c : DBCustomer.getAllCustomersFromDb()){
             if(c.customerName.equals(name)){
                 return c.getCustomerId();
             }
@@ -82,13 +82,14 @@ public class Customer {
     }
 
     public static String getCustomerNameById(int id){
-        for (Customer c : DBCustomer.getAllCustomers()){
+        for (Customer c : DBCustomer.getAllCustomersFromDb()){
             if(c.getCustomerId() == id){
                 return c.getCustomerName();
             }
         }
         return "";
     }
+
 
     /**
      Creates list of names representing all Customer objects.
@@ -98,7 +99,7 @@ public class Customer {
      */
     public static ObservableList<String> getAllCustomerNames(){
         ObservableList<String> customerNames = FXCollections.observableArrayList();
-        for (Customer c : DBCustomer.getAllCustomers()){
+        for (Customer c : DBCustomer.getAllCustomersFromDb()){
             customerNames.add(c.getCustomerName());
         }
         return customerNames;

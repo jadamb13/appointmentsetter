@@ -1,5 +1,6 @@
 package model;
 
+import DBAccess.DBAppointment;
 import DBAccess.DBContact;
 import DBAccess.DBCustomer;
 import javafx.collections.FXCollections;
@@ -9,6 +10,7 @@ public class Contact {
     private int contactId;
     private String contactName;
     private String contactEmail;
+    private ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
 
     public Contact(int contactId, String contactName, String contactEmail) {
         this.contactId = contactId;
@@ -72,5 +74,18 @@ public class Contact {
             }
         }
         return "";
+    }
+
+    public ObservableList<Appointment> getContactAppointments() {
+        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()){
+            if(a.getContact().equals(contactName)){
+                contactAppointments.add(a);
+            }
+        }
+        return contactAppointments;
+    }
+
+    public void setContactAppointments(ObservableList<Appointment> contactAppointments) {
+        this.contactAppointments = contactAppointments;
     }
 }

@@ -4,6 +4,8 @@ import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.AppointmentMonth;
+import model.AppointmentType;
 import model.Contact;
 
 import java.sql.PreparedStatement;
@@ -13,7 +15,11 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /** A class to communicate with the DB about Appointments. */
 public class DBAppointment {
@@ -239,7 +245,54 @@ public class DBAppointment {
         return weeklyAppointmentList;
     }
 
+    public static ObservableList<AppointmentType> getAppointmentsByType(){
+        ObservableList<AppointmentType> appointmentsByType = FXCollections.observableArrayList();
+        try{
+            // Get the types of appointments and count of each type
+            String sql = "SELECT DISTINCT Type, COUNT(Type) FROM client_schedule.appointments\n" +
+                    "GROUP BY Type";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                String type = rs.getString("Type");
+                int count = rs.getInt("Count(Type)");
+                AppointmentType at = new AppointmentType(type, count);
+                appointmentsByType.add(at);
+            }
+        }catch (SQLException e){
+            System.out.println("Caught you DBAppointment: " + e.getMessage());
+        }
 
+        return appointmentsByType;
+    }
+
+    public static ObservableList<AppointmentMonth> getAppointmentsByMonth(){
+        ObservableList<AppointmentMonth> appointmentsByMonth = FXCollections.observableArrayList();
+        List<String> months = new ArrayList<>();
+        for (Appointment a : getAllAppointmentsFromDb()){
+            String monthNumber = a.getStartDate().substring(0, 2);
+            //String year = a.getStartDate().substring(7, 11);
+            String monthName = String.valueOf(Month.of(Integer.parseInt(monthNumber)));
+            months.add(monthName);
+
+        }
+        List<String> uniqueMonths = new ArrayList<>();
+        for (int i = 0; i < months.size(); i++){
+            if (!uniqueMonths.contains(months.get(i))){
+                uniqueMonths.add(months.get(i));
+            }
+        }
+        List<Integer> frequencies = new ArrayList<>();
+        for (int i = 0; i < uniqueMonths.size(); i++){
+            frequencies.add(Collections.frequency(months, uniqueMonths.get(i)));
+        }
+        for (int i = 0; i < uniqueMonths.size(); i++){
+            AppointmentMonth am = new AppointmentMonth(uniqueMonths.get(i), frequencies.get(i));
+            appointmentsByMonth.add(am);
+        }
+
+        return appointmentsByMonth;
+    }
 
     public static int getNextAppointmentId(){
         int nextAppointmentId = -1;

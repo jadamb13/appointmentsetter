@@ -20,10 +20,10 @@
                                         <TableColumn fx:id="apptLocationCol" prefWidth="95.0" text="Location" />
                                         <TableColumn fx:id="apptContactCol" prefWidth="111.0" text="Contact" />
                                         <TableColumn fx:id="apptTypeCol" prefWidth="118.0" text="Type" />
-                                        <TableColumn fx:id="apptStartDateCol" prefWidth="91.0" text="Start Date" />
-                                        <TableColumn fx:id="apptStartTimeCol" prefWidth="81.0" text="Start Time" />
-                                        <TableColumn fx:id="apptEndDateCol" minWidth="0.0" prefWidth="99.0" text="End Date" />
-                              <TableColumn fx:id="apptEndTimeCol" minWidth="0.0" prefWidth="71.0" text="End Time" />
+                                        <TableColumn fx:id="apptStartDateCol" prefWidth="91.0" style="-fx-alignment: CENTER;" text="Start Date" />
+                                        <TableColumn fx:id="apptStartTimeCol" prefWidth="81.0" style="-fx-alignment: CENTER;" text="Start Time" />
+                                        <TableColumn fx:id="apptEndDateCol" minWidth="0.0" prefWidth="99.0" style="-fx-alignment: CENTER;" text="End Date" />
+                              <TableColumn fx:id="apptEndTimeCol" minWidth="0.0" prefWidth="71.0" style="-fx-alignment: CENTER;" text="End Time" />
                                         <TableColumn fx:id="apptCustomerIdCol" prefWidth="94.0" style="-fx-alignment: CENTER;" text="Customer ID" />
                               <TableColumn fx:id="apptUserIdCol" prefWidth="78.0" style="-fx-alignment: CENTER;" text="User ID" />
                                     </columns>
@@ -91,16 +91,17 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="1052.0">
                             <children>
-                                <TableView fx:id="appointmentScheduleTable" layoutX="95.0" layoutY="64.0" prefHeight="143.0" prefWidth="941.0">
+                                <TableView fx:id="appointmentScheduleTable" layoutX="57.0" layoutY="71.0" prefHeight="143.0" prefWidth="1017.0">
                                     <columns>
-                                        <TableColumn fx:id="contactApptIdCol" prefWidth="63.0" text="Appt. ID" />
+                                        <TableColumn fx:id="contactApptIdCol" prefWidth="63.0" style="-fx-alignment: CENTER;" text="Appt ID" />
                                         <TableColumn fx:id="contactApptTitleCol" prefWidth="122.0" text="Title" />
                                         <TableColumn fx:id="contactApptDescCol" prefWidth="158.0" text="Description" />
                                         <TableColumn fx:id="contactApptTypeCol" prefWidth="155.0" text="Type" />
-                                        <TableColumn fx:id="contactApptStartTimeCol" prefWidth="97.0" text="Start Time" />
-                                        <TableColumn fx:id="contactApptStartDateCol" prefWidth="125.0" text="Start Date" />
-                                        <TableColumn fx:id="contactApptEndTimeCol" prefWidth="137.0" text="End Time" />
-                              <TableColumn prefWidth="83.0" text="Customer ID" />
+                                        <TableColumn fx:id="contactApptStartTimeCol" prefWidth="97.0" style="-fx-alignment: CENTER;" text="Start Time" />
+                                        <TableColumn fx:id="contactApptStartDateCol" prefWidth="125.0" style="-fx-alignment: CENTER;" text="Start Date" />
+                                        <TableColumn fx:id="contactApptEndTimeCol" prefWidth="106.0" style="-fx-alignment: CENTER;" text="End Time" />
+                              <TableColumn fx:id="contactApptEndDateCol" prefWidth="114.0" style="-fx-alignment: CENTER;" text="End Date" />
+                              <TableColumn fx:id="contactApptCustomerIdCol" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Customer ID" />
                                     </columns>
                                 </TableView>
                                 <Label layoutX="420.0" layoutY="23.0" text="Appointment Schedule">
@@ -114,29 +115,29 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="appointmentsByTypeTable" layoutX="21.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
+                        <TableView fx:id="appointmentsByTypeTable" layoutX="57.0" layoutY="256.0" prefHeight="159.0" prefWidth="228.0">
                           <columns>
                             <TableColumn fx:id="byTypeCol" prefWidth="183.0" text="By Type" />
-                            <TableColumn fx:id="numberByTypeCol" prefWidth="43.0" text="#" />
+                            <TableColumn fx:id="numberByTypeCol" prefWidth="43.0" style="-fx-alignment: CENTER;" text="#" />
                           </columns>
                         </TableView>
-                        <Label layoutX="139.0" layoutY="222.0" text="Total Number of Appointments">
+                        <Label layoutX="168.0" layoutY="222.0" text="Total Number of Appointments">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TableView fx:id="appointmentsByMonthTable" layoutX="263.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
+                        <TableView fx:id="appointmentsByMonthTable" layoutX="296.0" layoutY="256.0" prefHeight="159.0" prefWidth="228.0">
                           <columns>
                             <TableColumn fx:id="byMonthCol" prefWidth="183.0" text="By Month" />
-                            <TableColumn fx:id="numberByMonthCol" prefWidth="43.0" text="#" />
+                            <TableColumn fx:id="numberByMonthCol" prefWidth="43.0" style="-fx-alignment: CENTER;" text="#" />
                           </columns>
                         </TableView>
-                        <Label layoutX="775.0" layoutY="226.0" text="Custom Report">
+                        <Label layoutX="768.0" layoutY="222.0" text="Custom Report">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TableView layoutX="577.0" layoutY="255.0" prefHeight="160.0" prefWidth="497.0">
+                        <TableView layoutX="576.0" layoutY="255.0" prefHeight="160.0" prefWidth="497.0">
                           <columns>
                             <TableColumn prefWidth="95.0" text="C1" />
                             <TableColumn prefWidth="88.0" text="C2" />

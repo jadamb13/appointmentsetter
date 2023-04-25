@@ -1,7 +1,12 @@
 package controller;
 
 import DBAccess.DBAppointment;
+import DBAccess.DBContact;
 import DBAccess.DBCustomer;
+import DBAccess.DBDivision;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.Appointment;
-import model.Customer;
+import model.*;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -25,6 +30,10 @@ import java.util.ResourceBundle;
 public class MainViewController implements Initializable {
 
 
+    @FXML
+    private TableColumn<Appointment, String> contactApptEndDateCol;
+    @FXML
+    private TableColumn<Appointment, Integer> contactApptCustomerIdCol;
     @FXML
     private TableView<Appointment> appointmentScheduleTable;
     @FXML
@@ -44,17 +53,17 @@ public class MainViewController implements Initializable {
     @FXML
     private ComboBox<String> contactCb;
     @FXML
-    private TableView<String> appointmentsByTypeTable;
+    private TableView<AppointmentType> appointmentsByTypeTable;
     @FXML
-    private TableColumn<Appointment, String> byTypeCol;
+    private TableColumn<AppointmentType, String> byTypeCol;
     @FXML
-    private TableColumn<String, Integer> numberByTypeCol;
+    private TableColumn<AppointmentType, Integer> numberByTypeCol;
     @FXML
-    private TableView<String> appointmentsByMonthTable;
+    private TableView<AppointmentMonth> appointmentsByMonthTable;
     @FXML
-    private TableColumn<String, String> byMonthCol;
+    private TableColumn<AppointmentMonth, String> byMonthCol;
     @FXML
-    private TableColumn<String, Integer> numberByMonthCol;
+    private TableColumn<AppointmentMonth, Integer> numberByMonthCol;
     @FXML
     private TableView<Customer> customerTable;
     @FXML
@@ -139,6 +148,7 @@ public class MainViewController implements Initializable {
         allAppointmentsRBtn.setSelected(true);
         System.out.println("MainView Initialized.");
 
+        /* Appointments Tab */
         // Set values in Appointments Table
         apptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
@@ -157,8 +167,8 @@ public class MainViewController implements Initializable {
         // Sort Appointments Table by Appointment ID
         appointmentsTable.getSortOrder().add(apptIdCol);
 
+        /* Customers Tab */
         // Set values in Customers Table
-
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
@@ -169,6 +179,55 @@ public class MainViewController implements Initializable {
 
         // Sort Appointments Table by Appointment ID
         customerTable.getSortOrder().add(customerIdCol);
+
+        /* Reports Tab */
+        contactApptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        contactApptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        contactApptDescCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        contactApptTypeCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        contactApptStartDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        contactApptEndDateCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        contactApptStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        contactApptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        contactApptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        contactCb.setItems(Contact.getAllContactNames());
+
+
+        // Set up listener for Contact Combo Box on Reports Tab
+        contactCb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Contact contact = null;
+
+                // Find which Contact object is responsible for appointment
+                for (Contact c : DBContact.getAllContacts()) {
+                    if (c.getContactName().equals(newValue)) {
+                        contact = c;
+
+                        // Add appointment to Contact's contactAppointment list
+                        ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
+                        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
+                            if (a.getContactId() == contact.getContactId()) {
+                                contactAppointments.add(a);
+                            }
+
+                            // Populate Appointment Schedule Table based on contact selected
+                            appointmentScheduleTable.setItems(contactAppointments);
+                        }
+                    }
+                }
+            }
+        }); // End of listener
+
+        contactCb.setValue("Li Lee");
+
+        // Initialize Appointments By Type table
+        byTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        numberByTypeCol.setCellValueFactory(new PropertyValueFactory<>("countOfType"));
+        appointmentsByTypeTable.setItems(DBAppointment.getAppointmentsByType());
+
+        byMonthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
+        numberByMonthCol.setCellValueFactory(new PropertyValueFactory<>("CountByMonth"));
+        appointmentsByMonthTable.setItems(DBAppointment.getAppointmentsByMonth());
     }
 
     /**
@@ -317,6 +376,8 @@ public class MainViewController implements Initializable {
     public void displayCurrentMonthAppointments(ActionEvent actionEvent) {
 
     }
+
+
 
 
 }

@@ -91,15 +91,16 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="1052.0">
                             <children>
-                                <TableView layoutX="20.0" layoutY="64.0" prefHeight="143.0" prefWidth="1055.0">
+                                <TableView fx:id="appointmentScheduleTable" layoutX="95.0" layoutY="64.0" prefHeight="143.0" prefWidth="941.0">
                                     <columns>
-                                        <TableColumn prefWidth="63.0" text="Appt. ID" />
-                                        <TableColumn prefWidth="191.0" text="Title" />
-                                        <TableColumn prefWidth="249.0" text="Description" />
-                                        <TableColumn prefWidth="210.0" text="Type" />
-                                        <TableColumn prefWidth="138.0" text="Start" />
-                                        <TableColumn prefWidth="122.0" text="End" />
-                                        <TableColumn prefWidth="81.0" text="Customer ID" />
+                                        <TableColumn fx:id="contactApptIdCol" prefWidth="63.0" text="Appt. ID" />
+                                        <TableColumn fx:id="contactApptTitleCol" prefWidth="122.0" text="Title" />
+                                        <TableColumn fx:id="contactApptDescCol" prefWidth="158.0" text="Description" />
+                                        <TableColumn fx:id="contactApptTypeCol" prefWidth="155.0" text="Type" />
+                                        <TableColumn fx:id="contactApptStartTimeCol" prefWidth="97.0" text="Start Time" />
+                                        <TableColumn fx:id="contactApptStartDateCol" prefWidth="125.0" text="Start Date" />
+                                        <TableColumn fx:id="contactApptEndTimeCol" prefWidth="137.0" text="End Time" />
+                              <TableColumn prefWidth="83.0" text="Customer ID" />
                                     </columns>
                                 </TableView>
                                 <Label layoutX="420.0" layoutY="23.0" text="Appointment Schedule">
@@ -107,16 +108,16 @@
                                         <Font name="System Bold" size="18.0" />
                                     </font>
                                 </Label>
-                        <ComboBox layoutX="99.0" layoutY="28.0" prefWidth="150.0" />
+                        <ComboBox fx:id="contactCb" layoutX="99.0" layoutY="28.0" prefWidth="150.0" />
                         <Label layoutX="34.0" layoutY="31.0" text="Contact:">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TableView layoutX="21.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
+                        <TableView fx:id="appointmentsByTypeTable" layoutX="21.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
                           <columns>
-                            <TableColumn prefWidth="183.0" text="By Type" />
-                            <TableColumn prefWidth="43.0" text="#" />
+                            <TableColumn fx:id="byTypeCol" prefWidth="183.0" text="By Type" />
+                            <TableColumn fx:id="numberByTypeCol" prefWidth="43.0" text="#" />
                           </columns>
                         </TableView>
                         <Label layoutX="139.0" layoutY="222.0" text="Total Number of Appointments">
@@ -124,10 +125,10 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TableView layoutX="263.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
+                        <TableView fx:id="appointmentsByMonthTable" layoutX="263.0" layoutY="255.0" prefHeight="159.0" prefWidth="228.0">
                           <columns>
-                            <TableColumn prefWidth="183.0" text="By Month" />
-                            <TableColumn prefWidth="43.0" text="#" />
+                            <TableColumn fx:id="byMonthCol" prefWidth="183.0" text="By Month" />
+                            <TableColumn fx:id="numberByMonthCol" prefWidth="43.0" text="#" />
                           </columns>
                         </TableView>
                         <Label layoutX="775.0" layoutY="226.0" text="Custom Report">

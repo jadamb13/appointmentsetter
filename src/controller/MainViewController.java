@@ -26,6 +26,36 @@ public class MainViewController implements Initializable {
 
 
     @FXML
+    private TableView<Appointment> appointmentScheduleTable;
+    @FXML
+    private TableColumn<Appointment, Integer> contactApptIdCol;
+    @FXML
+    private TableColumn<Appointment, String> contactApptTitleCol;
+    @FXML
+    private TableColumn<Appointment, String> contactApptDescCol;
+    @FXML
+    private TableColumn<Appointment, String> contactApptTypeCol;
+    @FXML
+    private TableColumn<Appointment, String> contactApptStartTimeCol;
+    @FXML
+    private TableColumn<Appointment, String> contactApptStartDateCol;
+    @FXML
+    private TableColumn<Appointment, String> contactApptEndTimeCol;
+    @FXML
+    private ComboBox<String> contactCb;
+    @FXML
+    private TableView<String> appointmentsByTypeTable;
+    @FXML
+    private TableColumn<Appointment, String> byTypeCol;
+    @FXML
+    private TableColumn<String, Integer> numberByTypeCol;
+    @FXML
+    private TableView<String> appointmentsByMonthTable;
+    @FXML
+    private TableColumn<String, String> byMonthCol;
+    @FXML
+    private TableColumn<String, Integer> numberByMonthCol;
+    @FXML
     private TableView<Customer> customerTable;
     @FXML
     private TableColumn<Customer,Integer> customerIdCol;

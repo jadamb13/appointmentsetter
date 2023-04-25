@@ -4,11 +4,15 @@ import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.Contact;
 import model.Customer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /** A class to communicate with the DB about Customers. */
 public class DBCustomer {
@@ -82,6 +86,40 @@ public class DBCustomer {
             e.printStackTrace();
         }
 
+    }
+
+    public static void updateCustomerInDb(int customerId, String customerName, String address, String postalCode,
+                                          String phone, int divisionId){
+        try {
+
+            String sql = "Update customers SET Customer_ID = ?, Customer_Name = ?, Address = ?, Postal_Code = ?, " +
+                    "Phone = ?, Create_Date = ?, Created_By = ?, Last_Update = ?, Last_Updated_By = ?," +
+                    "Division_ID = ? WHERE Customer_ID = ?";
+
+            // Same every time
+            Timestamp createDate = new Timestamp(System.currentTimeMillis());
+            String createdBy = "script";
+            String lastUpdatedBy = "script";
+            Timestamp lastUpdate = new Timestamp(System.currentTimeMillis());
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerId);
+            ps.setString(2, customerName);
+            ps.setString(3, address);
+            ps.setString(4, postalCode);
+            ps.setString(5, phone);
+            ps.setTimestamp(6, createDate);
+            ps.setString(7, createdBy);
+            ps.setTimestamp(8, lastUpdate);
+            ps.setString(9, lastUpdatedBy);
+            ps.setInt(10, divisionId);
+            ps.setInt(11, customerId);
+            ps.execute();
+
+
+        }catch (SQLException e){
+            System.out.println("Caught ye updateCustomerInDb: " + e.getMessage());;
+        }
     }
 
     public static void deleteCustomerInDb(int customerId){

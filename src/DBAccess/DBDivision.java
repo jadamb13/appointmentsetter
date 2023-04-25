@@ -3,6 +3,7 @@ package DBAccess;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Contact;
 import model.Customer;
 import model.Division;
 
@@ -80,5 +81,34 @@ public class DBDivision {
             }
         }
         return -1;
+    }
+
+    public static String getDivisionNameById(int divisionId){
+        for (Division d : getAllDivisionsFromDb()){
+            if(d.getDivisionId() == divisionId){
+                return d.getDivision();
+            }
+        }
+        return "";
+    }
+
+    public static String getCountryNameById(int divisionId) {
+        String countryName = "";
+        try {
+            // SQL statement
+            String sql = "SELECT Country FROM client_schedule.first_level_divisions, client_schedule.countries \n" +
+                    "WHERE first_level_divisions.Country_ID = client_schedule.countries.Country_ID \n" +
+                    "AND Division_ID = ?";
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, divisionId);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            countryName = rs.getString("Country");
+
+        } catch(SQLException e){
+            System.out.println("Caught you DBDivision: " + e.getMessage());
+        }
+        return countryName;
     }
 }

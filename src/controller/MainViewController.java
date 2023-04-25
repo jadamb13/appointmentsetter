@@ -83,6 +83,7 @@ public class MainViewController implements Initializable {
     private Button btn;
 
     private static Appointment selectedAppointment;
+    private static Customer selectedCustomer;
 
     // Getters and Setters
     public static Stage getMainViewStage() {
@@ -91,6 +92,10 @@ public class MainViewController implements Initializable {
 
     public static Appointment getSelectedAppointment(){
         return selectedAppointment;
+    }
+
+    public static Customer getSelectedCustomer(){
+        return selectedCustomer;
     }
 
     /**
@@ -221,12 +226,14 @@ public class MainViewController implements Initializable {
      */
     public void displayUpdateCustomerWindow(ActionEvent actionEvent) {
         try {
+            selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateCustomer.fxml"));
             Parent root = loader.load();
             mainViewStage = new Stage();
             mainViewStage.setTitle("Update Appointment");
             mainViewStage.setScene(new Scene(root));
-            mainViewStage.show();
+            mainViewStage.showAndWait();
+            customerTable.setItems(DBCustomer.getAllCustomersFromDb());
         } catch (IOException e) {
             System.out.println(e);
         }

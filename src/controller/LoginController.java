@@ -69,19 +69,18 @@ public class LoginController implements Initializable {
         System.out.println("LoginView Initialized.");
         timezoneTxt.setText(zone.getId());
         Locale.setDefault(new Locale("fr", "FR"));
-        //Locale englishLocale = new Locale("en", "US");
-        System.out.println(Locale.getDefault());
-
-        ResourceBundle resourceBundle1 = ResourceBundle.getBundle("LanguageSupport_fr");
-        String login = resourceBundle1.getString("loginBtn");
-        String username = resourceBundle1.getString("usernameLabel");
-        String password = resourceBundle1.getString("passwordLabel");
-        String appName = resourceBundle1.getString("appNameLabel");
-        loginBtn.setText(login);
-        usernameLabel.setText(username);
-        passwordLabel.setText(password);
-        appNameLabel.setText(appName);
-
+        //Locale.setDefault(new Locale("en", "US"));
+        if(Locale.getDefault().equals(new Locale("fr", "FR"))) {
+            ResourceBundle resourceBundle1 = ResourceBundle.getBundle("LanguageSupport_fr");
+            String login = resourceBundle1.getString("loginBtn");
+            String username = resourceBundle1.getString("usernameLabel");
+            String password = resourceBundle1.getString("passwordLabel");
+            String appName = resourceBundle1.getString("appNameLabel");
+            loginBtn.setText(login);
+            usernameLabel.setText(username);
+            passwordLabel.setText(password);
+            appNameLabel.setText(appName);
+        }
 
     }
 
@@ -97,9 +96,6 @@ public class LoginController implements Initializable {
         LocalDate localDate = LocalDate.now();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String successOrFail = "";
-
-
-
 
         for (User u : userList){
             if (userFound){

@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Locale;
+
 
 public class Main extends Application {
 
@@ -21,6 +23,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         JDBC.makeConnection();
+
+        /* Set Language/Locale */
+        //Locale.setDefault(new Locale("fr", "FR"));
+        Locale.setDefault(new Locale("en", "US"));
+
         launch(args);
         JDBC.closeConnection();
     }

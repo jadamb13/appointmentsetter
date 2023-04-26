@@ -2,6 +2,7 @@ package DBAccess;
 
 import helper.JDBC;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import model.Appointment;
 import model.AppointmentMonth;
@@ -77,6 +78,7 @@ public class DBAppointment {
         }catch(SQLException e){
             e.printStackTrace();
         }
+
         return appointmentList;
     }
 

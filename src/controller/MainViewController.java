@@ -162,7 +162,7 @@ public class MainViewController implements Initializable {
         apptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
         apptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+        //appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
 
         // Sort Appointments Table by Appointment ID
         appointmentsTable.getSortOrder().add(apptIdCol);
@@ -175,7 +175,7 @@ public class MainViewController implements Initializable {
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
         divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
-        customerTable.setItems(DBCustomer.getAllCustomersFromDb());
+        //customerTable.setItems(DBCustomer.getAllCustomersFromDb());
 
         // Sort Appointments Table by Appointment ID
         customerTable.getSortOrder().add(customerIdCol);
@@ -191,7 +191,7 @@ public class MainViewController implements Initializable {
         contactApptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
         contactApptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         contactCb.setItems(Contact.getAllContactNames());
-
+        populateTables();
 
         // Set up listener for Contact Combo Box on Reports Tab
         contactCb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -218,16 +218,15 @@ public class MainViewController implements Initializable {
             }
         }); // End of listener
 
-        contactCb.setValue("Li Lee");
 
         // Initialize Appointments By Type table
         byTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         numberByTypeCol.setCellValueFactory(new PropertyValueFactory<>("countOfType"));
-        appointmentsByTypeTable.setItems(DBAppointment.getAppointmentsByType());
+
 
         byMonthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         numberByMonthCol.setCellValueFactory(new PropertyValueFactory<>("CountByMonth"));
-        appointmentsByMonthTable.setItems(DBAppointment.getAppointmentsByMonth());
+        populateTables();
     }
 
     /**
@@ -243,7 +242,7 @@ public class MainViewController implements Initializable {
             mainViewStage.setTitle("Add Appointment");
             mainViewStage.setScene(new Scene(root));
             mainViewStage.showAndWait();
-            appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+            populateTables();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -265,7 +264,7 @@ public class MainViewController implements Initializable {
                 mainViewStage.setTitle("Update Appointment");
                 mainViewStage.setScene(new Scene(root));
                 mainViewStage.showAndWait();
-                appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+                populateTables();
             } catch (IOException e) {
                 System.out.println("Caught you: " + e.getMessage());
             }
@@ -285,7 +284,7 @@ public class MainViewController implements Initializable {
     public void deleteSelectedAppointment(ActionEvent actionEvent) {
         Appointment selected = appointmentsTable.getSelectionModel().getSelectedItem();
         DBAppointment.deleteAppointmentInDb(selected.getAppointmentId());
-        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+        populateTables();
     }
 
     /**
@@ -301,7 +300,7 @@ public class MainViewController implements Initializable {
             mainViewStage.setTitle("Update Appointment");
             mainViewStage.setScene(new Scene(root));
             mainViewStage.showAndWait();
-            customerTable.setItems(DBCustomer.getAllCustomersFromDb());
+            populateTables();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -322,7 +321,7 @@ public class MainViewController implements Initializable {
             mainViewStage.setTitle("Update Appointment");
             mainViewStage.setScene(new Scene(root));
             mainViewStage.showAndWait();
-            customerTable.setItems(DBCustomer.getAllCustomersFromDb());
+            populateTables();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -340,11 +339,11 @@ public class MainViewController implements Initializable {
         for(Appointment a : DBAppointment.getAllAppointmentsFromDb()){
             if(a.getCustomerId() == selected.getCustomerId()){
                 DBAppointment.deleteAppointmentInDb(a.getAppointmentId());
-                appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+                populateTables();
             }
         }
         DBCustomer.deleteCustomerInDb(selected.getCustomerId());
-        customerTable.setItems(DBCustomer.getAllCustomersFromDb());
+        populateTables();
     }
 
     /**
@@ -354,7 +353,7 @@ public class MainViewController implements Initializable {
 
      */
     public void displayAllAppointments(ActionEvent actionEvent) {
-        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+        populateTables();
     }
 
     /**
@@ -377,7 +376,14 @@ public class MainViewController implements Initializable {
 
     }
 
-
+    public void populateTables() {
+        appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+        appointmentsByTypeTable.setItems(DBAppointment.getAppointmentsByType());
+        appointmentsByMonthTable.setItems(DBAppointment.getAppointmentsByMonth());
+        customerTable.setItems(DBCustomer.getAllCustomersFromDb());
+        contactCb.setValue(null);
+        appointmentScheduleTable.setItems(null);
+    }
 
 
 }

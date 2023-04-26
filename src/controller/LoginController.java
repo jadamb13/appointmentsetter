@@ -68,10 +68,9 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("LoginView Initialized.");
         timezoneTxt.setText(zone.getId());
-        Locale.setDefault(new Locale("fr", "FR"));
-        //Locale.setDefault(new Locale("en", "US"));
+
         if(Locale.getDefault().equals(new Locale("fr", "FR"))) {
-            ResourceBundle resourceBundle1 = ResourceBundle.getBundle("LanguageSupport_fr");
+            ResourceBundle resourceBundle1 = ResourceBundle.getBundle("resources/LanguageSupport_fr");
             String login = resourceBundle1.getString("loginBtn");
             String username = resourceBundle1.getString("usernameLabel");
             String password = resourceBundle1.getString("passwordLabel");

@@ -31,6 +31,7 @@ public abstract class JDBC {
     public static Connection getConnection() {
         return connection;
     }
+
     public static void closeConnection() {
         try {
             connection.close();
@@ -39,11 +40,13 @@ public abstract class JDBC {
             System.out.println(e.getMessage());
         }
     }
+
     public static void makePreparedStatement(String sqlStatement, Connection conn) throws SQLException {
         if (conn != null)
             preparedStatement = conn.prepareStatement(sqlStatement);
         else               System.out.println("Prepared Statement Creation Failed!");
     }
+
     public static PreparedStatement getPreparedStatement() throws SQLException {
         if (preparedStatement != null)
             return preparedStatement;

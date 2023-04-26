@@ -21,15 +21,23 @@ import model.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** A Controller class for the MainView. */
 public class MainViewController implements Initializable {
 
 
+    @FXML
+    private ComboBox byMonthCb;
+    @FXML
+    private ComboBox byWeekCb;
     @FXML
     private TableColumn<Appointment, String> contactApptEndDateCol;
     @FXML
@@ -105,15 +113,9 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<Appointment, Integer>  apptUserIdCol;
     @FXML
-    private RadioButton currentMonthRBtn;
-    @FXML
-    private RadioButton currentWeekRBtn;
-    @FXML
     private RadioButton allAppointmentsRBtn;
     @FXML
     private Button apptsDelBtn;
-    @FXML
-    private Tab customerTab;
 
     @FXML
     private static Stage mainViewStage;
@@ -145,7 +147,7 @@ public class MainViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        allAppointmentsRBtn.setSelected(true);
+        //allAppointmentsRBtn.setSelected(true);
         System.out.println("MainView Initialized.");
 
         /* Appointments Tab */
@@ -362,7 +364,7 @@ public class MainViewController implements Initializable {
      @param actionEvent represents user clicking "Current Week" Radio Button
 
      */
-    public void displayCurrentWeekAppointments(ActionEvent actionEvent) {
+    public void displayAppointmentsByWeek(ActionEvent actionEvent) {
 
     }
 
@@ -372,9 +374,25 @@ public class MainViewController implements Initializable {
      @param actionEvent represents user clicking "Current Month" Radio Button
 
      */
-    public void displayCurrentMonthAppointments(ActionEvent actionEvent) {
+    public void displayAppointmentsByMonth(ActionEvent actionEvent) {
+        ObservableList<Appointment> appointments = DBAppointment.getAllAppointmentsFromDb();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
+        List<List<Appointment>> appointmentsByMonth = Stream.generate(ArrayList<Appointment>::new)
+                .limit(12)
+                .collect(Collectors.toList());
+
+        appointments.forEach(a -> {
+            int monthIndex = LocalDate.parse(a.getStartDate(),formatter).getMonthValue() - 1;
+            appointmentsByMonth.get(monthIndex).add(a);
+        });
+        ObservableList<Appointment> appointmentsByMonthList = FXCollections.observableArrayList();
+        for (List<Appointment> appts : appointmentsByMonth) {
+            appointmentsByMonthList.addAll(appts);
+        }
+        appointmentsTable.setItems(appointmentsByMonthList);
     }
+
 
     public void populateTables() {
         appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());

@@ -296,6 +296,7 @@ public class DBAppointment {
         return appointmentsByMonth;
     }
 
+
     public static int getNextAppointmentId(){
         int nextAppointmentId = -1;
         try{

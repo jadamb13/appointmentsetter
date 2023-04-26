@@ -68,20 +68,20 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("LoginView Initialized.");
         timezoneTxt.setText(zone.getId());
-        Locale frenchLocale = new Locale("fr", "FR");
+        Locale.setDefault(new Locale("fr", "FR"));
         //Locale englishLocale = new Locale("en", "US");
         System.out.println(Locale.getDefault());
-        if(Locale.getDefault().equals("fr_FR")) {
-            ResourceBundle resourceBundle1 = ResourceBundle.getBundle("LanguageSupport_fr");
-            String login = resourceBundle1.getString("loginBtn");
-            String username = resourceBundle1.getString("usernameLabel");
-            String password = resourceBundle1.getString("passwordLabel");
-            String appName = resourceBundle1.getString("appNameLabel");
-            loginBtn.setText(login);
-            usernameLabel.setText(username);
-            passwordLabel.setText(password);
-            appNameLabel.setText(appName);
-        }
+
+        ResourceBundle resourceBundle1 = ResourceBundle.getBundle("LanguageSupport_fr");
+        String login = resourceBundle1.getString("loginBtn");
+        String username = resourceBundle1.getString("usernameLabel");
+        String password = resourceBundle1.getString("passwordLabel");
+        String appName = resourceBundle1.getString("appNameLabel");
+        loginBtn.setText(login);
+        usernameLabel.setText(username);
+        passwordLabel.setText(password);
+        appNameLabel.setText(appName);
+
 
     }
 
@@ -115,10 +115,11 @@ public class LoginController implements Initializable {
                 successOrFail += "SUCCESS";
                 setProgramUserId(u.getUserId());
                 trackLoginAttempt(getProgramUserId(), localDate, timestamp, successOrFail);
-        stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.centerOnScreen();
+                Locale.setDefault(new Locale("en", "US"));
+                stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.centerOnScreen();
 
             }
         }
@@ -126,7 +127,8 @@ public class LoginController implements Initializable {
             successOrFail = "FAILURE";
             trackLoginAttempt(getProgramUserId(), localDate, timestamp, successOrFail);
             Alert loginAlert = new Alert(Alert.AlertType.WARNING);
-            if(Locale.getDefault().equals("fr_FR")){
+            if(Locale.getDefault().equals(new Locale("fr", "FR"))){
+
                 ResourceBundle resourceBundle = ResourceBundle.getBundle("LanguageSupport_fr");
                 String error = resourceBundle.getString("error");
                 loginAlert.setContentText(error);

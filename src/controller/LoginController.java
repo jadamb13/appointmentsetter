@@ -16,9 +16,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.User;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
@@ -26,6 +31,14 @@ import java.util.TimeZone;
 /** A Controller class for the LoginView. */
 public class LoginController implements Initializable {
 
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label passwordLabel;
+    @FXML
+    private Label appNameLabel;
+    @FXML
+    private Button loginBtn;
     @FXML
     private TextField usernameTxt;
     @FXML
@@ -55,6 +68,20 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("LoginView Initialized.");
         timezoneTxt.setText(zone.getId());
+        Locale frenchLocale = new Locale("fr", "FR");
+        //Locale englishLocale = new Locale("en", "US");
+        System.out.println(Locale.getDefault());
+        if(Locale.getDefault().equals("fr_FR")) {
+            ResourceBundle resourceBundle1 = ResourceBundle.getBundle("LanguageSupport_fr");
+            String login = resourceBundle1.getString("loginBtn");
+            String username = resourceBundle1.getString("usernameLabel");
+            String password = resourceBundle1.getString("passwordLabel");
+            String appName = resourceBundle1.getString("appNameLabel");
+            loginBtn.setText(login);
+            usernameLabel.setText(username);
+            passwordLabel.setText(password);
+            appNameLabel.setText(appName);
+        }
 
     }
 
@@ -67,6 +94,12 @@ public class LoginController implements Initializable {
         System.out.println("Clicked Login.");
         ObservableList<User> userList =  DBUser.getAllUsers();
         boolean userFound = false;
+        LocalDate localDate = LocalDate.now();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String successOrFail = "";
+
+
+
 
         for (User u : userList){
             if (userFound){
@@ -79,8 +112,9 @@ public class LoginController implements Initializable {
 
             if (un.equals(inputUn) && pw.equals(inputPw)){
                 userFound = true;
+                successOrFail += "SUCCESS";
                 setProgramUserId(u.getUserId());
-
+                trackLoginAttempt(getProgramUserId(), localDate, timestamp, successOrFail);
         stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
         stage.setScene(new Scene(scene));
@@ -89,14 +123,31 @@ public class LoginController implements Initializable {
             }
         }
         if (!userFound){
+            successOrFail = "FAILURE";
+            trackLoginAttempt(getProgramUserId(), localDate, timestamp, successOrFail);
             Alert loginAlert = new Alert(Alert.AlertType.WARNING);
-            loginAlert.setTitle("Invalid Login Credentials");
-            loginAlert.setContentText("Invalid username/password combination. Please check your information and try again.");
+            if(Locale.getDefault().equals("fr_FR")){
+                ResourceBundle resourceBundle = ResourceBundle.getBundle("LanguageSupport_fr");
+                String error = resourceBundle.getString("error");
+                loginAlert.setContentText(error);
+            }else{
+                loginAlert.setContentText("Invalid username and password combination. Please check your information and try again.");
+            }
             loginAlert.show();
+
 
         }
 
-
     }
 
+    public void trackLoginAttempt(int userId, LocalDate date, Timestamp timestamp, String successOrFail){
+        try{
+            FileWriter writer = new FileWriter("src/login_activity.txt", true);
+            writer.write(String.valueOf(userId) + "\t\t" + date + "\t" + timestamp + "\t\t" + successOrFail + "\n");
+            writer.close();
+        }catch (IOException e){
+            System.out.println("Caught you LoginController(FileWriter): " + e.getMessage());
+        }
     }
+
+}

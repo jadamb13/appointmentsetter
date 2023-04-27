@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -212,7 +213,7 @@ public class MainViewController implements Initializable {
         contactCb.setItems(Contact.getAllContactNames());
         populateTables();
 
-
+        displayAppointmentsByWeek();
 
         // Initialize Appointments By Type table
         byTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -358,19 +359,91 @@ public class MainViewController implements Initializable {
 
     /**
      Updates Appointments tableView to show only appointments this week (filter)
+
+     LAMBDA
      */
     public void displayAppointmentsByWeek() {
 
+        int year = 2023;
+        List<String> dates = new ArrayList<>();
+        for(Appointment a : DBAppointment.getAllAppointmentsFromDb()){
+            dates.add(a.getStartDate());
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        List<ObservableList<String>> weeks = new ArrayList<ObservableList<String>>(52);
+        LocalDate firstDayOfYear = LocalDate.of(year, 1, 1);
+        int daysToShift = (DayOfWeek.MONDAY.getValue() - firstDayOfYear.getDayOfWeek().getValue() + 7) % 7;
+        for (int i = 0; i < 52; i++) {
+            weeks.add(FXCollections.observableArrayList());
+        }
+        for (String date : dates) {
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            int dayOfYear = localDate.getDayOfYear() - daysToShift;
+            int week = dayOfYear / 7 + 1;
+            weeks.get(week - 1).add(date);
+        }
+        System.out.println(weeks);
+        System.out.println(weeks.size());
+        /*
+        ObservableList<Appointment> appointments = DBAppointment.getAllAppointmentsFromDb();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        // Create a list of lists of Appointment objects for each week
+        List<List<Appointment>> appointmentsByWeek = Stream.generate(ArrayList<Appointment>::new)
+                .limit(52)
+                .collect(Collectors.toList());
+
+        // Iterate over the Appointment objects and add them to the appropriate week list
+        appointments.forEach(a -> {
+            LocalDate startDate = LocalDate.parse(a.getStartDate(),formatter);
+            LocalDate weekStartDate = startDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.from(LocalDate.of(2023, 1, 1))))
+                    .with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+            int weekIndex = (int) ChronoUnit.WEEKS.between(LocalDate.of(2023, 1, 1), weekStartDate);
+            if(weekIndex > 0){
+                appointmentsByWeek.get(weekIndex).add(a);
+            }
+
+        });
+        System.out.println(appointmentsByWeek.size());
+        for(List<Appointment> appts : appointmentsByWeek){
+            if (!appts.isEmpty()){
+                System.out.println(appts.get(0).getStartDate());
+            }
+        }
+
+
+        // Set the Appointments table to the values of the month selected in byMonth Combo Box
+        ObservableList<Appointment> appointmentsByMonthSelected = FXCollections.observableArrayList();
+
+        // Search list of month lists to see if there are appointments in the selected month
+        for (List<Appointment> appts : appointmentsByMonth) {
+            if(!appts.isEmpty()) {
+                String monthName = appts.get(0).getStartDate().substring(0, 2);
+                if (Month.of(Integer.parseInt(monthName)).name().equals(monthSelected)) {
+                    appointmentsByMonthSelected.addAll(appts);
+                    break;
+                }
+            }else{
+                // Set table to empty list if no appointments found for selected month
+                appointmentsTable.setItems(FXCollections.emptyObservableList());
+            }
+        }
+        // If non-empty list is found for selected month, setItems of Appointments table with that list
+        appointmentsTable.setItems(appointmentsByMonthSelected);
+
+         */
     }
+
 
     /**
      Updates Appointments tableView to show appointments for the current month (filter)
+
+     LAMBDA
      */
     public void displayAppointmentsByMonth(String monthSelected) {
         ObservableList<Appointment> appointments = DBAppointment.getAllAppointmentsFromDb();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
-        // Create ArrayList for each month
+        // Create a List of ArrayLists -- one list for each month
         List<List<Appointment>> appointmentsByMonth = Stream.generate(ArrayList<Appointment>::new)
                 .limit(12)
                 .collect(Collectors.toList());
@@ -384,6 +457,7 @@ public class MainViewController implements Initializable {
         // Set the Appointments table to the values of the month selected in byMonth Combo Box
         ObservableList<Appointment> appointmentsByMonthSelected = FXCollections.observableArrayList();
 
+        // Search list of month lists to see if there are appointments in the selected month
         for (List<Appointment> appts : appointmentsByMonth) {
             if(!appts.isEmpty()) {
                 String monthName = appts.get(0).getStartDate().substring(0, 2);
@@ -392,9 +466,11 @@ public class MainViewController implements Initializable {
                     break;
                 }
             }else{
+                // Set table to empty list if no appointments found for selected month
                 appointmentsTable.setItems(FXCollections.emptyObservableList());
             }
         }
+        // If non-empty list is found for selected month, setItems of Appointments table with that list
        appointmentsTable.setItems(appointmentsByMonthSelected);
     }
 

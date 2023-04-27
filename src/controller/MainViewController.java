@@ -5,6 +5,7 @@ import DBAccess.DBContact;
 import DBAccess.DBCustomer;
 import DBAccess.DBDivision;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -35,7 +37,7 @@ public class MainViewController implements Initializable {
 
 
     @FXML
-    private ComboBox byMonthCb;
+    private ComboBox<String> byMonthCb;
     @FXML
     private ComboBox byWeekCb;
     @FXML
@@ -125,6 +127,8 @@ public class MainViewController implements Initializable {
 
     private static Appointment selectedAppointment;
     private static Customer selectedCustomer;
+    private static String selectedAppointmentMonth;
+    //private static AppointmentWeek selectedAppointmentWeek;
 
     // Getters and Setters
     public static Stage getMainViewStage() {
@@ -139,6 +143,10 @@ public class MainViewController implements Initializable {
         return selectedCustomer;
     }
 
+    public static String getSelectedAppointmentMonth(){
+        return selectedAppointmentMonth;
+    }
+
     /**
      Initializes MainView.
 
@@ -149,6 +157,7 @@ public class MainViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //allAppointmentsRBtn.setSelected(true);
         System.out.println("MainView Initialized.");
+        allAppointmentsRBtn.setSelected(true);
 
         /* Appointments Tab */
         // Set values in Appointments Table
@@ -165,6 +174,14 @@ public class MainViewController implements Initializable {
         apptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
         //appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
+
+        setContactListener();
+
+        // Set listeners on both Combo Boxes of Appointments Tab
+        setByMonthListener();
+
+        // Set the items of the byMonth Combo Box with months of year that have appointments
+        setByMonthItems();
 
         // Sort Appointments Table by Appointment ID
         appointmentsTable.getSortOrder().add(apptIdCol);
@@ -195,41 +212,20 @@ public class MainViewController implements Initializable {
         contactCb.setItems(Contact.getAllContactNames());
         populateTables();
 
-        // Set up listener for Contact Combo Box on Reports Tab
-        contactCb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                Contact contact = null;
-
-                // Find which Contact object is responsible for appointment
-                for (Contact c : DBContact.getAllContacts()) {
-                    if (c.getContactName().equals(newValue)) {
-                        contact = c;
-
-                        // Add appointment to Contact's contactAppointment list
-                        ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
-                        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
-                            if (a.getContactId() == contact.getContactId()) {
-                                contactAppointments.add(a);
-                            }
-
-                            // Populate Appointment Schedule Table based on contact selected
-                            appointmentScheduleTable.setItems(contactAppointments);
-                        }
-                    }
-                }
-            }
-        }); // End of listener
 
 
         // Initialize Appointments By Type table
         byTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         numberByTypeCol.setCellValueFactory(new PropertyValueFactory<>("countOfType"));
 
-
+        // Initialize Appointments By Month table
         byMonthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         numberByMonthCol.setCellValueFactory(new PropertyValueFactory<>("CountByMonth"));
         populateTables();
     }
+
+
+
 
     /**
      Displays overlay window/stage of the AddAppointment view.
@@ -356,45 +352,53 @@ public class MainViewController implements Initializable {
      */
     public void displayAllAppointments(ActionEvent actionEvent) {
         populateTables();
+        byMonthCb.setValue(null);
+        byWeekCb.setValue(null);
     }
 
     /**
      Updates Appointments tableView to show only appointments this week (filter)
-
-     @param actionEvent represents user clicking "Current Week" Radio Button
-
      */
-    public void displayAppointmentsByWeek(ActionEvent actionEvent) {
+    public void displayAppointmentsByWeek() {
 
     }
 
     /**
      Updates Appointments tableView to show appointments for the current month (filter)
-
-     @param actionEvent represents user clicking "Current Month" Radio Button
-
      */
-    public void displayAppointmentsByMonth(ActionEvent actionEvent) {
+    public void displayAppointmentsByMonth(String monthSelected) {
         ObservableList<Appointment> appointments = DBAppointment.getAllAppointmentsFromDb();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
+        // Create ArrayList for each month
         List<List<Appointment>> appointmentsByMonth = Stream.generate(ArrayList<Appointment>::new)
                 .limit(12)
                 .collect(Collectors.toList());
 
+        // Populate each month list with appointments starting in that month
         appointments.forEach(a -> {
             int monthIndex = LocalDate.parse(a.getStartDate(),formatter).getMonthValue() - 1;
             appointmentsByMonth.get(monthIndex).add(a);
         });
-        ObservableList<Appointment> appointmentsByMonthList = FXCollections.observableArrayList();
+
+        // Set the Appointments table to the values of the month selected in byMonth Combo Box
+        ObservableList<Appointment> appointmentsByMonthSelected = FXCollections.observableArrayList();
+
         for (List<Appointment> appts : appointmentsByMonth) {
-            appointmentsByMonthList.addAll(appts);
+            if(!appts.isEmpty()) {
+                String monthName = appts.get(0).getStartDate().substring(0, 2);
+                if (Month.of(Integer.parseInt(monthName)).name().equals(monthSelected)) {
+                    appointmentsByMonthSelected.addAll(appts);
+                    break;
+                }
+            }else{
+                appointmentsTable.setItems(FXCollections.emptyObservableList());
+            }
         }
-        appointmentsTable.setItems(appointmentsByMonthList);
+       appointmentsTable.setItems(appointmentsByMonthSelected);
     }
 
-
-    public void populateTables() {
+    private void populateTables() {
         appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
         appointmentsByTypeTable.setItems(DBAppointment.getAppointmentsByType());
         appointmentsByMonthTable.setItems(DBAppointment.getAppointmentsByMonth());
@@ -403,5 +407,60 @@ public class MainViewController implements Initializable {
         appointmentScheduleTable.setItems(null);
     }
 
+    private void setContactListener(){
+        // Set up listener for Contact Combo Box on Reports Tab
+        contactCb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Contact contact = null;
 
+                // Find which Contact object is responsible for appointment
+                for (Contact c : DBContact.getAllContacts()) {
+                    if (c.getContactName().equals(newValue)) {
+                        contact = c;
+
+                        // Add appointment to Contact's contactAppointment list
+                        ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
+                        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
+                            if (a.getContactId() == contact.getContactId()) {
+                                contactAppointments.add(a);
+                            }
+
+                            // Populate Appointment Schedule Table based on contact selected
+                            appointmentScheduleTable.setItems(contactAppointments);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void setByMonthListener() {
+        // Set up listener for byMonth Combo Box on Reports Tab
+        byMonthCb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                displayAppointmentsByMonth(newValue);
+                allAppointmentsRBtn.setSelected(false);
+            }
+        });
+    }
+
+    private void setByMonthItems() {
+        // Find months of all Appointments
+        List<String> months = new ArrayList<>();
+        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
+            String monthNumber = a.getStartDate().substring(0, 2);
+            //String year = a.getStartDate().substring(7, 11);
+            String monthName = String.valueOf(Month.of(Integer.parseInt(monthNumber)));
+            months.add(monthName);
+        }
+
+        // Create observable list of unique months
+        ObservableList<String> uniqueMonths = FXCollections.observableArrayList();
+        for (int i = 0; i < months.size(); i++){
+            if (!uniqueMonths.contains(months.get(i))){
+                uniqueMonths.add(months.get(i));
+            }
+        }
+        byMonthCb.setItems(uniqueMonths);
+    }
 }

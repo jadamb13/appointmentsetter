@@ -1,18 +1,13 @@
 package controller;
 
 import DBAccess.DBAppointment;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -51,11 +46,6 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private ComboBox<String> typeCb;
 
-    Stage stage;
-    Parent scene;
-
-
-
     /**
      Initializes AddAppointment view.
 
@@ -75,8 +65,6 @@ public class AddAppointmentController implements Initializable {
         startTimeCb.setItems(Appointment.getAppointmentTimes());
         endTimeCb.setItems(Appointment.getAppointmentTimes());
     }
-
-
 
     /**
      Checks the user input for validity, creates a new Appointment object, and adds the Appointment to DB before returning

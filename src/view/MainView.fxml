@@ -45,12 +45,12 @@
                                     <font>
                                         <Font size="14.0" />
                                     </font></Button>
-                        <RadioButton fx:id="allAppointmentsRBtn" layoutX="187.0" layoutY="62.0" mnemonicParsing="false" onAction="#displayAllAppointments" text="All Appointments">
+                        <RadioButton fx:id="allAppointmentsRBtn" layoutX="218.0" layoutY="62.0" mnemonicParsing="false" onAction="#displayAllAppointments" text="All Appointments">
                            <font>
                               <Font size="14.0" />
                            </font></RadioButton>
                         <ComboBox fx:id="byMonthCb" layoutX="781.0" layoutY="59.0" prefHeight="25.0" prefWidth="125.0" />
-                        <ComboBox fx:id="byWeekCb" layoutX="482.0" layoutY="59.0" prefHeight="25.0" prefWidth="129.0" />
+                        <ComboBox fx:id="byWeekCb" layoutX="482.0" layoutY="59.0" prefHeight="25.0" prefWidth="171.0" />
                         <Label layoutX="710.0" layoutY="62.0" text="By Month:">
                            <font>
                               <Font size="14.0" />

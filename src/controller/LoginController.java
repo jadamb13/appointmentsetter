@@ -45,11 +45,16 @@ public class LoginController implements Initializable {
     private TextField passwordTxt;
     @FXML
     private Label timezoneTxt;
+
     Stage stage;
     Parent scene;
+
+    // Find timezone information of user's system
     ZoneId zone = ZoneId.systemDefault();
+
     private static int programUserId = 0;
 
+    /* Getters and Setters */
     public static int getProgramUserId() {
         return programUserId;
     }
@@ -137,10 +142,18 @@ public class LoginController implements Initializable {
 
     }
 
+    /**
+     * Writes user login attempt information to login_activity.txt.
+     *
+     * @param userId userId of user attempting to login
+     * @param date LocalDate when user attempts to login
+     * @param timestamp Timestamp of user login attempt
+     * @param successOrFail outcome of login attempt
+     */
     public void trackLoginAttempt(int userId, LocalDate date, Timestamp timestamp, String successOrFail){
         try{
             FileWriter writer = new FileWriter("src/login_activity.txt", true);
-            writer.write(String.valueOf(userId) + "\t\t" + date + "\t" + timestamp + "\t\t" + successOrFail + "\n");
+            writer.write(userId + "\t\t" + date + "\t" + timestamp + "\t\t" + successOrFail + "\n");
             writer.close();
         }catch (IOException e){
             System.out.println("Caught you LoginController(FileWriter): " + e.getMessage());

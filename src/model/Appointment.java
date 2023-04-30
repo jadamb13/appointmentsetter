@@ -3,6 +3,12 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Appointment {
 
     private int appointmentId;
@@ -161,15 +167,46 @@ public class Appointment {
     }
 
     public static ObservableList<String> getAppointmentTimes() {
-        ObservableList<String> appointmentTimes = FXCollections.observableArrayList();
+        ObservableList<String> timeList = FXCollections.observableArrayList();
 
-        // Logic to determine which appointments are available based on the current local time compared to EST
-        // Also cross-reference appointments already assigned to this customer and update list based on customer selected
-        // or just allow the time to show but show error on selection/save
-        appointmentTimes.add("8:00 AM");
-        appointmentTimes.add("8:30 AM");
+        // Define the EST time range we want to use
+        LocalTime estStartTime = LocalTime.of(8, 0);
+        LocalTime estEndTime = LocalTime.of(22, 0);
 
-        return appointmentTimes;
+        // Get the user's timezone
+        ZoneId userZone = ZoneId.systemDefault();
+
+        // Get the current time in the user's timezone
+        ZonedDateTime now = ZonedDateTime.now(userZone);
+
+        // Convert the user's time to EST
+        ZonedDateTime estTime = now.withZoneSameInstant(ZoneId.of("America/New_York"));
+
+        // Calculate the time difference between EST and the user's timezone
+        ZoneOffset offset = estTime.getOffset();
+        int offsetHours = offset.getTotalSeconds() / 3600;
+
+        // Calculate the start and end times in the user's timezone
+        LocalTime userStartTime = estStartTime.plusHours(offsetHours);
+        LocalTime userEndTime = estEndTime.plusHours(offsetHours);
+
+        // Generate the list of times in the user's timezone
+        LocalTime currentTime = userStartTime;
+        while (currentTime.isBefore(userEndTime)) {
+            String timeString = currentTime.format(DateTimeFormatter.ofPattern("h:mm a"));
+            timeList.add(timeString);
+            currentTime = currentTime.plusMinutes(15);
+        }
+
+        /*
+        // add 10:00 pm (EST) as the last time to the list
+        if (end.withZoneSameInstant(userZone).toLocalTime().isAfter(userTime)) {
+            String lastTime = end.withZoneSameInstant(userZone).toLocalTime().format(formatter);
+            timesList.add(lastTime);
+        }
+        */
+
+        return timeList;
     }
 
 

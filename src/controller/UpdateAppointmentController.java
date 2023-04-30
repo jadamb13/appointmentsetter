@@ -4,13 +4,10 @@ import DBAccess.DBAppointment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -23,8 +20,6 @@ import java.util.ResourceBundle;
 /** A Controller class for the UpdateAppointment view. */
 public class UpdateAppointmentController implements Initializable {
 
-    @FXML
-    private DatePicker startDateDp;
     @FXML
     private ComboBox<String> contactCb;
     @FXML
@@ -40,6 +35,8 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private TextArea descriptionTxt;
     @FXML
+    private DatePicker startDateDp;
+    @FXML
     private DatePicker endDateDp;
     @FXML
     private ComboBox<String> startTimeCb;
@@ -47,11 +44,6 @@ public class UpdateAppointmentController implements Initializable {
     private ComboBox<String> endTimeCb;
     @FXML
     private ComboBox<String> typeCb;
-    @FXML
-    private Button updateAppointmentBtn;
-
-    Stage stage;
-    Parent scene;
 
     /**
      Initializes UpdateAppointment view.

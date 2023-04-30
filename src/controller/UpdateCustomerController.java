@@ -1,6 +1,5 @@
 package controller;
 
-import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import DBAccess.DBDivision;
 import javafx.event.ActionEvent;
@@ -8,18 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import model.Appointment;
-import model.Contact;
 import model.Country;
 import model.Customer;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ResourceBundle;
 
 /** A Controller class for the UpdateCustomer view. */
@@ -29,7 +21,6 @@ public class UpdateCustomerController implements Initializable {
     private TextField customerIdTxt;
     @FXML
     private TextField nameTxt;
-
     @FXML
     private TextField postalCodeTxt;
     @FXML
@@ -83,12 +74,10 @@ public class UpdateCustomerController implements Initializable {
                 if (newValue != null) {
                     // Populate divisionCb based on the selected country
                     String selectedCountry = newValue.toString();
-                    if (selectedCountry.equals("U.S")) {
-                        divisionCb.setItems(DBDivision.getAllUnitedStatesDivisionNames());
-                    } else if (selectedCountry.equals("UK")) {
-                        divisionCb.setItems(DBDivision.getAllUnitedKingdomDivisionNames());
-                    } else if (selectedCountry.equals("Canada")) {
-                        divisionCb.setItems(DBDivision.getAllCanadaDivisionNames());
+                    switch (selectedCountry) {
+                        case "U.S" -> divisionCb.setItems(DBDivision.getAllUnitedStatesDivisionNames());
+                        case "UK" -> divisionCb.setItems(DBDivision.getAllUnitedKingdomDivisionNames());
+                        case "Canada" -> divisionCb.setItems(DBDivision.getAllCanadaDivisionNames());
                     }
                 }
             });
@@ -96,8 +85,6 @@ public class UpdateCustomerController implements Initializable {
             System.out.println("Caught ye AddCustomerController: " + e.getMessage());
         }
     }
-
-
 
     /**
      Checks the user input for validity, creates a new Customer object, and updates the Customer in DB before returning

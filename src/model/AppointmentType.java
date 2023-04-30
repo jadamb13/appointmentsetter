@@ -1,5 +1,6 @@
 package model;
 
+/** Class representing an Appointment Type object */
 public class AppointmentType {
 
     private String type;
@@ -10,6 +11,7 @@ public class AppointmentType {
         this.countOfType = countOfType;
     }
 
+    /* Getters and Setters */
     public String getType() {
         return type;
     }

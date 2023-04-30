@@ -1,10 +1,10 @@
 package model;
 
-import DBAccess.DBContact;
 import DBAccess.DBCustomer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/** Class representing a Country object */
 public class Customer {
     private int customerId;
     private String customerName;
@@ -23,6 +23,7 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
+    /* Getters and Setters */
     public int getCustomerId() {
         return customerId;
     }
@@ -71,6 +72,12 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
+    /**
+     Gets Customer ID associated with a name.
+
+     @return c.getCustomerId() customerID of customer with the parameter name; or -1 if none found
+
+     */
     public static int getCustomerIdByName(String name){
         for (Customer c : DBCustomer.getAllCustomersFromDb()){
             if(c.customerName.equals(name)){
@@ -81,6 +88,12 @@ public class Customer {
         return -1;
     }
 
+    /**
+     Gets Name associated with a Customer ID.
+
+     @return c.getCustomerName() Customer name associated with the parameter id
+
+     */
     public static String getCustomerNameById(int id){
         for (Customer c : DBCustomer.getAllCustomersFromDb()){
             if(c.getCustomerId() == id){
@@ -89,7 +102,6 @@ public class Customer {
         }
         return "";
     }
-
 
     /**
      Creates list of names representing all Customer objects.

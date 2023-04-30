@@ -6,6 +6,7 @@ import DBAccess.DBCustomer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/** Class representing a Contact object */
 public class Contact {
     private int contactId;
     private String contactName;
@@ -18,6 +19,7 @@ public class Contact {
         this.contactEmail = contactEmail;
     }
 
+    /* Getters and Setters */
     public int getContactId() {
         return contactId;
     }
@@ -28,6 +30,18 @@ public class Contact {
 
     public String getContactName() {
         return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 
     /**
@@ -44,19 +58,12 @@ public class Contact {
         return contactNames;
     }
 
+    /**
+     Gets Contact ID associated with a name.
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
+     @return c.getContact() contactID of contact with the parameter name; or -1 if none found
 
-    public String getContactEmail() {
-        return contactEmail;
-    }
-
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
-
+     */
     public static int getContactIdByName(String name){
         for (Contact c : DBContact.getAllContacts()){
             if(c.contactName.equals(name)){
@@ -67,6 +74,12 @@ public class Contact {
         return -1;
     }
 
+    /**
+     Gets Name associated with a Contact ID.
+
+     @return c.getContactName() Contact name associated with the parameter id
+
+     */
     public static String getContactNameById(int id){
         for (Contact c : DBContact.getAllContacts()){
             if(c.getContactId() == id){

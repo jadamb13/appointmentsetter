@@ -1,15 +1,16 @@
 package model;
 
-import DBAccess.DBCountry;
 import DBAccess.DBDivision;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/** Class representing a Country object */
 public class Division {
     private int divisionId;
     private String division;
     private int countryId;
 
+    /* Getters and Setters */
     public Division(int divisionId, String division, int countryId) {
         this.divisionId = divisionId;
         this.division = division;
@@ -40,6 +41,12 @@ public class Division {
         this.countryId = countryId;
     }
 
+    /**
+     Gets all Division Names in database.
+
+     @return divisionNames ObservableList of Strings representing all division names
+
+     */
     public static ObservableList<String> getAllDivisionNames(){
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
         for (Division d : DBDivision.getAllDivisionsFromDb()){
@@ -48,6 +55,12 @@ public class Division {
         return divisionNames;
     }
 
+    /**
+     Gets all Division Names associated with the United States.
+
+     @return unitedStates ObservableList of Strings representing all United States division names
+
+     */
     public static ObservableList<String> getAllUnitedStatesDivisionNames(){
         ObservableList<String> unitedStatesDivisions = FXCollections.observableArrayList();
         for (Division d : DBDivision.getAllDivisionsFromDb()){
@@ -59,6 +72,12 @@ public class Division {
         return unitedStatesDivisions;
     }
 
+    /**
+     Gets all Division Names associated with Canada.
+
+     @return canadaDivisions ObservableList of Strings representing all Canada division names
+
+     */
     public static ObservableList<String> getAllCanadaDivisionNames(){
         ObservableList<String> canadaDivisions = FXCollections.observableArrayList();
         for (Division d : DBDivision.getAllDivisionsFromDb()){
@@ -69,6 +88,12 @@ public class Division {
         return canadaDivisions;
     }
 
+    /**
+     Gets all Division Names associated with the United Kingdom.
+
+     @return unitedKingdomDivisions ObservableList of Strings representing all United Kingdom division names
+
+     */
     public static ObservableList<String> getAllUnitedKingdomDivisionNames(){
         ObservableList<String> unitedKingdomDivisions = FXCollections.observableArrayList();
         for (Division d : DBDivision.getAllDivisionsFromDb()){
@@ -79,6 +104,12 @@ public class Division {
         return unitedKingdomDivisions;
     }
 
+    /**
+     Gets Division ID associated with a Division name.
+
+     @return d.getDivisionId() customerID of customer with the parameter name; or -1 if none found
+
+     */
     public static int getDivisionIdByName(String divisionName){
         for (Division d : DBDivision.getAllDivisionsFromDb()){
             if(d.getDivision().equals(divisionName)){
@@ -88,6 +119,12 @@ public class Division {
         return -1;
     }
 
+    /**
+     Gets Division Name associated with a Division ID.
+
+     @return c.getDivision() Division Name associated with the parameter divisionId; or empty string if none found
+
+     */
     public static String getDivisionNameById(int divisionId){
         for (Division d : DBDivision.getAllDivisionsFromDb()){
             if(d.getDivisionId() == divisionId){

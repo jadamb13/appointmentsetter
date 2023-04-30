@@ -151,7 +151,6 @@ public class Appointment {
     }
 
 
-
     /**
      Sets "Type" of Appointment that can be selected for new or updated Appointments.
 

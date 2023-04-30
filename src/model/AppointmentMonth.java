@@ -1,5 +1,6 @@
 package model;
 
+/** Class representing an Appointment Month object */
 public class AppointmentMonth {
 
     private String month;
@@ -10,6 +11,7 @@ public class AppointmentMonth {
         this.countByMonth = countByMonth;
     }
 
+    /* Getters and Setters */
     public String getMonth() {
         return month;
     }

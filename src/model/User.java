@@ -1,5 +1,6 @@
 package model;
 
+/** Class representing a User object */
 public class User {
     private int userId;
     private String userName;
@@ -11,6 +12,7 @@ public class User {
         this.userPassword = userPassword;
     }
 
+    /* Getters and Setters */
     public int getUserId() {
         return userId;
     }

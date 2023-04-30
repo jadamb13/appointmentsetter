@@ -55,6 +55,10 @@ public class DBCustomer {
         return customerList;
     }
 
+    /**
+     Gathers data entered by user and combines with generated fields to insert new Customer into DB.
+
+     */
     public static void insertCustomer(int customerId, String customerName, String address, String postalCode,
                                          String phone, int divisionId) {
         try {
@@ -88,6 +92,10 @@ public class DBCustomer {
 
     }
 
+    /**
+     Gathers data entered by user and combines with generated fields to update Customer in DB.
+
+     */
     public static void updateCustomerInDb(int customerId, String customerName, String address, String postalCode,
                                           String phone, int divisionId){
         try {
@@ -122,6 +130,12 @@ public class DBCustomer {
         }
     }
 
+    /**
+     Deletes Customer from database using the Customer ID.
+
+     @param customerId Customer ID (Primary Key) to remove from database
+
+     */
     public static void deleteCustomerInDb(int customerId){
         try {
             // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
@@ -135,6 +149,12 @@ public class DBCustomer {
         }
     }
 
+    /**
+     Finds MAX Appointment_ID from database.
+
+     @return nextCustomerId next integer after value of MAX(Customer_ID)
+
+     */
     public static int getNextCustomerId(){
         int nextCustomerId = -1;
         try{

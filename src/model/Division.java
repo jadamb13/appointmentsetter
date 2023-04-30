@@ -47,4 +47,54 @@ public class Division {
         }
         return divisionNames;
     }
+
+    public static ObservableList<String> getAllUnitedStatesDivisionNames(){
+        ObservableList<String> unitedStatesDivisions = FXCollections.observableArrayList();
+        for (Division d : DBDivision.getAllDivisionsFromDb()){
+            if(d.getCountryId() == 1){
+                unitedStatesDivisions.add(d.getDivision());
+            }
+        }
+
+        return unitedStatesDivisions;
+    }
+
+    public static ObservableList<String> getAllCanadaDivisionNames(){
+        ObservableList<String> canadaDivisions = FXCollections.observableArrayList();
+        for (Division d : DBDivision.getAllDivisionsFromDb()){
+            if(d.getCountryId() == 3){
+                canadaDivisions.add(d.getDivision());
+            }
+        }
+        return canadaDivisions;
+    }
+
+    public static ObservableList<String> getAllUnitedKingdomDivisionNames(){
+        ObservableList<String> unitedKingdomDivisions = FXCollections.observableArrayList();
+        for (Division d : DBDivision.getAllDivisionsFromDb()){
+            if(d.getCountryId() == 2){
+                unitedKingdomDivisions.add(d.getDivision());
+            }
+        }
+        return unitedKingdomDivisions;
+    }
+
+    public static int getDivisionIdByName(String divisionName){
+        for (Division d : DBDivision.getAllDivisionsFromDb()){
+            if(d.getDivision().equals(divisionName)){
+                return d.getDivisionId();
+            }
+        }
+        return -1;
+    }
+
+    public static String getDivisionNameById(int divisionId){
+        for (Division d : DBDivision.getAllDivisionsFromDb()){
+            if(d.getDivisionId() == divisionId){
+                return d.getDivision();
+            }
+        }
+        return "";
+    }
+
 }

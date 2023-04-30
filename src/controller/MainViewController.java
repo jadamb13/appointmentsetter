@@ -429,7 +429,7 @@ public class MainViewController implements Initializable {
     private void populateTables() {
         appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
         appointmentsByTypeTable.setItems(DBAppointment.getAppointmentsByType());
-        appointmentsByMonthTable.setItems(DBAppointment.getAppointmentsByMonth());
+        appointmentsByMonthTable.setItems(Appointment.getAppointmentsByMonth());
         customerTable.setItems(DBCustomer.getAllCustomersFromDb());
 
         // Reset Contact combo box when tables are refreshed

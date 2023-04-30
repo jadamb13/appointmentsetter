@@ -16,13 +16,11 @@ public class DBContact {
     /**
      * Queries DB to gather data and create Contact objects to be added to ObservableList.
      *
-     * @return contactList list of Customer objects representing data in the DB
+     * @return contactList list of Customer objects created from data in the DB
      */
     public static ObservableList<Contact> getAllContacts() {
         ObservableList<Contact> contactList = FXCollections.observableArrayList();
-
         try {
-
             String sql = "SELECT * FROM client_schedule.contacts";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

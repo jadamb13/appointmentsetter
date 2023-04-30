@@ -1,14 +1,16 @@
 package model;
 
+import DBAccess.DBAppointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+/** Class representing an Appointment object */
 public class Appointment {
 
     private int appointmentId;
@@ -43,11 +45,10 @@ public class Appointment {
         this.endTime = endTime;
     }
 
-    // Getters and Setters
+    /* Getters and Setters */
     public int getAppointmentId() {
         return appointmentId;
     }
-
 
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
@@ -117,7 +118,6 @@ public class Appointment {
         this.type = type;
     }
 
-
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
@@ -150,6 +150,8 @@ public class Appointment {
         this.endTime = endTime;
     }
 
+
+
     /**
      Sets "Type" of Appointment that can be selected for new or updated Appointments.
 
@@ -166,6 +168,47 @@ public class Appointment {
         return appointmentTypes;
     }
 
+    /**
+     Counts and groups appointments by month.
+
+     @return appointmentsByMonth ObservableList of AppointmentMonth objects representing
+     unique months and the number of appointments for each month
+
+     */
+    public static ObservableList<AppointmentMonth> getAppointmentsByMonth(){
+        ObservableList<AppointmentMonth> appointmentsByMonth = FXCollections.observableArrayList();
+        List<String> months = new ArrayList<>();
+        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()){
+            String monthNumber = a.getStartDate().substring(0, 2);
+            //String year = a.getStartDate().substring(7, 11);
+            String monthName = String.valueOf(Month.of(Integer.parseInt(monthNumber)));
+            months.add(monthName);
+
+        }
+        List<String> uniqueMonths = new ArrayList<>();
+        for (int i = 0; i < months.size(); i++){
+            if (!uniqueMonths.contains(months.get(i))){
+                uniqueMonths.add(months.get(i));
+            }
+        }
+        List<Integer> frequencies = new ArrayList<>();
+        for (int i = 0; i < uniqueMonths.size(); i++){
+            frequencies.add(Collections.frequency(months, uniqueMonths.get(i)));
+        }
+        for (int i = 0; i < uniqueMonths.size(); i++){
+            AppointmentMonth am = new AppointmentMonth(uniqueMonths.get(i), frequencies.get(i));
+            appointmentsByMonth.add(am);
+        }
+
+        return appointmentsByMonth;
+    }
+
+    /**
+     Determines appointments times available based on user locale and EST business hours.
+
+     @return timeList list of String objects representing times available for appointments
+
+     */
     public static ObservableList<String> getAppointmentTimes() {
         ObservableList<String> timeList = FXCollections.observableArrayList();
 

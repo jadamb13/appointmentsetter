@@ -82,7 +82,6 @@ public class DBAppointment {
         return appointmentList;
     }
 
-
     /**
      Gathers data entered by user and combines with generated fields to insert new Appointments into DB.
 
@@ -129,7 +128,6 @@ public class DBAppointment {
         }
 
     }
-
 
     /**
      Gathers data entered by user and combines with generated fields to update Appointment in DB.
@@ -185,6 +183,12 @@ public class DBAppointment {
        }
     }
 
+    /**
+     Deletes Appointment from database using the Appointment ID.
+
+     @param appointmentId Appointment ID (Primary Key) to remove from database
+
+     */
     public static void deleteAppointmentInDb(int appointmentId){
         try {
             // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
@@ -247,6 +251,13 @@ public class DBAppointment {
         return weeklyAppointmentList;
     }
 
+    /**
+     Counts and groups Appointments by Type.
+
+     @return appointmentsByType ObservableList of AppointmentType objects representing
+     types of appointments and the number of each type
+
+     */
     public static ObservableList<AppointmentType> getAppointmentsByType(){
         ObservableList<AppointmentType> appointmentsByType = FXCollections.observableArrayList();
         try{
@@ -268,35 +279,12 @@ public class DBAppointment {
         return appointmentsByType;
     }
 
-    public static ObservableList<AppointmentMonth> getAppointmentsByMonth(){
-        ObservableList<AppointmentMonth> appointmentsByMonth = FXCollections.observableArrayList();
-        List<String> months = new ArrayList<>();
-        for (Appointment a : getAllAppointmentsFromDb()){
-            String monthNumber = a.getStartDate().substring(0, 2);
-            //String year = a.getStartDate().substring(7, 11);
-            String monthName = String.valueOf(Month.of(Integer.parseInt(monthNumber)));
-            months.add(monthName);
+    /**
+     Finds MAX Appointment_ID from database.
 
-        }
-        List<String> uniqueMonths = new ArrayList<>();
-        for (int i = 0; i < months.size(); i++){
-            if (!uniqueMonths.contains(months.get(i))){
-                uniqueMonths.add(months.get(i));
-            }
-        }
-        List<Integer> frequencies = new ArrayList<>();
-        for (int i = 0; i < uniqueMonths.size(); i++){
-            frequencies.add(Collections.frequency(months, uniqueMonths.get(i)));
-        }
-        for (int i = 0; i < uniqueMonths.size(); i++){
-            AppointmentMonth am = new AppointmentMonth(uniqueMonths.get(i), frequencies.get(i));
-            appointmentsByMonth.add(am);
-        }
+     @return nextAppointmentID next integer after value of MAX(Appointment_ID)
 
-        return appointmentsByMonth;
-    }
-
-
+     */
     public static int getNextAppointmentId(){
         int nextAppointmentId = -1;
         try{

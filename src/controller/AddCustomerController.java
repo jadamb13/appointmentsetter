@@ -9,6 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import model.Country;
+import model.Division;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,13 +53,13 @@ public class AddCustomerController implements Initializable {
                     String selectedCountry = newValue.toString();
                     // Populate divisionCb
                     if(selectedCountry.equals("U.S")){
-                        divisionCb.setItems(DBDivision.getAllUnitedStatesDivisionNames());
+                        divisionCb.setItems(Division.getAllUnitedStatesDivisionNames());
                     }
                     if(selectedCountry.equals("UK")){
-                        divisionCb.setItems(DBDivision.getAllUnitedKingdomDivisionNames());
+                        divisionCb.setItems(Division.getAllUnitedKingdomDivisionNames());
                     }
                     if(selectedCountry.equals("Canada")){
-                        divisionCb.setItems(DBDivision.getAllCanadaDivisionNames());
+                        divisionCb.setItems(Division.getAllCanadaDivisionNames());
                     }
                 }
             });
@@ -94,7 +96,7 @@ public class AddCustomerController implements Initializable {
             String phone = phoneNumberTxt.getText();
             String countryName = countryCb.getSelectionModel().getSelectedItem();
             String divisionName = divisionCb.getSelectionModel().getSelectedItem();
-            int divisionId = DBDivision.getDivisionIdByName(divisionName);
+            int divisionId = Division.getDivisionIdByName(divisionName);
 
             // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
             DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);

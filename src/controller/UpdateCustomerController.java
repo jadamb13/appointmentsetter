@@ -9,6 +9,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import model.Country;
 import model.Customer;
+import model.Division;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -56,16 +58,16 @@ public class UpdateCustomerController implements Initializable {
             // Populate divisionCb based on the selected country
             switch (countryName) {
                 case "U.S" -> {
-                    divisionCb.setItems(DBDivision.getAllUnitedStatesDivisionNames());
-                    divisionCb.setValue(DBDivision.getDivisionNameById(selected.getDivisionId()));
+                    divisionCb.setItems(Division.getAllUnitedStatesDivisionNames());
+                    divisionCb.setValue(Division.getDivisionNameById(selected.getDivisionId()));
                 }
                 case "UK" -> {
-                    divisionCb.setItems(DBDivision.getAllUnitedKingdomDivisionNames());
-                    divisionCb.setValue(DBDivision.getDivisionNameById(selected.getDivisionId()));
+                    divisionCb.setItems(Division.getAllUnitedKingdomDivisionNames());
+                    divisionCb.setValue(Division.getDivisionNameById(selected.getDivisionId()));
                 }
                 case "Canada" -> {
-                    divisionCb.setItems(DBDivision.getAllCanadaDivisionNames());
-                    divisionCb.setValue(DBDivision.getDivisionNameById(selected.getDivisionId()));
+                    divisionCb.setItems(Division.getAllCanadaDivisionNames());
+                    divisionCb.setValue(Division.getDivisionNameById(selected.getDivisionId()));
                 }
             }
 
@@ -75,9 +77,9 @@ public class UpdateCustomerController implements Initializable {
                     // Populate divisionCb based on the selected country
                     String selectedCountry = newValue.toString();
                     switch (selectedCountry) {
-                        case "U.S" -> divisionCb.setItems(DBDivision.getAllUnitedStatesDivisionNames());
-                        case "UK" -> divisionCb.setItems(DBDivision.getAllUnitedKingdomDivisionNames());
-                        case "Canada" -> divisionCb.setItems(DBDivision.getAllCanadaDivisionNames());
+                        case "U.S" -> divisionCb.setItems(Division.getAllUnitedStatesDivisionNames());
+                        case "UK" -> divisionCb.setItems(Division.getAllUnitedKingdomDivisionNames());
+                        case "Canada" -> divisionCb.setItems(Division.getAllCanadaDivisionNames());
                     }
                 }
             });
@@ -103,7 +105,7 @@ public class UpdateCustomerController implements Initializable {
             String postalCode = postalCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
             String divisionName = divisionCb.getSelectionModel().getSelectedItem();
-            int divisionId = DBDivision.getDivisionIdByName(divisionName);
+            int divisionId = Division.getDivisionIdByName(divisionName);
 
             // Use insertAppointment() and data from form to insert new Appointment into DB
             DBCustomer.updateCustomerInDb(customerId, customerName, address, postalCode, phone, divisionId);

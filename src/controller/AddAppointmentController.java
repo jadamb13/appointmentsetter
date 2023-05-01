@@ -62,8 +62,9 @@ public class AddAppointmentController implements Initializable {
         contactCb.setItems(Contact.getAllContactNames());
         typeCb.setItems(Appointment.getAppointmentTypes());
         customerCb.setItems(Customer.getAllCustomerNames());
-        startTimeCb.setItems(Appointment.getAppointmentTimes());
-        endTimeCb.setItems(Appointment.getAppointmentTimes());
+        Appointment.getAppointmentTimes();
+        //startTimeCb.setItems(Appointment.getAppointmentTimes());
+        //endTimeCb.setItems(Appointment.getAppointmentTimes());
     }
 
     /**

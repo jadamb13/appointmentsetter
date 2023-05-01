@@ -74,10 +74,10 @@ public class UpdateAppointmentController implements Initializable {
             contactCb.setValue(selected.getContact());
             typeCb.setItems(Appointment.getAppointmentTypes());
             typeCb.setValue(selected.getType());
-            startTimeCb.setItems(Appointment.getAppointmentTimes());
-            startTimeCb.setValue(selected.getStartTime());
-            endTimeCb.setItems(Appointment.getAppointmentTimes());
-            endTimeCb.setValue(selected.getEndTime());
+            //startTimeCb.setItems(Appointment.getAppointmentTimes());
+            //startTimeCb.setValue(selected.getStartTime());
+            //endTimeCb.setItems(Appointment.getAppointmentTimes());
+            //endTimeCb.setValue(selected.getEndTime());
             startDateDp.setValue(startDate);
             endDateDp.setValue(endDate);
 

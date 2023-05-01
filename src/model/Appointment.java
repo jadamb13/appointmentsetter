@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -209,46 +210,66 @@ public class Appointment {
 
      */
     public static ObservableList<String> getAppointmentTimes() {
-        ObservableList<String> timeList = FXCollections.observableArrayList();
 
-        // Define the EST time range we want to use
-        LocalTime estStartTime = LocalTime.of(8, 0);
-        LocalTime estEndTime = LocalTime.of(22, 0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        ObservableList<String> timesList = FXCollections.observableArrayList();
 
-        // Get the user's timezone
-        ZoneId userZone = ZoneId.systemDefault();
+        // Get the system's current time of the user
+        ZoneId userZoneId = ZoneId.systemDefault();
+        ZonedDateTime userZDT = ZonedDateTime.of(LocalDate.now(userZoneId), LocalTime.now(userZoneId), userZoneId).truncatedTo(ChronoUnit.SECONDS);
+        System.out.println("Zone ID: " + userZoneId + " | ZDT: " + userZDT);
 
-        // Get the current time in the user's timezone
-        ZonedDateTime now = ZonedDateTime.now(userZone);
+        // Get the current time in the EST time zone
+        ZoneId estZoneId = ZoneId.of("America/New_York");
+        ZonedDateTime estZDT = ZonedDateTime.of(LocalDate.now(estZoneId), LocalTime.now(estZoneId), estZoneId).truncatedTo(ChronoUnit.SECONDS);
+        System.out.println("Zone ID: " + estZoneId + " | ZDT: " + estZDT);
 
-        // Convert the user's time to EST
-        ZonedDateTime estTime = now.withZoneSameInstant(ZoneId.of("America/New_York"));
+        // Get difference between user's system time and EST
 
-        // Calculate the time difference between EST and the user's timezone
-        ZoneOffset offset = estTime.getOffset();
-        int offsetHours = offset.getTotalSeconds() / 3600;
+        // Get the offsets for each time zone
+        ZoneOffset userOffset = userZDT.getOffset();
+        ZoneOffset estOffset = estZDT.getOffset();
 
-        // Calculate the start and end times in the user's timezone
-        LocalTime userStartTime = estStartTime.plusHours(offsetHours);
-        LocalTime userEndTime = estEndTime.plusHours(offsetHours);
+        // Calculate the difference between the offsets
+        Duration offsetDifference = Duration.ofSeconds(userOffset.getTotalSeconds() - estOffset.getTotalSeconds());
+        long minutesDifference = offsetDifference.toMinutes();
+        double hoursDifference = offsetDifference.toHours();
 
-        // Generate the list of times in the user's timezone
-        LocalTime currentTime = userStartTime;
-        while (currentTime.isBefore(userEndTime)) {
-            String timeString = currentTime.format(DateTimeFormatter.ofPattern("h:mm a"));
-            timeList.add(timeString);
-            currentTime = currentTime.plusMinutes(15);
+        // EST LocalTime start and end
+        LocalTime start;
+        LocalTime end;
+
+        // Set times of list based on difference between time of User's local time and EST
+        if(hoursDifference % 1 == 0){
+            start = LocalTime.of(8 + (int)hoursDifference, 0);
+            end = LocalTime.of(22 + (int)hoursDifference, 0);
+        }else {
+            start = LocalTime.of(8 + (int)hoursDifference, (int)minutesDifference/60);
+            end = LocalTime.of(22 + (int)hoursDifference, (int)minutesDifference/60);
         }
 
+        System.out.println("Start: " + start + " | End: " + end);
         /*
-        // add 10:00 pm (EST) as the last time to the list
-        if (end.withZoneSameInstant(userZone).toLocalTime().isAfter(userTime)) {
-            String lastTime = end.withZoneSameInstant(userZone).toLocalTime().format(formatter);
-            timesList.add(lastTime);
-        }
-        */
 
-        return timeList;
+        // iterate over the times between 8am-10pm EST, converting them to local times
+        while (start.isBefore(end)) {
+            // convert the EST time to the system's time zone
+            ZonedDateTime zonedEstTime = estTime.atDate(LocalDate.now()).atZone(estZone);
+            LocalTime localTime = zonedEstTime.withZoneSameInstant(systemZone).toLocalTime();
+
+            // check if the local time is after the current time
+            if (localTime.isAfter(systemTime)) {
+                // format the local time as a string and add it to the list
+                String timeString = localTime.format(formatter);
+                timesList.add(timeString);
+            }
+
+            // increment the EST time by 15 minutes
+            estTime = estTime.plusMinutes(15);
+        }
+*/
+
+        return timesList;
     }
 
 

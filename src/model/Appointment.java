@@ -234,40 +234,44 @@ public class Appointment {
         Duration offsetDifference = Duration.ofSeconds(userOffset.getTotalSeconds() - estOffset.getTotalSeconds());
         long minutesDifference = offsetDifference.toMinutes();
         double hoursDifference = offsetDifference.toHours();
-
         // EST LocalTime start and end
         LocalTime start;
         LocalTime end;
 
         // Set times of list based on difference between time of User's local time and EST
         if(hoursDifference % 1 == 0){
-            start = LocalTime.of(8 + (int)hoursDifference, 0);
-            end = LocalTime.of(22 + (int)hoursDifference, 0);
+            start = LocalTime.of((8 + (int)hoursDifference) % 24, 0);
+            end = LocalTime.of((22 + (int)hoursDifference) % 24, 0);
+            if(22 + (int)hoursDifference > 24){
+                // Change the date
+            }
         }else {
-            start = LocalTime.of(8 + (int)hoursDifference, (int)minutesDifference/60);
-            end = LocalTime.of(22 + (int)hoursDifference, (int)minutesDifference/60);
+            start = LocalTime.of((8 + (int)hoursDifference) % 24, (int)minutesDifference/60);
+            end = LocalTime.of((22 + (int)hoursDifference) % 24, (int)minutesDifference/60);
+            if(22 + (int)hoursDifference > 24){
+                // Change the date
+            }
         }
 
         System.out.println("Start: " + start + " | End: " + end);
-        /*
+        String listStartTime = userZDT.toLocalDateTime().format(formatter);
+        String listEndTime = end.format(formatter);
 
-        // iterate over the times between 8am-10pm EST, converting them to local times
-        while (start.isBefore(end)) {
-            // convert the EST time to the system's time zone
-            ZonedDateTime zonedEstTime = estTime.atDate(LocalDate.now()).atZone(estZone);
-            LocalTime localTime = zonedEstTime.withZoneSameInstant(systemZone).toLocalTime();
+        LocalTime ltNow = LocalTime.parse(listStartTime, formatter);
+        int difference = 15 - ltNow.getMinute() % 15;
+        LocalTime ltStart = ltNow.plusMinutes(difference);
+        LocalTime time = ltStart;
 
-            // check if the local time is after the current time
-            if (localTime.isAfter(systemTime)) {
-                // format the local time as a string and add it to the list
-                String timeString = localTime.format(formatter);
+        for(int i = 0; i < 48; i++){
+            if(time.compareTo(end) == 0){
+                String timeString = time.format(formatter);
                 timesList.add(timeString);
+                break;
             }
-
-            // increment the EST time by 15 minutes
-            estTime = estTime.plusMinutes(15);
+            String timeString = time.format(formatter);
+            timesList.add(timeString);
+            time = time.plusMinutes(15);
         }
-*/
 
         return timesList;
     }

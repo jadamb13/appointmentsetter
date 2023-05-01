@@ -243,15 +243,10 @@ public class MainViewController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddAppointment.fxml"));
             Parent root = loader.load();
-            System.out.println("Runnn");
             mainViewStage = new Stage();
-            System.out.println("Runnnn");
             mainViewStage.setTitle("Add Appointment");
-            System.out.println("Runnnnn");
             mainViewStage.setScene(new Scene(root));
-            System.out.println("Runnnnnn");
             mainViewStage.showAndWait();
-            System.out.println("Runnnnnnn");
             populateTables();
         } catch (IOException e) {
             System.out.println(e.getCause());

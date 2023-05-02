@@ -11,7 +11,7 @@ public class Contact {
     private int contactId;
     private String contactName;
     private String contactEmail;
-    private ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
+
 
     public Contact(int contactId, String contactName, String contactEmail) {
         this.contactId = contactId;
@@ -89,16 +89,26 @@ public class Contact {
         return "";
     }
 
-    public ObservableList<Appointment> getContactAppointments() {
-        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()){
-            if(a.getContact().equals(contactName)){
-                contactAppointments.add(a);
+    public static ObservableList<Appointment> getContactAppointments(String newValue) {
+        ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
+        if (newValue != null) {
+            Contact contact = null;
+
+            // Find which Contact object is responsible for appointment
+            for (Contact c : DBContact.getAllContacts()) {
+                if (c.getContactName().equals(newValue)) {
+                    contact = c;
+                }
+            }
+            if(contact != null){
+                for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
+                    if (a.getContact().equals(contact.getContactName())) {
+                        contactAppointments.add(a);
+                    }
+                }
             }
         }
         return contactAppointments;
     }
 
-    public void setContactAppointments(ObservableList<Appointment> contactAppointments) {
-        this.contactAppointments = contactAppointments;
-    }
 }

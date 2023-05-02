@@ -6,6 +6,7 @@ import DBAccess.DBDivision;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import model.Country;
@@ -94,18 +95,23 @@ public class AddCustomerController implements Initializable {
             String address = addressTxt.getText();
             String postalCode = postalCodeTxt.getText();
             String phone = phoneNumberTxt.getText();
-            String countryName = countryCb.getSelectionModel().getSelectedItem();
             String divisionName = divisionCb.getSelectionModel().getSelectedItem();
             int divisionId = Division.getDivisionIdByName(divisionName);
+            if(!MainViewController.validateCustomerInput(customerName, address, postalCode, phone, divisionName, divisionId)){
+                // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
+                DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);
 
-            // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
-            DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);
-
-            // Close AddCustomer view and show MainView
-            MainViewController.getMainViewStage().close();
-
+                // Close AddCustomer view and show MainView
+                MainViewController.getMainViewStage().close();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
+                alert.show();
+            }
         }catch (Exception e){
-            System.out.println("Caught ye saveNewCustomer: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
+
+
 }

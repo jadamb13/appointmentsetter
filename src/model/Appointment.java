@@ -204,78 +204,76 @@ public class Appointment {
     }
 
     /**
-     Determines appointments times available based on user locale and EST business hours.
+     Determines appointments times available based on user ZonedDateTime and EST business hours.
 
      @return timeList list of String objects representing times available for appointments
 
      */
     public static ObservableList<String> getAppointmentTimes() {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a"); // formatter for times added to timesList
         ObservableList<String> timesList = FXCollections.observableArrayList();
 
-        // Get the system's current time of the user
+        // Get the current ZoneId, Date, and Time in the user's time zone and created ZonedDateTime
         ZoneId userZoneId = ZoneId.systemDefault();
-        ZonedDateTime userZDT = ZonedDateTime.of(LocalDate.now(userZoneId), LocalTime.now(userZoneId), userZoneId).truncatedTo(ChronoUnit.SECONDS);
-        System.out.println("Zone ID: " + userZoneId + " | ZDT: " + userZDT);
+        LocalDate userDate = LocalDate.now(userZoneId);
+        LocalTime userTime = LocalTime.now(userZoneId);
+        ZonedDateTime userZDT = ZonedDateTime.of(userDate, userTime, userZoneId).truncatedTo(ChronoUnit.SECONDS);
 
-        // Get the current time in the EST time zone
+        // Get the current ZoneId, Date, and Time in the EST time zone and created ZonedDateTime
         ZoneId estZoneId = ZoneId.of("America/New_York");
-        ZonedDateTime estZDT = ZonedDateTime.of(LocalDate.now(estZoneId), LocalTime.now(estZoneId), estZoneId).truncatedTo(ChronoUnit.SECONDS);
-        System.out.println("Zone ID: " + estZoneId + " | ZDT: " + estZDT);
+        LocalDate estDate = LocalDate.now(estZoneId);
+        LocalTime estTime = LocalTime.now(estZoneId);
+        ZonedDateTime estZDT = ZonedDateTime.of(estDate, estTime, estZoneId).truncatedTo(ChronoUnit.SECONDS);
 
-        // Get difference between user's system time and EST
-
+        /* Get difference between user's system time and EST */
         // Get the offsets for each time zone
         ZoneOffset userOffset = userZDT.getOffset();
         ZoneOffset estOffset = estZDT.getOffset();
 
-        // Calculate the difference between the offsets
+        // Calculate the difference between the timezone offsets
         Duration offsetDifference = Duration.ofSeconds(userOffset.getTotalSeconds() - estOffset.getTotalSeconds());
         long minutesDifference = offsetDifference.toMinutes();
         double hoursDifference = offsetDifference.toHours();
-        // EST LocalTime start and end
-        LocalTime start;
+
+        // LocalTime to determine end of loop that populates timesList
         LocalTime end;
 
-        // Set times of list based on difference between time of User's local time and EST
-        if(hoursDifference % 1 == 0){
-            start = LocalTime.of((8 + (int)hoursDifference) % 24, 0);
+        // Set times in list based on difference between time of User's local time and EST
+        if(hoursDifference % 1 == 0){ // if the difference in timezone offset is a whole number
+            // Last available appointment (10pm EST) converted to time of user
             end = LocalTime.of((22 + (int)hoursDifference) % 24, 0);
             if(22 + (int)hoursDifference > 24){
-                // Change the date
+                // The date has changed
             }
-        }else {
-            start = LocalTime.of((8 + (int)hoursDifference) % 24, (int)minutesDifference/60);
+        }else { // if the difference in timezone offset is fractional
+            // Last available appointment (10pm EST) converted to time of user including quarter hours
             end = LocalTime.of((22 + (int)hoursDifference) % 24, (int)minutesDifference/60);
             if(22 + (int)hoursDifference > 24){
-                // Change the date
+                // The date has changed
             }
         }
 
-        System.out.println("Start: " + start + " | End: " + end);
-        String listStartTime = userZDT.toLocalDateTime().format(formatter);
-        String listEndTime = end.format(formatter);
+        // Determine start time of timeList loop by using the user's current time and rounding to the next quarter hour
+        LocalTime ltNow = userZDT.toLocalDateTime().toLocalTime();
+        int minutesToNextQuarterHour = 15 - ltNow.getMinute() % 15;
 
-        LocalTime ltNow = LocalTime.parse(listStartTime, formatter);
-        int difference = 15 - ltNow.getMinute() % 15;
-        LocalTime ltStart = ltNow.plusMinutes(difference);
-        LocalTime time = ltStart;
-
-        for(int i = 0; i < 48; i++){
-            if(time.compareTo(end) == 0){
+        LocalTime time = ltNow.plusMinutes(minutesToNextQuarterHour); // first time to be added to timesList and incremented
+        for(int i = 0; i < 48; i++){ // 48 possible appointment times between 8am-10pm EST
+            LocalTime ltStartWithoutSeconds = time.truncatedTo(ChronoUnit.MINUTES);
+            LocalTime endWithoutSeconds = end.truncatedTo(ChronoUnit.MINUTES);
+            if(ltStartWithoutSeconds.compareTo(endWithoutSeconds) == 0){ // local time corresponding with 10pm EST has been reached
                 String timeString = time.format(formatter);
                 timesList.add(timeString);
-                break;
+                break; // break out of for loop after adding last time to list
             }
+
+            // Format time for timesList
             String timeString = time.format(formatter);
             timesList.add(timeString);
-            time = time.plusMinutes(15);
+            time = time.plusMinutes(15); // add appointment times in 15 minute increments
         }
-
         return timesList;
     }
-
-
 
 }

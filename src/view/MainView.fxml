@@ -122,7 +122,7 @@
                                         <Font name="System Bold" size="18.0" />
                                     </font>
                                 </Label>
-                        <ComboBox fx:id="contactCb" layoutX="99.0" layoutY="28.0" prefWidth="150.0" />
+                        <ComboBox fx:id="contactCb" layoutX="99.0" layoutY="28.0" onAction="#setContactCb" prefWidth="150.0" />
                         <Label layoutX="34.0" layoutY="31.0" text="Contact:">
                            <font>
                               <Font name="System Bold" size="14.0" />

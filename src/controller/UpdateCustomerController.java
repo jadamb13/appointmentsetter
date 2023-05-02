@@ -5,6 +5,7 @@ import DBAccess.DBDivision;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import model.Country;
@@ -107,13 +108,24 @@ public class UpdateCustomerController implements Initializable {
             String divisionName = divisionCb.getSelectionModel().getSelectedItem();
             int divisionId = Division.getDivisionIdByName(divisionName);
 
+
+            if(!MainViewController.validateCustomerInput(customerName, address, postalCode, phone, divisionName, divisionId)){
+                // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
+                DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);
+
+                // Close AddCustomer view and show MainView
+                MainViewController.getMainViewStage().close();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
+                alert.show();
+            }
             // Use insertAppointment() and data from form to insert new Appointment into DB
             DBCustomer.updateCustomerInDb(customerId, customerName, address, postalCode, phone, divisionId);
         }catch(Exception e){
-            System.out.println("Caught ye: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
-        // Close AddAppointment view and show MainView
-        MainViewController.getMainViewStage().close();
+
     }
 
     /**

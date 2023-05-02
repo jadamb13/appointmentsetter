@@ -218,10 +218,6 @@ public class MainViewController implements Initializable {
         contactApptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         contactCb.setItems(Contact.getAllContactNames());
 
-
-        // Set Contact combo box listener on Reports tab
-        setContactListener();
-
         // Set up columns for Appointments By Type table
         byTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         numberByTypeCol.setCellValueFactory(new PropertyValueFactory<>("countOfType"));
@@ -442,37 +438,6 @@ public class MainViewController implements Initializable {
     }
 
     /**
-     * Sets listener on Contact combo box to update Appointment Schedule table (on Reports tab) with appointments for contact selected.
-     *
-     */
-    private void setContactListener(){
-        // Set up listener for Contact Combo Box on Reports Tab
-        contactCb.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                Contact contact = null;
-
-                // Find which Contact object is responsible for appointment
-                for (Contact c : DBContact.getAllContacts()) {
-                    if (c.getContactName().equals(newValue)) {
-                        contact = c;
-
-                        // Add appointment to Contact's contactAppointment list
-                        ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
-                        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
-                            if (a.getContactId() == contact.getContactId()) {
-                                contactAppointments.add(a);
-                            }
-
-                            // Populate Appointment Schedule Table based on contact selected
-                            appointmentScheduleTable.setItems(contactAppointments);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    /**
      * Sets listener on byMonth combo box to update Appointment table (on Appointment tab) with appointments for month selected.
      *
      */
@@ -482,6 +447,7 @@ public class MainViewController implements Initializable {
             if (newValue != null) {
                 displayAppointmentsByMonth(newValue);
                 allAppointmentsRBtn.setSelected(false);
+                byWeekCb.setValue(null);
             }
         });
     }
@@ -510,6 +476,7 @@ public class MainViewController implements Initializable {
             }
         }
         byMonthCb.setItems(uniqueMonths);
+
     }
 
     /**
@@ -522,6 +489,7 @@ public class MainViewController implements Initializable {
             if (newValue != null) {
                 displayAppointmentsByWeek(newValue);
                 allAppointmentsRBtn.setSelected(false);
+                byMonthCb.setValue(null);
             }
         });
     }
@@ -597,5 +565,90 @@ public class MainViewController implements Initializable {
         }
 
         byWeekCb.setItems(dateRanges);
+    }
+
+    /**
+     * Sets listener on Contact combo box to update Appointment Schedule table (on Reports tab) with appointments for contact selected.
+     *
+     */
+    public void setContactCb(ActionEvent actionEvent) {
+        // Set up listener for Contact Combo Box on Reports Tab
+        String selectedContact = contactCb.getSelectionModel().getSelectedItem();
+        ObservableList<Appointment> contactAppointments = Contact.getContactAppointments(selectedContact);
+
+        // Populate Appointment Schedule Table based on contact selected
+        appointmentScheduleTable.setItems(contactAppointments);
+
+    }
+
+    static boolean validateCustomerInput(String customerName, String address, String postalCode, String phone,
+                                 String divisionName, int divisionId) {
+        boolean customerNameEmpty = false;
+        boolean addressEmpty = false;
+        boolean postalCodeEmpty = false;
+        boolean phoneEmpty = false;
+
+        boolean countryNameEmpty = false;
+        boolean divisionNameEmpty = false;
+        boolean divisionIdEmpty = false;
+
+        if(customerName == null){
+            customerNameEmpty = true;
+        }
+        if(address == null){
+            addressEmpty = true;
+        }
+        if(postalCode == null){
+            postalCodeEmpty = true;
+        }
+        if(phone == null){
+            phoneEmpty = true;
+        }
+        if(divisionName == null){
+            divisionNameEmpty = true;
+        }
+        if(divisionId == -1){
+            divisionIdEmpty = true;
+        }
+
+        return (customerNameEmpty || addressEmpty || postalCodeEmpty || phoneEmpty || countryNameEmpty || divisionNameEmpty
+                || divisionIdEmpty );
+    }
+
+    static boolean validateAppointmentInput(String title, String description,
+                                            String location, String type, int customerId, int contactId) {
+        boolean titleEmpty = false;
+        boolean descriptionEmpty = false;
+        boolean locationEmpty = false;
+        boolean typeEmpty = false;
+        boolean customerIdEmpty = false;
+        boolean contactIdEmpty = false;
+
+        if(title.isBlank()){
+            titleEmpty = true;
+        }
+        if(description.isBlank()){
+            descriptionEmpty = true;
+        }
+        if(location.isBlank()){
+            locationEmpty = true;
+        }
+        if(type == null){
+            typeEmpty = true;
+        }
+        if(customerId == -1){
+            customerIdEmpty = true;
+        }
+        if(contactId == -1){
+            contactIdEmpty = true;
+        }
+        System.out.println("TitleEmpty: " + titleEmpty);
+        System.out.println("DescriptionEmpty: " + descriptionEmpty);
+        System.out.println("locationEmpty: " + locationEmpty);
+        System.out.println("TypeEmpty: " + typeEmpty);
+        System.out.println("CustomerIdEmpty: " + customerIdEmpty);
+        System.out.println("ContactEmpty: " + contactIdEmpty);
+
+        return (titleEmpty || descriptionEmpty || locationEmpty || typeEmpty || customerIdEmpty || contactIdEmpty);
     }
 }

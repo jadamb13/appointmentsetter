@@ -109,8 +109,9 @@ public class AddAppointmentController implements Initializable {
             LocalDate startDate = startDateDp.getValue();
             LocalDate endDate = endDateDp.getValue();
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+
             // Create LocalDate and LocalTime objects to create LocalDateTimes
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
             LocalTime ltStartTime = LocalTime.parse(startTime, formatter);
             LocalTime ltEndTime = LocalTime.parse(endTime, formatter);
             LocalDateTime ldtStart = LocalDateTime.of(startDate, ltStartTime);
@@ -120,9 +121,13 @@ public class AddAppointmentController implements Initializable {
             Timestamp start = Timestamp.valueOf(ldtStart);
             Timestamp end = Timestamp.valueOf(ldtEnd);
 
+            // If Appointment information input is not blank
             if(!MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
-                DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end);
-                MainViewController.getMainViewStage().close();
+                // If the insert is successful (no conflicting/overlapping customer appointments)
+                if(!DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end)){
+                    MainViewController.getMainViewStage().close();
+                }
+
             }else{
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
@@ -133,6 +138,7 @@ public class AddAppointmentController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
             alert.show();
+            System.out.println(e.getMessage() + " " + e.getCause());
         }
 
     }

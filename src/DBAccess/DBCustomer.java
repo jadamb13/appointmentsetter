@@ -3,6 +3,8 @@ package DBAccess;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
@@ -13,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 /** A class to communicate with the DB about Customers. */
 public class DBCustomer {
@@ -137,15 +140,29 @@ public class DBCustomer {
 
      */
     public static void deleteCustomerInDb(int customerId){
+        String customer = Customer.getCustomerNameById(customerId);
         try {
             // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
             String sql = "DELETE FROM client_schedule.customers WHERE Customer_ID = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, customerId);
-            ps.execute();
 
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove " + customer + " as a customer?");
+            confirm.setTitle("Confirmation");
+            confirm.setHeaderText("Customer will be deleted");
+
+            Optional<ButtonType> result = confirm.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) {
+                ps.execute();
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Customer deleted");
+
+            alert.setContentText("Customer record for " + customer + " has been deleted.");
+            alert.show();
         }catch(SQLException e){
-            System.out.println("Caught yas.");
+            e.printStackTrace();
         }
     }
 

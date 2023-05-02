@@ -80,7 +80,7 @@ public class Customer {
      */
     public static int getCustomerIdByName(String name){
         for (Customer c : DBCustomer.getAllCustomersFromDb()){
-            if(c.customerName.equals(name)){
+            if(c.getCustomerName().equals(name)){
                 return c.getCustomerId();
             }
 

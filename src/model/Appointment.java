@@ -249,22 +249,44 @@ public class Appointment {
         //System.out.println("RoundedTime: " + roundedTime);
         LocalTime localStartTime = LocalTime.of(8, 0).plusMinutes(minutesDifference);
         LocalTime localEndTime = LocalTime.of(22, 0).plusMinutes(minutesDifference);
+        LocalDate estStartDate = estZDT.toLocalDate();
+        LocalDate localStartDate = userZDT.toLocalDate();
+        if(localStartDate.compareTo(estStartDate) > 0){
+            localStartTime = roundedLocalTimeNow;
+        }
+        boolean noAppointmentsLeftToday = false;
+        if(localStartDate.compareTo(estStartDate) < 0){
+            noAppointmentsLeftToday = true;
+        }
+
+
+
+
+        /* Below loop only works if startDateDp is the current day (EST); startDateDp is next day or later, need to
+        * return full list based on initial localStartTime and localEndTime */
+
+
+
 
         LocalTime time = localStartTime;
-        for(int i = 0; i < 56; i++){ // 56 possible appointment times between 8am-10pm EST
-            if(time.compareTo(localEndTime) == 0){
+        if(!noAppointmentsLeftToday) {
+            for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
+                if (time.compareTo(localEndTime) == 0) {
+                    String timeString = time.format(formatter);
+                    timesList.add(timeString);
+                    break;
+                }
+                // Format time for timesList
                 String timeString = time.format(formatter);
                 timesList.add(timeString);
-                break;
+                time = time.plusMinutes(15); // add appointment times in 15 minute increments
             }
-            // Format time for timesList
+        }
+        if(!noAppointmentsLeftToday) {
+            // Add last time of day
             String timeString = time.format(formatter);
             timesList.add(timeString);
-            time = time.plusMinutes(15); // add appointment times in 15 minute increments
         }
-        // Add last time of day
-        String timeString = time.format(formatter);
-        timesList.add(timeString);
         System.out.println(timesList);
         return timesList;
     }

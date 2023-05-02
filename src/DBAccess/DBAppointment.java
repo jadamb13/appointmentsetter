@@ -4,10 +4,9 @@ import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import model.Appointment;
-import model.AppointmentMonth;
-import model.AppointmentType;
-import model.Contact;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import model.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /** A class to communicate with the DB about Appointments. */
 public class DBAppointment {
@@ -86,8 +86,9 @@ public class DBAppointment {
      Gathers data entered by user and combines with generated fields to insert new Appointments into DB.
 
      */
-    public static void insertAppointment(int customerId, int contactId, int userId, String title, String description,
+    public static boolean insertAppointment(int customerId, int contactId, int userId, String title, String description,
                                          String location, String type, Timestamp start, Timestamp end) {
+        boolean alertFlag = false;
         try {
             // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
             String max_sql = "SELECT MAX(Appointment_ID) as MAX FROM appointments";
@@ -121,12 +122,46 @@ public class DBAppointment {
             ps.setInt(13, userId);
             ps.setInt(14, contactId);
 
-            ps.execute();
+
+            // Checks for overlapping appointments
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a MM-dd-yyyy");
+            LocalDateTime startLdt = start.toLocalDateTime();
+            LocalDateTime endLdt = end.toLocalDateTime();
+            for(Appointment a : getAllAppointmentsFromDb()){
+                LocalDateTime apptStart = LocalDateTime.parse(a.getStartTime() + " " + a.getStartDate(), formatter);
+                LocalDateTime apptEnd = LocalDateTime.parse(a.getEndTime() + " " + a.getEndDate(), formatter);
+                if(a.getCustomerId() == customerId && (startLdt.isAfter(apptStart) && startLdt.isBefore(apptEnd) || (endLdt.isAfter(apptStart) && endLdt.isBefore(apptEnd)))
+                || startLdt.isEqual(apptStart)){
+
+                    System.out.println("a.getCustomerId: "  + a.getCustomerId());
+                    System.out.println("Param customer ID: " + customerId);
+                    System.out.println("startLdt: " + startLdt);
+                    System.out.println("endLdt: " + endLdt);
+                    System.out.println("apptStart: " + apptStart);
+                    System.out.println("apptEnd: " + apptEnd);
+                    System.out.println();
+                    System.out.println("startLdt.isAfter(apptStart): " + startLdt.isAfter(apptStart));
+                    System.out.println("startLdt.isBefore(apptEnd): " + startLdt.isBefore(apptEnd));
+                    System.out.println("endLdt.isAfter(apptStart): " + endLdt.isAfter(apptStart));
+
+                    alertFlag = true;
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Overlapping appointments");
+                    alert.setTitle("Error scheduling appointment");
+                    alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
+                            "overlaps with an appointment already scheduled for this customer.");
+                    alert.show();
+                }
+            }
+            if(!alertFlag){
+                ps.execute();
+            }
+
 
         }catch (SQLException e){
             e.printStackTrace();
         }
-
+        return alertFlag;
     }
 
     /**
@@ -190,15 +225,41 @@ public class DBAppointment {
 
      */
     public static void deleteAppointmentInDb(int appointmentId){
+        String customer = "N/A";
+        String appointmentType = "N/A";
+        // Get appointment type for Appointment ID
+        for (Appointment a : getAllAppointmentsFromDb()){
+            if(a.getAppointmentId() == appointmentId){
+                System.out.println("a.getAppointmentID: " + a.getAppointmentId());
+                System.out.println("Appointment ID param: " + appointmentId);
+                appointmentType = a.getType();
+                int custId = a.getCustomerId();
+                customer = Customer.getCustomerNameById(custId);
+            }
+        }
         try {
             // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
             String sql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, appointmentId);
-            ps.execute();
 
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel the " + appointmentType + " appointment with " + customer + "?");
+            confirm.setTitle("Confirmation");
+            confirm.setHeaderText("Appointment will be deleted");
+
+            Optional<ButtonType> result = confirm.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) {
+                    ps.execute();
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Confirmation");
+                    alert.setHeaderText("Appointment deleted");
+                    alert.setContentText("The " + appointmentType + " appointment with Appointment ID: " + appointmentId +
+                            " has been canceled and removed from the schedule.");
+                    alert.show();
+            }
         }catch(SQLException e){
-            System.out.println("Caught yas.");
+            e.printStackTrace();
         }
     }
 

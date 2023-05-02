@@ -125,15 +125,19 @@ public class UpdateAppointmentController implements Initializable {
             Timestamp start = Timestamp.valueOf(ldtStart);
             Timestamp end = Timestamp.valueOf(ldtEnd);
 
-
-            // Use insertAppointment() and data from form to insert new Appointment into DB
-            DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location,
-                    type, start, end);
+            if(!MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
+                DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end);
+                MainViewController.getMainViewStage().close();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
+                alert.show();
+            }
         }catch(Exception e){
-            System.out.println("Caught ye: " + e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
+            alert.show();
         }
-        // Close AddAppointment view and show MainView
-        MainViewController.getMainViewStage().close();
     }
 
     /**

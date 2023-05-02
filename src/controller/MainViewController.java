@@ -642,12 +642,6 @@ public class MainViewController implements Initializable {
         if(contactId == -1){
             contactIdEmpty = true;
         }
-        System.out.println("TitleEmpty: " + titleEmpty);
-        System.out.println("DescriptionEmpty: " + descriptionEmpty);
-        System.out.println("locationEmpty: " + locationEmpty);
-        System.out.println("TypeEmpty: " + typeEmpty);
-        System.out.println("CustomerIdEmpty: " + customerIdEmpty);
-        System.out.println("ContactEmpty: " + contactIdEmpty);
 
         return (titleEmpty || descriptionEmpty || locationEmpty || typeEmpty || customerIdEmpty || contactIdEmpty);
     }

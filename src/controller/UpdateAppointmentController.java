@@ -140,6 +140,17 @@ public class UpdateAppointmentController implements Initializable {
         }
     }
 
+    public void verifyDate(ActionEvent actionEvent) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        String selectedTime = endTimeCb.getValue();
+
+        LocalTime endTime = LocalTime.parse(selectedTime, formatter);
+        LocalTime startTime = LocalTime.parse(startTimeCb.getValue(), formatter);
+        if(endTime.compareTo(startTime) < 0) { // appointment crosses over into the next day
+            endDateDp.setValue(startDateDp.getValue().plusDays(1));
+        }
+    }
+
     /**
      Returns user to the MainView.
 

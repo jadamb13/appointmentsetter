@@ -234,45 +234,38 @@ public class Appointment {
         // Calculate the difference between the timezone offsets
         Duration offsetDifference = Duration.ofSeconds(userOffset.getTotalSeconds() - estOffset.getTotalSeconds());
         long minutesDifference = offsetDifference.toMinutes();
-        double hoursDifference = offsetDifference.toHours();
+        //double hoursDifference = offsetDifference.toHours();
 
         // LocalTime to determine end of loop that populates timesList
         LocalTime end;
 
-        // Set times in list based on difference between time of User's local time and EST
-        if(hoursDifference % 1 == 0){ // if the difference in timezone offset is a whole number
-            // Last available appointment (10pm EST) converted to time of user
-            end = LocalTime.of((22 + (int)hoursDifference) % 24, 0);
-            if(22 + (int)hoursDifference > 24){
-                // The date has changed
-            }
-        }else { // if the difference in timezone offset is fractional
-            // Last available appointment (10pm EST) converted to time of user including quarter hours
-            end = LocalTime.of((22 + (int)hoursDifference) % 24, (int)minutesDifference/60);
-            if(22 + (int)hoursDifference > 24){
-                // The date has changed
-            }
-        }
+        /* Set times in list based on difference between time of User's local time and EST */
 
         // Determine start time of timeList loop by using the user's current time and rounding to the next quarter hour
         LocalTime ltNow = userZDT.toLocalDateTime().toLocalTime();
         int minutesToNextQuarterHour = 15 - ltNow.getMinute() % 15;
 
-        LocalTime time = ltNow.plusMinutes(minutesToNextQuarterHour); // first time to be added to timesList and incremented
-        for(int i = 0; i < 48; i++){ // 48 possible appointment times between 8am-10pm EST
-            LocalTime ltStartWithoutSeconds = time.truncatedTo(ChronoUnit.MINUTES);
-            LocalTime endWithoutSeconds = end.truncatedTo(ChronoUnit.MINUTES);
-            if(ltStartWithoutSeconds.compareTo(endWithoutSeconds) == 0){ // local time corresponding with 10pm EST has been reached
+        LocalTime roundedLocalTimeNow = ltNow.plusMinutes(minutesToNextQuarterHour).truncatedTo(ChronoUnit.MINUTES);
+        //System.out.println("RoundedTime: " + roundedTime);
+        LocalTime localStartTime = LocalTime.of(8, 0).plusMinutes(minutesDifference);
+        LocalTime localEndTime = LocalTime.of(22, 0).plusMinutes(minutesDifference);
+
+        LocalTime time = localStartTime;
+        for(int i = 0; i < 56; i++){ // 56 possible appointment times between 8am-10pm EST
+            if(time.compareTo(localEndTime) == 0){
                 String timeString = time.format(formatter);
                 timesList.add(timeString);
-                break; // break out of for loop after adding last time to list
+                break;
             }
-
             // Format time for timesList
             String timeString = time.format(formatter);
             timesList.add(timeString);
             time = time.plusMinutes(15); // add appointment times in 15 minute increments
         }
+        // Add last time of day
+        String timeString = time.format(formatter);
+        timesList.add(timeString);
+        System.out.println(timesList);
         return timesList;
     }
 

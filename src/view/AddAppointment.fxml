@@ -23,7 +23,7 @@
       <DatePicker fx:id="startDateDp" layoutX="87.0" layoutY="229.0" />
       <DatePicker fx:id="endDateDp" layoutX="353.0" layoutY="230.0" />
       <ComboBox fx:id="startTimeCb" layoutX="87.0" layoutY="262.0" prefHeight="25.0" prefWidth="174.0" />
-      <ComboBox fx:id="endTimeCb" layoutX="354.0" layoutY="262.0" prefHeight="25.0" prefWidth="174.0" />
+      <ComboBox fx:id="endTimeCb" layoutX="354.0" layoutY="262.0" onAction="#verifyDate" prefHeight="25.0" prefWidth="174.0" />
       <Label layoutX="19.0" layoutY="14.0" text="Add Appointment">
          <font>
             <Font name="System Bold" size="18.0" />

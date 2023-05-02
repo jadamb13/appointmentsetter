@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -64,6 +65,13 @@ public class AddAppointmentController implements Initializable {
             customerCb.setItems(Customer.getAllCustomerNames());
             startTimeCb.setItems(Appointment.getAppointmentTimes());
             endTimeCb.setItems(Appointment.getAppointmentTimes());
+
+            // Get user's LocalDate to perform logic check against date selected
+            ZoneId userZoneId = ZoneId.systemDefault();
+            LocalDate userDate = LocalDate.now(userZoneId);
+
+            startDateDp.setValue(userDate);
+            endDateDp.setValue(userDate);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -92,10 +100,12 @@ public class AddAppointmentController implements Initializable {
             int contactId = Contact.getContactIdByName(contactName);
             int userId = LoginController.getProgramUserId();
 
-
             // Get selected/entered times and dates from Add Appointment Form
             String startTime = startTimeCb.getValue();
             String endTime = endTimeCb.getValue();
+            if(endTime.compareTo(startTime) < 0){
+                endDateDp.setValue(startDateDp.getValue().plusDays(1));
+            }
             LocalDate startDate = startDateDp.getValue();
             LocalDate endDate = endDateDp.getValue();
 
@@ -137,5 +147,16 @@ public class AddAppointmentController implements Initializable {
 
         // On "Cancel" button being clicked
         MainViewController.getMainViewStage().close();
+    }
+
+    public void verifyDate(ActionEvent actionEvent) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+        String selectedTime = endTimeCb.getValue();
+
+        LocalTime endTime = LocalTime.parse(selectedTime, formatter);
+        LocalTime startTime = LocalTime.parse(startTimeCb.getValue(), formatter);
+        if(endTime.compareTo(startTime) < 0) { // appointment crosses over into the next day
+            endDateDp.setValue(startDateDp.getValue().plusDays(1));
+        }
     }
 }

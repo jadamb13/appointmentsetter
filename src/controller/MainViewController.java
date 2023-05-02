@@ -645,4 +645,6 @@ public class MainViewController implements Initializable {
 
         return (titleEmpty || descriptionEmpty || locationEmpty || typeEmpty || customerIdEmpty || contactIdEmpty);
     }
+
+
 }

@@ -85,6 +85,18 @@ public class DBAppointment {
     /**
      Gathers data entered by user and combines with generated fields to insert new Appointments into DB.
 
+     @param customerId ID representing customer associated with appointment
+     @param contactId ID representing Contact associated with appointment
+     @param userId ID of user creating the appointment
+     @param title title of appointment
+     @param description description of appointment
+     @param location location of appointment
+     @param type type of appointment
+     @param start start Timestamp of appointment
+     @param end end Timestamp of appointment
+
+     @return alertFlag boolean value representing if there are alerts preventing the insertion
+
      */
     public static boolean insertAppointment(int customerId, int contactId, int userId, String title, String description,
                                          String location, String type, Timestamp start, Timestamp end) {
@@ -193,6 +205,16 @@ public class DBAppointment {
     /**
      Gathers data entered by user and combines with generated fields to update Appointment in DB.
 
+     @param customerId ID representing customer associated with appointment
+     @param contactId ID representing Contact associated with appointment
+     @param userId ID of user creating the appointment
+     @param title title of appointment
+     @param description description of appointment
+     @param location location of appointment
+     @param type type of appointment
+     @param start start Timestamp of appointment
+     @param end end Timestamp of appointment
+
      */
     public static void updateAppointmentInDb(int appointmentId, int customerId, int contactId, int userId, String title, String description,
                                              String location, String type, Timestamp start, Timestamp end){
@@ -256,15 +278,14 @@ public class DBAppointment {
         // Get appointment type for Appointment ID
         for (Appointment a : getAllAppointmentsFromDb()){
             if(a.getAppointmentId() == appointmentId){
-                System.out.println("a.getAppointmentID: " + a.getAppointmentId());
-                System.out.println("Appointment ID param: " + appointmentId);
+
                 appointmentType = a.getType();
                 int custId = a.getCustomerId();
                 customer = Customer.getCustomerNameById(custId);
             }
         }
         try {
-            // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
+
             String sql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, appointmentId);
@@ -287,55 +308,6 @@ public class DBAppointment {
         }catch(SQLException e){
             e.printStackTrace();
         }
-    }
-
-    public static ObservableList<Appointment> getCurrentWeekAppointments(){
-        ObservableList<Appointment> weeklyAppointmentList = FXCollections.observableArrayList();
-
-        try{
-            // SQL statement
-            String sql = "SELECT Appointment_ID, Title, Description, Location, Contact_Name, Type, Start, End, Customer_ID, User_ID, appointments.Contact_ID\n" +
-                    "FROM client_schedule.appointments JOIN contacts WHERE appointments.Contact_ID = contacts.Contact_ID;";
-
-            // Create a PreparedStatement
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-            // Execute query and get results
-            ResultSet rs = ps.executeQuery();
-
-            // Work through result set one row at a time
-            while(rs.next()){
-                int appointmentId = rs.getInt("Appointment_ID");
-                int customerId = rs.getInt("Customer_ID");
-                int contactId = rs.getInt("Contact_ID");
-                int userId = rs.getInt("User_ID");
-                String title = rs.getString("Title");
-                String description = rs.getString("Description");
-                String location = rs.getString("Location");
-                String contact = rs.getString("Contact_Name");
-                String type = rs.getString("Type");
-                Timestamp start = rs.getTimestamp("Start");
-                Timestamp end = rs.getTimestamp("End");
-
-                // Convert Timestamp to LocalDate and LocalTime
-                LocalDate startDate = start.toLocalDateTime().toLocalDate();
-                LocalDate endDate = end.toLocalDateTime().toLocalDate();
-                LocalTime startTime = start.toLocalDateTime().toLocalTime();
-                LocalTime endTime = end.toLocalDateTime().toLocalTime();
-
-                // Convert LD and LT to DateTimeFormatter strings for display in UI
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM-dd-yyyy");
-
-                Appointment a = new Appointment(appointmentId, customerId, contactId, userId, title, description, location,
-                        contact, type, dateFormatter.format(startDate), dateFormatter.format(endDate),
-                        timeFormatter.format(startTime), timeFormatter.format(endTime));
-                weeklyAppointmentList.add(a);
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return weeklyAppointmentList;
     }
 
     /**

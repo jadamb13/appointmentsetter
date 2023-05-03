@@ -148,7 +148,7 @@
                         <TableView fx:id="appointmentsByDayOfWeek" layoutX="693.0" layoutY="256.0" prefHeight="160.0" prefWidth="205.0">
                           <columns>
                             <TableColumn fx:id="dayOfWeekCol" prefWidth="163.0" text="Day of Week" />
-                            <TableColumn fx:id="numberByDayCol" prefWidth="38.0" style="-fx-alignment: CENTER;" text="#" />
+                            <TableColumn fx:id="numberByDayCol" prefWidth="40.0" style="-fx-alignment: CENTER;" text="#" />
                           </columns>
                         </TableView>
                             </children>

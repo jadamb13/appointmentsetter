@@ -72,9 +72,9 @@ public class AddCustomerController implements Initializable {
      Returns user to the MainView.
 
      @param actionEvent ActionEvent object holding information about page where user clicks Cancel button
-     @exception IOException thrown if FXMLLoader.load() resource is Null
+
      */
-    public void displayCustomerTab(ActionEvent actionEvent) throws IOException {
+    public void displayCustomerTab(ActionEvent actionEvent) {
         MainViewController.getMainViewStage().close();
 
     }
@@ -84,8 +84,7 @@ public class AddCustomerController implements Initializable {
      the user to the MainView.
 
      @param actionEvent object containing information about the page where user clicks Save button
-     //@exception IOException thrown if FXMLLoader.load() resource is Null
-     //@exception SQLException thrown in case of invalid SQL statement during insertAppointment()
+
      */
     public void saveNewCustomer(ActionEvent actionEvent) {
         try {

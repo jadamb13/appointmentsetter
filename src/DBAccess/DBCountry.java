@@ -32,7 +32,7 @@ public class DBCountry {
             }
 
         }catch (SQLException e){
-            System.out.println("Caught ye country: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return countriesList;

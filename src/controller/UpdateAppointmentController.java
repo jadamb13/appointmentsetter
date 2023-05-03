@@ -85,7 +85,7 @@ public class UpdateAppointmentController implements Initializable {
             setStartDateListener();
 
         } catch (Exception e){
-            System.out.println("Caught ya: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -171,11 +171,23 @@ public class UpdateAppointmentController implements Initializable {
         MainViewController.getMainViewStage().close();
     }
 
+    /**
+     Sets startTime and endTime combo boxes based on selection made for startDate DatePicker.
+
+     @param actionEvent ActionEvent object holding information about page where user chooses a Start Date
+     from the startDate DatePicker
+     */
     public void setAppointmentTimes(ActionEvent actionEvent) {
         LocalDate selectedDate = startDateDp.getValue();
+        endDateDp.setValue(selectedDate);
         startTimeCb.setItems(Appointment.getAppointmentTimes(selectedDate));
+        endTimeCb.setItems(Appointment.getAppointmentTimes(selectedDate));
     }
 
+    /**
+     * Sets listener on startDate DatePicker to update startTime and endTime combo boxes based on new date selected.
+     *
+     */
     private void setStartDateListener() {
         startDateDp.valueProperty().addListener((observable, oldValue, newValue) -> {
             // This method will be called when the value of the date picker changes

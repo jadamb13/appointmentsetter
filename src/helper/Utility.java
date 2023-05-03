@@ -12,6 +12,10 @@ import java.time.temporal.ChronoUnit;
 /* Class of utility methods. */
 public class Utility {
 
+    /**
+     * Alerts the user upon login to any appointments within 15 minutes or alerts that there are no appointments within 15 minutes.
+     *
+     * */
     public static void alertUpcomingAppointments() {
         // Get the current ZoneId, Date, and Time in the user's time zone and created ZonedDateTime
         ZoneId userZoneId = ZoneId.systemDefault();

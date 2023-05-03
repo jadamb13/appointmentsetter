@@ -182,6 +182,9 @@ public class MainViewController implements Initializable {
         apptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
+        // Sort Appointments Table by Appointment ID
+        appointmentsTable.getSortOrder().add(apptIdCol);
+
         // Set listeners on both Combo Boxes of Appointments Tab
         setByMonthListener();
         setByWeekListener();
@@ -192,8 +195,7 @@ public class MainViewController implements Initializable {
         // Set the items of the byWeek Combo Box with weeks that have appointments
         setByWeekItems();
 
-        // Sort Appointments Table by Appointment ID
-        appointmentsTable.getSortOrder().add(apptIdCol);
+
 
         /* Customers Tab */
         // Set values in Customers Table
@@ -219,6 +221,7 @@ public class MainViewController implements Initializable {
         contactApptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         contactCb.setItems(Contact.getAllContactNames());
 
+
         // Set up columns for Appointments By Type table
         byTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         numberByTypeCol.setCellValueFactory(new PropertyValueFactory<>("countOfType"));
@@ -233,6 +236,7 @@ public class MainViewController implements Initializable {
         numberByDayCol.setCellValueFactory(new PropertyValueFactory<>("numberOfAppointmentsOnDay"));
 
         populateTables();
+
 
         // Alert customer to whether there is an appointment in the next 15 minutes or not
         Utility.alertUpcomingAppointments();
@@ -341,13 +345,6 @@ public class MainViewController implements Initializable {
     public void deleteSelectedCustomer(ActionEvent actionEvent) {
 
         Customer selected = customerTable.getSelectionModel().getSelectedItem();
-        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
-            if (a.getCustomerId() == selected.getCustomerId()) {
-                DBAppointment.deleteAppointmentInDb(a.getAppointmentId());
-                populateTables();
-            }
-        }
-
         DBCustomer.deleteCustomerInDb(selected.getCustomerId());
         populateTables();
     }
@@ -368,7 +365,12 @@ public class MainViewController implements Initializable {
     /**
      * Updates Appointments tableView to show appointments by week selected.
      *
-     * LAMBDA
+     * LAMBDA: This method utilizes a lambda function to define the filter criteria for the filtered() method
+     * which creates a new list of appointments that meet the filter criteria. Using the lambda here is a
+     * more concise way to define a function that takes one argument (the appointment)
+     * and returns a boolean value indicating whether the appointment should be included in the
+     * filtered list. The use of a lambda in this context makes the code more concise and readable compared to
+     * using an explicit loop and function definition.
      */
     public void displayAppointmentsByWeek(String weekSelected) {
         String weekStart = weekSelected.substring(0,10);
@@ -378,6 +380,8 @@ public class MainViewController implements Initializable {
         int startYear = Integer.parseInt(weekStart.substring(6,8));
         int endDay = Integer.parseInt(weekEnd.substring(3,5));
         ObservableList<Appointment> appointments = DBAppointment.getAllAppointmentsFromDb();
+
+        // LAMBDA: filters list of all appointments to only include those from weekSelected
         ObservableList<Appointment> filteredAppointments = appointments.filtered(a -> {
             int apptStartMonth = Integer.parseInt(a.getStartDate().substring(0,2));
             int apptStartDay = Integer.parseInt(a.getStartDate().substring(3,5));
@@ -388,9 +392,15 @@ public class MainViewController implements Initializable {
     }
 
     /**
-     Updates Appointments tableView to show appointments by month selected
-
-     LAMBDA
+     * Updates Appointments tableView to show appointments by month selected.
+     *
+     * LAMBDA: This method utilizes a lambda expression to iterate over the list of appointments and
+     * group them by month. Using the lambda here is a concise way to define a function that takes
+     * one argument (the appointment) and performs an operation on it. In this case, the
+     * operation is to extract the month value from the appointment's start date, and add
+     * the appointment to the corresponding list in the `appointmentsByMonth` ArrayList. The lambda
+     * expression is a more compact and expressive way to write this code compared to using an explicit
+     * loop and function definition.
      */
     public void displayAppointmentsByMonth(String monthSelected) {
         ObservableList<Appointment> appointments = DBAppointment.getAllAppointmentsFromDb();
@@ -401,7 +411,7 @@ public class MainViewController implements Initializable {
                 .limit(12)
                 .collect(Collectors.toList());
 
-        // Populate each month list with appointments starting in that month
+        // LAMBDA: Populate each month list with appointments starting in that month
         appointments.forEach(a -> {
             int monthIndex = LocalDate.parse(a.getStartDate(),formatter).getMonthValue() - 1;
             appointmentsByMonth.get(monthIndex).add(a);

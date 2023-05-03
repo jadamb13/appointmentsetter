@@ -211,16 +211,17 @@ public class Appointment {
             LocalDate date = LocalDate.parse(a.getStartDate(), formatter);
             String dayName = date.getDayOfWeek().toString();
             days.add(dayName);
+
         }
         List<String> uniqueDays = new ArrayList<>();
-        for (int i = 0; i < days.size(); i++){
-            if (!uniqueDays.contains(days.get(i))){
-                uniqueDays.add(days.get(i));
+        for (String day : days) {
+            if (!uniqueDays.contains(day)) {
+                uniqueDays.add(day);
             }
         }
         List<Integer> frequencies = new ArrayList<>();
-        for (int i = 0; i < uniqueDays.size(); i++){
-            frequencies.add(Collections.frequency(days, uniqueDays.get(i)));
+        for (String uniqueDay : uniqueDays) {
+            frequencies.add(Collections.frequency(days, uniqueDay));
         }
         for (int i = 0; i < uniqueDays.size(); i++){
             AppointmentDay ad = new AppointmentDay(uniqueDays.get(i), frequencies.get(i));
@@ -236,7 +237,7 @@ public class Appointment {
      @return timeList list of String objects representing times available for appointments
 
      */
-    public static ObservableList<String> getAppointmentTimes(LocalDate startDate) {
+    public static ObservableList<String> getAppointmentTimes(LocalDate selectedDate) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a"); // formatter for times added to timesList
         ObservableList<String> timesList = FXCollections.observableArrayList();
@@ -266,37 +267,62 @@ public class Appointment {
         LocalTime localStartTime = LocalTime.of(8, 0).plusMinutes(minutesDifference);
         LocalTime localEndTime = LocalTime.of(22, 0).plusMinutes(minutesDifference);
 
-        // If userTime greater than user equivalent of 10pm and userDate/startDate given are the same -> show empty list
-        if(userTime.compareTo(localEndTime) > 0 && userDate.compareTo(startDate) == 0){
-            timesList = FXCollections.emptyObservableList();
+        // If user selects current day (locally), list populated based on time of day (in EST equivalent)
+        if(selectedDate.compareTo(userDate) == 0){
+            // If before or equal to the equivalent of 8am EST, show full list for the day
+            if(userTime.compareTo(localStartTime) <= 0){
+                LocalTime time = localStartTime;
 
-        }else if(userTime.compareTo(localEndTime) > 0 && userDate.compareTo(startDate) < 0){ // it is a day in the future -> show full list
+                for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
+                    if (time.compareTo(localEndTime) == 0) { // Exit loop when time = user equivalent of 10pm EST
+                        String timeString = time.format(formatter);
+                        timesList.add(timeString);
+                        break;
+                    }
+                    // Format time for timesList
+                    String timeString = time.format(formatter);
+                    timesList.add(timeString);
+                    time = time.plusMinutes(15); // add appointment times in 15 minute increments
+                }
+                // Add last time of day
+                String timeString = time.format(formatter);
+                if(!timesList.contains(timeString)){
+                    timesList.add(timeString);
+                }
+            }
+            // If between equivalent of 8am-10pm EST, show partial list based on rounded time
+            if(userTime.compareTo(localStartTime) > 0 && userTime.compareTo(localEndTime) < 0){
+                int minutesToNextQuarterHour = 15 - userTime.getMinute() % 15;
+                LocalTime time = userTime.plusMinutes(minutesToNextQuarterHour).truncatedTo(ChronoUnit.MINUTES);
+                for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
+                    if (time.compareTo(localEndTime) == 0) { // Stop loop when time = user equivalent of 10pm EST
+                        String timeString = time.format(formatter);
+                        timesList.add(timeString);
+                        break;
+                    }
+                    // Format time for timesList
+                    String timeString = time.format(formatter);
+                    timesList.add(timeString);
+                    time = time.plusMinutes(15); // add appointment times in 15 minute increments
+                }
+                // Add last time of day
+                String timeString = time.format(formatter);
+                if(!timesList.contains(timeString)){
+                    timesList.add(timeString);
+                }
+            }
+            // If after equivalent of (9:45pm)/10pm EST, show empty list
+            if(userTime.compareTo(localEndTime.minusMinutes(14)) >= 0){
+                timesList = FXCollections.emptyObservableList();
+            }
+        }
+
+        // If user selects future date, show full list
+        if (selectedDate.compareTo(userDate) > 0) {
             LocalTime time = localStartTime;
 
             for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
                 if (time.compareTo(localEndTime) == 0) { // Exit loop when time = user equivalent of 10pm EST
-                    String timeString = time.format(formatter);
-                    timesList.add(timeString);
-                    break;
-                }
-                // Format time for timesList
-                String timeString = time.format(formatter);
-                timesList.add(timeString);
-                time = time.plusMinutes(15); // add appointment times in 15 minute increments
-            }
-            // Add last time of day
-            String timeString = time.format(formatter);
-            if(!timesList.contains(timeString)){
-                timesList.add(timeString);
-            }
-
-
-        }else{
-            // if userTime less than user equiv. of 10pm EST -> show list from userTimeRounded to equiv. of 10pm EST
-            int minutesToNextQuarterHour = 15 - userTime.getMinute() % 15;
-            LocalTime time = userTime.plusMinutes(minutesToNextQuarterHour).truncatedTo(ChronoUnit.MINUTES);
-            for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
-                if (time.compareTo(localEndTime) == 0) { // Stop loop when time = user equivalent of 10pm EST
                     String timeString = time.format(formatter);
                     timesList.add(timeString);
                     break;

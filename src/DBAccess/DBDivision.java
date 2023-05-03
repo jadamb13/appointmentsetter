@@ -41,6 +41,7 @@ public class DBDivision {
     /**
      Finds the name of the country with specified divisionId.
 
+     @param divisionId divisionId of country
      @return countryName Country name corresponding to division ID parameter
 
      */
@@ -48,9 +49,10 @@ public class DBDivision {
         String countryName = "";
         try {
             // SQL statement
-            String sql = "SELECT Country FROM client_schedule.first_level_divisions, client_schedule.countries \n" +
-                    "WHERE first_level_divisions.Country_ID = client_schedule.countries.Country_ID \n" +
-                    "AND Division_ID = ?";
+            String sql = """
+                    SELECT Country FROM client_schedule.first_level_divisions, client_schedule.countries\s
+                    WHERE first_level_divisions.Country_ID = client_schedule.countries.Country_ID\s
+                    AND Division_ID = ?""";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, divisionId);

@@ -61,6 +61,13 @@ public class DBCustomer {
     /**
      Gathers data entered by user and combines with generated fields to insert new Customer into DB.
 
+     @param customerId ID representing customer
+     @param customerName name of customer
+     @param address address of customer
+     @param postalCode postal code of customer
+     @param phone phone number of customer
+     @param divisionId ID representing division of country where customer lives
+
      */
     public static void insertCustomer(int customerId, String customerName, String address, String postalCode,
                                          String phone, int divisionId) {
@@ -97,6 +104,13 @@ public class DBCustomer {
 
     /**
      Gathers data entered by user and combines with generated fields to update Customer in DB.
+
+     @param customerId ID representing customer
+     @param customerName name of customer
+     @param address address of customer
+     @param postalCode postal code of customer
+     @param phone phone number of customer
+     @param divisionId ID representing division of country where customer lives
 
      */
     public static void updateCustomerInDb(int customerId, String customerName, String address, String postalCode,
@@ -141,19 +155,34 @@ public class DBCustomer {
      */
     public static void deleteCustomerInDb(int customerId){
         String customer = Customer.getCustomerNameById(customerId);
+
+
         try {
-            // Get maximum Appointment ID already in table and set new Appointment ID to (max + 1)
             String sql = "DELETE FROM client_schedule.customers WHERE Customer_ID = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setInt(1, customerId);
 
-            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove " + customer + " as a customer?");
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove " + customer + " as a customer? " +
+                    "All appointments with this customer will also be canceled.");
             confirm.setTitle("Confirmation");
             confirm.setHeaderText("Customer will be deleted");
 
             Optional<ButtonType> result = confirm.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK) {
-                ps.execute();
+                // If user chooses to delete customer, delete all appointments associated with customer
+                for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
+                    if (a.getCustomerId() == customerId) {
+                        try{
+                            String apptSql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
+                            PreparedStatement ps2 = JDBC.getConnection().prepareStatement(apptSql);
+                            ps2.setInt(1, a.getAppointmentId());
+                            ps2.execute();
+                        }catch (SQLException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    ps.execute();
+                }
             }
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

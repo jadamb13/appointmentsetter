@@ -94,8 +94,7 @@ public class UpdateCustomerController implements Initializable {
      the user to the MainView.
 
      @param actionEvent object containing information about the page where user clicks Save button
-     //@exception IOException thrown if FXMLLoader.load() resource is Null
-     //@exception SQLException thrown in case of invalid SQL statement
+
      */
     public void saveUpdatedCustomer(ActionEvent actionEvent) {
         try {
@@ -110,8 +109,7 @@ public class UpdateCustomerController implements Initializable {
 
 
             if(MainViewController.validateCustomerInput(customerName, address, postalCode, phone, divisionName, divisionId)){
-                // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
-                DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);
+                DBCustomer.updateCustomerInDb(customerId, customerName, address, postalCode, phone, divisionId);
 
                 // Close AddCustomer view and show MainView
                 MainViewController.getMainViewStage().close();
@@ -120,8 +118,8 @@ public class UpdateCustomerController implements Initializable {
                 alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
                 alert.show();
             }
-            // Use insertAppointment() and data from form to insert new Appointment into DB
-            DBCustomer.updateCustomerInDb(customerId, customerName, address, postalCode, phone, divisionId);
+
+
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -132,7 +130,7 @@ public class UpdateCustomerController implements Initializable {
      Returns user to the MainView.
 
      @param actionEvent ActionEvent object holding information about page where user clicks Cancel button
-     @exception IOException thrown if FXMLLoader.load() resource is Null
+
      */
     public void displayCustomerTab(ActionEvent actionEvent) {
         MainViewController.getMainViewStage().close();

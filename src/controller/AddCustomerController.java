@@ -43,7 +43,6 @@ public class AddCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            System.out.println("AddCustomer Initialized.");
             customerIdTxt.setText(String.valueOf(DBCustomer.getNextCustomerId()));
             countryCb.setItems(Country.getAllCountryNames());
             // Set up listener for countryCb

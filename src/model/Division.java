@@ -107,6 +107,7 @@ public class Division {
     /**
      Gets Division ID associated with a Division name.
 
+     @param divisionName name of division
      @return d.getDivisionId() customerID of customer with the parameter name; or -1 if none found
 
      */
@@ -122,6 +123,7 @@ public class Division {
     /**
      Gets Division Name associated with a Division ID.
 
+     @param divisionId id of division
      @return c.getDivision() Division Name associated with the parameter divisionId; or empty string if none found
 
      */

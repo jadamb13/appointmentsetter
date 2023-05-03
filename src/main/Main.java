@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-        primaryStage.setTitle("Appointment Management System");
+        primaryStage.setTitle("");
         primaryStage.setScene(new Scene(root, 452, 212));
         primaryStage.show();
     }
@@ -24,9 +24,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         JDBC.makeConnection();
 
-        /* Set Language/Locale */
+        /* Set Language/Locale Manually */
         //Locale.setDefault(new Locale("fr", "FR"));
-        Locale.setDefault(new Locale("en", "US"));
 
         launch(args);
         JDBC.closeConnection();

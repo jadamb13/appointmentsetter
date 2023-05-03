@@ -3,7 +3,6 @@ package model;
 import DBAccess.DBAppointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -186,14 +185,14 @@ public class Appointment {
 
         }
         List<String> uniqueMonths = new ArrayList<>();
-        for (int i = 0; i < months.size(); i++){
-            if (!uniqueMonths.contains(months.get(i))){
-                uniqueMonths.add(months.get(i));
+        for (String month : months) {
+            if (!uniqueMonths.contains(month)) {
+                uniqueMonths.add(month);
             }
         }
         List<Integer> frequencies = new ArrayList<>();
-        for (int i = 0; i < uniqueMonths.size(); i++){
-            frequencies.add(Collections.frequency(months, uniqueMonths.get(i)));
+        for (String uniqueMonth : uniqueMonths) {
+            frequencies.add(Collections.frequency(months, uniqueMonth));
         }
         for (int i = 0; i < uniqueMonths.size(); i++){
             AppointmentMonth am = new AppointmentMonth(uniqueMonths.get(i), frequencies.get(i));
@@ -203,6 +202,13 @@ public class Appointment {
         return appointmentsByMonth;
     }
 
+    /**
+     Counts and groups appointments by day of week.
+
+     @return appointmentsByDay ObservableList of AppointmentDay objects representing
+     unique days and the number of appointments for each unique day
+
+     */
     public static ObservableList<AppointmentDay> getAppointmentsByDayOfWeek(){
         ObservableList<AppointmentDay> appointmentsByDay = FXCollections.observableArrayList();
         List<String> days = new ArrayList<>();
@@ -234,6 +240,7 @@ public class Appointment {
     /**
      Determines appointments times available based on user ZonedDateTime and EST business hours.
 
+     @param selectedDate date chosen by user from startDate DatePicker
      @return timeList list of String objects representing times available for appointments
 
      */

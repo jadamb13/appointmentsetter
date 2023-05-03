@@ -1,5 +1,6 @@
 package model;
 
+/** Class representing an Appointment Day. */
 public class AppointmentDay {
     String dayOfWeek;
     int numberOfAppointmentsOnDay;

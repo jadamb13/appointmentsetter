@@ -75,6 +75,7 @@ public class Customer {
     /**
      Gets Customer ID associated with a name.
 
+     @param name customer name
      @return c.getCustomerId() customerID of customer with the parameter name; or -1 if none found
 
      */
@@ -91,6 +92,7 @@ public class Customer {
     /**
      Gets Name associated with a Customer ID.
 
+     @param id customer id
      @return c.getCustomerName() Customer name associated with the parameter id
 
      */

@@ -55,7 +55,6 @@ public class AddAppointmentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("AddAppointment Initialized.");
         try{
             // Assign values to disabled fields and pre-populated lists (Combo Boxes)
             appointmentIdTxt.setText(String.valueOf(DBAppointment.getNextAppointmentId()));

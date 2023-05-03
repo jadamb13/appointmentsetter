@@ -71,7 +71,6 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("LoginView Initialized.");
         timezoneTxt.setText(zone.getId());
 
         if(Locale.getDefault().equals(new Locale("fr", "FR"))) {
@@ -94,7 +93,6 @@ public class LoginController implements Initializable {
      * @param actionEvent represents user clicking on "Login" button
      */
     public void onActionDisplayMainView(ActionEvent actionEvent) throws IOException {
-        System.out.println("Clicked Login.");
         ObservableList<User> userList =  DBUser.getAllUsers();
         boolean userFound = false;
         LocalDate localDate = LocalDate.now();
@@ -128,10 +126,16 @@ public class LoginController implements Initializable {
             trackLoginAttempt(getProgramUserId(), localDate, timestamp, successOrFail);
             Alert loginAlert = new Alert(Alert.AlertType.WARNING);
             if(Locale.getDefault().equals(new Locale("fr", "FR"))){
+                try{
+                    ResourceBundle resourceBundle = ResourceBundle.getBundle("resources/LanguageSupport_fr");
+                    String error = resourceBundle.getString("error");
+                    loginAlert.setTitle("");
+                    loginAlert.setContentText(error);
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    System.out.println(e.getCause());
+                }
 
-                ResourceBundle resourceBundle = ResourceBundle.getBundle("LanguageSupport_fr");
-                String error = resourceBundle.getString("error");
-                loginAlert.setContentText(error);
             }else{
                 loginAlert.setContentText("Invalid username and password combination. Please check your information and try again.");
             }

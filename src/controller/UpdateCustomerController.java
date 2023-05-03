@@ -44,7 +44,7 @@ public class UpdateCustomerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("UpdateCustomer Initialized.");
+
         try {
             Customer selected = MainViewController.getSelectedCustomer();
             customerIdTxt.setText(String.valueOf(selected.getCustomerId()));

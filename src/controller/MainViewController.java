@@ -365,6 +365,8 @@ public class MainViewController implements Initializable {
     /**
      * Updates Appointments tableView to show appointments by week selected.
      *
+     * @param weekSelected week selected from byWeek combo box
+     *
      * LAMBDA: This method utilizes a lambda function to define the filter criteria for the filtered() method
      * which creates a new list of appointments that meet the filter criteria. Using the lambda here is a
      * more concise way to define a function that takes one argument (the appointment)
@@ -393,6 +395,8 @@ public class MainViewController implements Initializable {
 
     /**
      * Updates Appointments tableView to show appointments by month selected.
+     *
+     * @param monthSelected month selected from byMonth combo box
      *
      * LAMBDA: This method utilizes a lambda expression to iterate over the list of appointments and
      * group them by month. Using the lambda here is a concise way to define a function that takes
@@ -598,14 +602,23 @@ public class MainViewController implements Initializable {
 
     }
 
+    /**
+     * Checks customer forms with user input for blank selections or text fields.
+     *
+     * @param customerName customer name
+     * @param address customer address
+     * @param postalCode customer postal code
+     * @param phone customer phone number
+     * @param divisionName name of division where customer lives
+     * @param divisionId id of division where customer lives
+     *
+     */
     static boolean validateCustomerInput(String customerName, String address, String postalCode, String phone,
                                  String divisionName, int divisionId) {
         boolean customerNameEmpty = false;
         boolean addressEmpty = false;
         boolean postalCodeEmpty = false;
         boolean phoneEmpty = false;
-
-        boolean countryNameEmpty = false;
         boolean divisionNameEmpty = false;
         boolean divisionIdEmpty = false;
 
@@ -628,10 +641,21 @@ public class MainViewController implements Initializable {
             divisionIdEmpty = true;
         }
 
-        return (!customerNameEmpty && !addressEmpty && !postalCodeEmpty && !phoneEmpty && !countryNameEmpty && !divisionNameEmpty
+        return (!customerNameEmpty && !addressEmpty && !postalCodeEmpty && !phoneEmpty && !divisionNameEmpty
                 && !divisionIdEmpty);
     }
 
+    /**
+     * Checks appointment forms with user input for blank selections or text fields.
+     *
+     * @param title appointment title
+     * @param description appointment description
+     * @param location location of appointment
+     * @param type type of appointment
+     * @param customerId id of customer belonging to appointment
+     * @param contactId id of contact belonging to appointment
+     *
+     */
     static boolean validateAppointmentInput(String title, String description,
                                             String location, String type, int customerId, int contactId) {
         boolean titleEmpty = false;

@@ -54,7 +54,6 @@ public class UpdateAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            System.out.println("UpdateAppointment Initialized.");
             Appointment selected = MainViewController.getSelectedAppointment();
 
             // Convert String Dates into LocalDate to use with DatePicker boxes

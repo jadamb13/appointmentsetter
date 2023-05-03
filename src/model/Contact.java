@@ -2,7 +2,6 @@ package model;
 
 import DBAccess.DBAppointment;
 import DBAccess.DBContact;
-import DBAccess.DBCustomer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -61,6 +60,7 @@ public class Contact {
     /**
      Gets Contact ID associated with a name.
 
+     @param name name of Contact
      @return c.getContact() contactID of contact with the parameter name; or -1 if none found
 
      */
@@ -77,6 +77,7 @@ public class Contact {
     /**
      Gets Name associated with a Contact ID.
 
+     @param id contact id
      @return c.getContactName() Contact name associated with the parameter id
 
      */
@@ -89,6 +90,13 @@ public class Contact {
         return "";
     }
 
+    /**
+     Gets ObservableList of Appointments associated with contact.
+
+     @param newValue name of Contact selected from combo box
+     @return contactAppointments ObservableList of Appointments associated with Contact
+
+     */
     public static ObservableList<Appointment> getContactAppointments(String newValue) {
         ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
         if (newValue != null) {

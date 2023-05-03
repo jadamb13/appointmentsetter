@@ -20,11 +20,11 @@
          </font></Button>
       <TextField fx:id="usernameTxt" layoutX="146.0" layoutY="70.0" prefHeight="30.0" prefWidth="161.0" />
       <TextField fx:id="passwordTxt" layoutX="146.0" layoutY="106.0" prefHeight="30.0" prefWidth="161.0" />
-      <Label fx:id="timezoneTxt" layoutX="155.0" layoutY="157.0" text="Timezone/ZoneId">
+      <Label fx:id="timezoneTxt" layoutX="147.0" layoutY="157.0" text="Timezone/ZoneId">
          <font>
             <Font name="System Italic" size="16.0" />
          </font></Label>
-      <Label fx:id="appNameLabel" layoutX="108.0" layoutY="27.0" text="Client Management System">
+      <Label fx:id="appNameLabel" layoutX="91.0" layoutY="27.0" text="Client Management System">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

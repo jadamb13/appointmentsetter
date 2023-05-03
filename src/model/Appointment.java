@@ -209,7 +209,7 @@ public class Appointment {
      @return timeList list of String objects representing times available for appointments
 
      */
-    public static ObservableList<String> getAppointmentTimes() {
+    public static ObservableList<String> getAppointmentTimes(LocalDate startDate) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a"); // formatter for times added to timesList
         ObservableList<String> timesList = FXCollections.observableArrayList();
@@ -239,8 +239,11 @@ public class Appointment {
         LocalTime localStartTime = LocalTime.of(8, 0).plusMinutes(minutesDifference);
         LocalTime localEndTime = LocalTime.of(22, 0).plusMinutes(minutesDifference);
 
-        // If userTime greater than user equivalent of 10pm -> show full list
-        if(userTime.compareTo(localEndTime) > 0){
+        // If userTime greater than user equivalent of 10pm and userDate/startDate given are the same -> show empty list
+        if(userTime.compareTo(localEndTime) > 0 && userDate.compareTo(startDate) == 0){
+            timesList = FXCollections.emptyObservableList();
+
+        }else if(userTime.compareTo(localEndTime) > 0 && userDate.compareTo(startDate) < 0){ // it is a day in the future -> show full list
             LocalTime time = localStartTime;
 
             for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
@@ -254,11 +257,14 @@ public class Appointment {
                 timesList.add(timeString);
                 time = time.plusMinutes(15); // add appointment times in 15 minute increments
             }
-            // Add last appointment time of the day
+            // Add last time of day
             String timeString = time.format(formatter);
-            timesList.add(timeString);
-        }else{
+            if(!timesList.contains(timeString)){
+                timesList.add(timeString);
+            }
 
+
+        }else{
             // if userTime less than user equiv. of 10pm EST -> show list from userTimeRounded to equiv. of 10pm EST
             int minutesToNextQuarterHour = 15 - userTime.getMinute() % 15;
             LocalTime time = userTime.plusMinutes(minutesToNextQuarterHour).truncatedTo(ChronoUnit.MINUTES);
@@ -273,10 +279,11 @@ public class Appointment {
                 timesList.add(timeString);
                 time = time.plusMinutes(15); // add appointment times in 15 minute increments
             }
-
-            // Add last appointment time of the day
+            // Add last time of day
             String timeString = time.format(formatter);
-            timesList.add(timeString);
+            if(!timesList.contains(timeString)){
+                timesList.add(timeString);
+            }
         }
 
         return timesList;

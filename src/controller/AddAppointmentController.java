@@ -63,8 +63,7 @@ public class AddAppointmentController implements Initializable {
             contactCb.setItems(Contact.getAllContactNames());
             typeCb.setItems(Appointment.getAppointmentTypes());
             customerCb.setItems(Customer.getAllCustomerNames());
-            startTimeCb.setItems(Appointment.getAppointmentTimes());
-            endTimeCb.setItems(Appointment.getAppointmentTimes());
+
 
             // Get user's LocalDate to perform logic check against date selected
             ZoneId userZoneId = ZoneId.systemDefault();
@@ -72,6 +71,9 @@ public class AddAppointmentController implements Initializable {
 
             startDateDp.setValue(userDate);
             endDateDp.setValue(userDate);
+            startTimeCb.setItems(Appointment.getAppointmentTimes(userDate));
+            endTimeCb.setItems(Appointment.getAppointmentTimes(userDate));
+            setStartDateListener();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -87,7 +89,7 @@ public class AddAppointmentController implements Initializable {
      @exception SQLException thrown in case of invalid SQL statement during insertAppointment()
      */
     public void saveNewAppointment(ActionEvent actionEvent) throws SQLException, IOException {
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
         try {
             // Form data (not including times and dates)
             String title = titleTxt.getText();
@@ -103,15 +105,10 @@ public class AddAppointmentController implements Initializable {
             // Get selected/entered times and dates from Add Appointment Form
             String startTime = startTimeCb.getValue();
             String endTime = endTimeCb.getValue();
-            if(endTime.compareTo(startTime) < 0){
-                endDateDp.setValue(startDateDp.getValue().plusDays(1));
-            }
             LocalDate startDate = startDateDp.getValue();
             LocalDate endDate = endDateDp.getValue();
 
-
             // Create LocalDate and LocalTime objects to create LocalDateTimes
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
             LocalTime ltStartTime = LocalTime.parse(startTime, formatter);
             LocalTime ltEndTime = LocalTime.parse(endTime, formatter);
             LocalDateTime ldtStart = LocalDateTime.of(startDate, ltStartTime);
@@ -121,19 +118,31 @@ public class AddAppointmentController implements Initializable {
             Timestamp start = Timestamp.valueOf(ldtStart);
             Timestamp end = Timestamp.valueOf(ldtEnd);
 
-            // If Appointment information input is not blank
-            if(MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
-                // If the insert is successful (no conflicting/overlapping customer appointments)
-                if(!DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end)){
-                    MainViewController.getMainViewStage().close();
-                }
-
-            }else{
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
-                alert.show();
+            // Logic check to make sure end date and time are after start date and time
+            boolean logicFlag = false;
+            if(ldtEnd.compareTo(ldtStart) < 0){
+                logicFlag = true;
+                Alert timeAlert = new Alert(Alert.AlertType.WARNING);
+                timeAlert.setTitle("");
+                timeAlert.setHeaderText("Incorrect time entered");
+                timeAlert.setContentText("The end date and time for the appointment must be after the start date and time.");
+                timeAlert.show();
             }
 
+            if(!logicFlag) {
+                // If Appointment information input is not blank
+                if (MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
+                    // If the insert is successful (no conflicting/overlapping customer appointments)
+                    if (!DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end)) {
+                        MainViewController.getMainViewStage().close();
+                    }
+
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
+                    alert.show();
+                }
+            }
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
@@ -155,14 +164,20 @@ public class AddAppointmentController implements Initializable {
         MainViewController.getMainViewStage().close();
     }
 
-    public void verifyDate(ActionEvent actionEvent) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-        String selectedTime = endTimeCb.getValue();
-
-        LocalTime endTime = LocalTime.parse(selectedTime, formatter);
-        LocalTime startTime = LocalTime.parse(startTimeCb.getValue(), formatter);
-        if(endTime.compareTo(startTime) < 0) { // appointment crosses over into the next day
-            endDateDp.setValue(startDateDp.getValue().plusDays(1));
-        }
+    public void setAppointmentTimes(ActionEvent actionEvent) {
+        LocalDate selectedDate = startDateDp.getValue();
+        startTimeCb.setItems(Appointment.getAppointmentTimes(selectedDate));
     }
+
+    private void setStartDateListener() {
+        startDateDp.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                startTimeCb.setItems(Appointment.getAppointmentTimes(newValue));
+                endTimeCb.setItems(Appointment.getAppointmentTimes(newValue));
+            }
+
+        });
+    }
+
+
 }

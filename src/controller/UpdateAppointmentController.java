@@ -74,17 +74,21 @@ public class UpdateAppointmentController implements Initializable {
             contactCb.setValue(selected.getContact());
             typeCb.setItems(Appointment.getAppointmentTypes());
             typeCb.setValue(selected.getType());
-            startTimeCb.setItems(Appointment.getAppointmentTimes());
+
             startTimeCb.setValue(selected.getStartTime());
-            endTimeCb.setItems(Appointment.getAppointmentTimes());
             endTimeCb.setValue(selected.getEndTime());
             startDateDp.setValue(startDate);
             endDateDp.setValue(endDate);
+            startTimeCb.setItems(Appointment.getAppointmentTimes(startDate));
+            endTimeCb.setItems(Appointment.getAppointmentTimes(startDate));
+
+            setStartDateListener();
 
         } catch (Exception e){
             System.out.println("Caught ya: " + e.getMessage());
         }
     }
+
 
     /**
      Checks the user input for validity, creates a new Appointment object, and updates the Appointment in DB before returning
@@ -125,31 +129,35 @@ public class UpdateAppointmentController implements Initializable {
             Timestamp start = Timestamp.valueOf(ldtStart);
             Timestamp end = Timestamp.valueOf(ldtEnd);
 
-            if(MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
-                DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location, type, start, end);
-                MainViewController.getMainViewStage().close();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
-                alert.show();
+            // Logic check to make sure end date and time are after start date and time
+            boolean logicFlag = false;
+            if(ldtEnd.compareTo(ldtStart) < 0){
+                logicFlag = true;
+                Alert timeAlert = new Alert(Alert.AlertType.WARNING);
+                timeAlert.setTitle("");
+                timeAlert.setHeaderText("Incorrect time entered");
+                timeAlert.setContentText("The end date and time for the appointment must be after the start date and time.");
+                timeAlert.show();
+            }
+
+            if(!logicFlag) {
+                if (MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
+                    DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location, type, start, end);
+                    MainViewController.getMainViewStage().close();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
+                    alert.show();
+                }
             }
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");
             alert.show();
+            System.out.println(e.getMessage() + " " + e.getCause());
         }
     }
 
-    public void verifyDate(ActionEvent actionEvent) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-        String selectedTime = endTimeCb.getValue();
-
-        LocalTime endTime = LocalTime.parse(selectedTime, formatter);
-        LocalTime startTime = LocalTime.parse(startTimeCb.getValue(), formatter);
-        if(endTime.compareTo(startTime) < 0) { // appointment crosses over into the next day
-            endDateDp.setValue(startDateDp.getValue().plusDays(1));
-        }
-    }
 
     /**
      Returns user to the MainView.
@@ -162,4 +170,20 @@ public class UpdateAppointmentController implements Initializable {
         // On "Cancel" button being clicked
         MainViewController.getMainViewStage().close();
     }
+
+    public void setAppointmentTimes(ActionEvent actionEvent) {
+        LocalDate selectedDate = startDateDp.getValue();
+        startTimeCb.setItems(Appointment.getAppointmentTimes(selectedDate));
+    }
+
+    private void setStartDateListener() {
+        startDateDp.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // This method will be called when the value of the date picker changes
+            if(newValue != null){
+                startTimeCb.setItems(Appointment.getAppointmentTimes(newValue));
+                endTimeCb.setItems(Appointment.getAppointmentTimes(newValue));
+            }
+        });
+    }
+
 }

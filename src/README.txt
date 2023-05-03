@@ -19,8 +19,27 @@ JavaFX: JavaFX SDK 17.0.6 (openjfx-17.0.6_windows-x64_bin-sdk)
 
 How to Run Program:
 
+The language/locale of the application can be set manually if needed by uncommenting
+"Locale.setDefault(new Locale("fr", "FR"));" in the main method, or it will be gathered automatically from
+the system's default locale.
 
-Additional Report Description: The additional report on the Reports tab shows the number of appointments by day
+To run the program, launch the program from the main() method and enter credentials
+Username: test | Password: test (or) Username: admin | Password: admin and click "Login". From the main
+application window, you are defaulted to the "Appointments" tab of the program where appointments can be
+viewed, added, updated, or deleted. Appointments can also be viewed as "All Appointments" by clicking the All Appointments
+radio button, by week by selecting a week from the "By Week" combo box, or by month by selecting a month from the
+"By Month" combo box.
+
+To view, add, update, or delete Customers, click the "Customer" tab along the top of the application window.
+Similarly, reports for the application can be viewed by clicking the "Reports" tab along the top of the
+application window.
+
+A login_activity.txt file is located at the root ("src") of the application file structure and javadocs are
+located in the package: src/javadocs.
+
+Additional Report Description:
+
+The additional report on the Reports tab shows the number of appointments by day
 of the week. This could provide insight to an organization that will help with workforce scheduling of contacts
 or weekly planning based on popular appointment days.
 

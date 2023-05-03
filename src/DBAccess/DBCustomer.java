@@ -178,11 +178,13 @@ public class DBCustomer {
                             ps2.setInt(1, a.getAppointmentId());
                             ps2.execute();
                         }catch (SQLException e){
-                            e.printStackTrace();
+                            System.out.println(e.getMessage());
+                            System.out.println(e.getCause());
                         }
                     }
-                    ps.execute();
+
                 }
+                ps.execute();
             }
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

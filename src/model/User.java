@@ -1,5 +1,8 @@
 package model;
 
+import DBAccess.DBContact;
+import DBAccess.DBUser;
+
 /** Class representing a User object */
 public class User {
     private int userId;
@@ -35,5 +38,21 @@ public class User {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    /**
+     Gets Name associated with a User ID.
+
+     @param id contact id
+     @return u.getUserName() Contact name associated with the parameter id
+
+     */
+    public static String getUserNameById(int id){
+        for (User u : DBUser.getAllUsers()){
+            if(u.getUserId() == id){
+                return u.getUserName();
+            }
+        }
+        return "";
     }
 }

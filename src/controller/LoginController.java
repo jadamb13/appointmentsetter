@@ -21,8 +21,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -95,8 +97,10 @@ public class LoginController implements Initializable {
     public void onActionDisplayMainView(ActionEvent actionEvent) throws IOException {
         ObservableList<User> userList =  DBUser.getAllUsers();
         boolean userFound = false;
+        boolean passwordMatches = false;
         LocalDate localDate = LocalDate.now();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        LocalTime localTime = LocalTime.now();
+        ZoneId userZoneId = ZoneId.systemDefault();
         String successOrFail = "";
 
         for (User u : userList){
@@ -110,20 +114,42 @@ public class LoginController implements Initializable {
 
             if (un.equals(inputUn) && pw.equals(inputPw)){
                 userFound = true;
-                successOrFail += "SUCCESS";
+                passwordMatches = true;
+                successOrFail = "SUCCESS";
                 setProgramUserId(u.getUserId());
-                trackLoginAttempt(getProgramUserId(), localDate, timestamp, successOrFail);
+                trackLoginAttempt(getProgramUserId(), localDate, localTime, userZoneId,successOrFail);
                 Locale.setDefault(new Locale("en", "US"));
                 stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
                 stage.setScene(new Scene(scene));
                 stage.centerOnScreen();
+            }
+            if(un.equals(inputUn) && !pw.equals(inputPw)){
+                userFound = true;
+                successOrFail = "FAILURE";
+                setProgramUserId(u.getUserId());
+                trackLoginAttempt(getProgramUserId(), localDate, localTime, userZoneId, successOrFail);
+                Alert loginAlert = new Alert(Alert.AlertType.WARNING);
+                if(Locale.getDefault().equals(new Locale("fr", "FR"))){
+                    try{
+                        ResourceBundle resourceBundle = ResourceBundle.getBundle("resources/LanguageSupport_fr");
+                        String error = resourceBundle.getString("error");
+                        loginAlert.setTitle("");
+                        loginAlert.setContentText(error);
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
+                        System.out.println(e.getCause());
+                    }
 
+                }else{
+                    loginAlert.setContentText("Invalid username and password combination. Please check your information and try again.");
+                }
+                loginAlert.show();
             }
         }
         if (!userFound){
             successOrFail = "FAILURE";
-            trackLoginAttempt(getProgramUserId(), localDate, timestamp, successOrFail);
+            trackLoginAttempt(getProgramUserId(), localDate, localTime, userZoneId, successOrFail);
             Alert loginAlert = new Alert(Alert.AlertType.WARNING);
             if(Locale.getDefault().equals(new Locale("fr", "FR"))){
                 try{
@@ -151,16 +177,28 @@ public class LoginController implements Initializable {
      *
      * @param userId userId of user attempting to login
      * @param date LocalDate when user attempts to login
-     * @param timestamp Timestamp of user login attempt
+     * @param time LocalTime of user login attempt
      * @param successOrFail outcome of login attempt
      */
-    public void trackLoginAttempt(int userId, LocalDate date, Timestamp timestamp, String successOrFail){
+    public void trackLoginAttempt(int userId, LocalDate date, LocalTime time, ZoneId userZoneId, String successOrFail){
         try{
             FileWriter writer = new FileWriter("src/login_activity.txt", true);
-            writer.write(userId + "\t\t" + date + "\t" + timestamp + "\t\t" + successOrFail + "\n");
+            if(successOrFail.equals("SUCCESS")){
+                writer.write("User " + User.getUserNameById(userId) + " successfully logged in at " +
+                        date + " " + time.truncatedTo(ChronoUnit.SECONDS) + " (" + userZoneId + ")\n");
+            }else{
+                if(User.getUserNameById(userId).equals("")){
+                    writer.write("Unknown user " + "gave invalid log-in credentials at " +
+                            date + " " + time.truncatedTo(ChronoUnit.SECONDS) + " (" + userZoneId + ")\n");
+                }else {
+                    writer.write("User " + User.getUserNameById(userId) + " gave invalid log-in credentials at " +
+                            date + " " + time.truncatedTo(ChronoUnit.SECONDS) + " (" + userZoneId + ")\n");
+                }
+            }
             writer.close();
+
         }catch (IOException e){
-            System.out.println("Caught you LoginController(FileWriter): " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

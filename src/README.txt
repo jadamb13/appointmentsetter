@@ -20,7 +20,8 @@ JavaFX: JavaFX SDK 17.0.6 (openjfx-17.0.6_windows-x64_bin-sdk)
 How to Run Program:
 
 
-Additional Report Description:
-
+Additional Report Description: The additional report on the Reports tab shows the number of appointments by day
+of the week. This could provide insight to an organization that will help with workforce scheduling of contacts
+or weekly planning based on popular appointment days.
 
 MySQL Connector Driver: mysql-connector-java-8.0.25

@@ -109,7 +109,7 @@ public class UpdateCustomerController implements Initializable {
             int divisionId = Division.getDivisionIdByName(divisionName);
 
 
-            if(!MainViewController.validateCustomerInput(customerName, address, postalCode, phone, divisionName, divisionId)){
+            if(MainViewController.validateCustomerInput(customerName, address, postalCode, phone, divisionName, divisionId)){
                 // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
                 DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);
 

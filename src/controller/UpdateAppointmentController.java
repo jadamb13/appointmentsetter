@@ -125,8 +125,8 @@ public class UpdateAppointmentController implements Initializable {
             Timestamp start = Timestamp.valueOf(ldtStart);
             Timestamp end = Timestamp.valueOf(ldtEnd);
 
-            if(!MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
-                DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end);
+            if(MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
+                DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location, type, start, end);
                 MainViewController.getMainViewStage().close();
             }else{
                 Alert alert = new Alert(Alert.AlertType.WARNING);

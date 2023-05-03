@@ -130,27 +130,39 @@ public class DBAppointment {
             for(Appointment a : getAllAppointmentsFromDb()){
                 LocalDateTime apptStart = LocalDateTime.parse(a.getStartTime() + " " + a.getStartDate(), formatter);
                 LocalDateTime apptEnd = LocalDateTime.parse(a.getEndTime() + " " + a.getEndDate(), formatter);
-                if(a.getCustomerId() == customerId && (startLdt.isAfter(apptStart) && startLdt.isBefore(apptEnd) || (endLdt.isAfter(apptStart) && endLdt.isBefore(apptEnd)))
-                || startLdt.isEqual(apptStart)){
+                if(a.getAppointmentId() != appointmentId) {
+                    System.out.println("a.getAppointmentId: " + a.getAppointmentId());
+                    System.out.println("Appointment ID param: " + appointmentId);
+                    if (a.getCustomerId() == customerId                               // if this appointment belongs to the same customer
+                       && (startLdt.isAfter(apptStart) && startLdt.isBefore(apptEnd)) // and new appt would start during this already scheduled appt
+                       || (endLdt.isAfter(apptStart))                                 // or end of new appt goes beyond the start of this already scheduled appt
+                       || startLdt.isEqual(apptStart))                                // or start of new appt is equal to the start of this already scheduled appt
+                    {
 
-                    System.out.println("a.getCustomerId: "  + a.getCustomerId());
-                    System.out.println("Param customer ID: " + customerId);
-                    System.out.println("startLdt: " + startLdt);
-                    System.out.println("endLdt: " + endLdt);
-                    System.out.println("apptStart: " + apptStart);
-                    System.out.println("apptEnd: " + apptEnd);
-                    System.out.println();
-                    System.out.println("startLdt.isAfter(apptStart): " + startLdt.isAfter(apptStart));
-                    System.out.println("startLdt.isBefore(apptEnd): " + startLdt.isBefore(apptEnd));
-                    System.out.println("endLdt.isAfter(apptStart): " + endLdt.isAfter(apptStart));
+                        /* Test statements
+                        System.out.println("a.getCustomerId: " + a.getCustomerId());
+                        System.out.println("Param customer ID: " + customerId);
+                        System.out.println("startLdt: " + startLdt);
+                        System.out.println("endLdt: " + endLdt);
+                        System.out.println("apptStart: " + apptStart);
+                        System.out.println("apptEnd: " + apptEnd);
+                        System.out.println();
+                        System.out.println("startLdt.isAfter(apptStart): " + startLdt.isAfter(apptStart));
+                        System.out.println("startLdt.isBefore(apptEnd): " + startLdt.isBefore(apptEnd));
+                        System.out.println("endLdt.isAfter(apptStart): " + endLdt.isAfter(apptStart));
+                        */
 
-                    alertFlag = true;
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Overlapping appointments");
-                    alert.setTitle("Error scheduling appointment");
-                    alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
-                            "overlaps with an appointment already scheduled for this customer.");
-                    alert.show();
+                        alertFlag = true;
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Overlapping appointments");
+                        alert.setTitle("Error scheduling appointment");
+                        alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
+                                "overlaps with an appointment already scheduled for this customer.");
+                        alert.show();
+                    }
+                }else{
+                    System.out.println("Break.");
+                    break;
                 }
             }
             if(!alertFlag){

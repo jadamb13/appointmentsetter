@@ -122,7 +122,7 @@ public class AddAppointmentController implements Initializable {
             Timestamp end = Timestamp.valueOf(ldtEnd);
 
             // If Appointment information input is not blank
-            if(!MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
+            if(MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
                 // If the insert is successful (no conflicting/overlapping customer appointments)
                 if(!DBAppointment.insertAppointment(customerId, contactId, userId, title, description, location, type, start, end)){
                     MainViewController.getMainViewStage().close();

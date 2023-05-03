@@ -2,7 +2,6 @@ package controller;
 
 
 import DBAccess.DBCustomer;
-import DBAccess.DBDivision;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -97,7 +96,7 @@ public class AddCustomerController implements Initializable {
             String phone = phoneNumberTxt.getText();
             String divisionName = divisionCb.getSelectionModel().getSelectedItem();
             int divisionId = Division.getDivisionIdByName(divisionName);
-            if(!MainViewController.validateCustomerInput(customerName, address, postalCode, phone, divisionName, divisionId)){
+            if(MainViewController.validateCustomerInput(customerName, address, postalCode, phone, divisionName, divisionId)){
                 // Use DBCustomer.insertAppointment() and data from form to insert new Appointment into DB
                 DBCustomer.insertCustomer(customerId, customerName, address, postalCode, phone, divisionId);
 

@@ -234,44 +234,17 @@ public class Appointment {
         // Calculate the difference between the timezone offsets
         Duration offsetDifference = Duration.ofSeconds(userOffset.getTotalSeconds() - estOffset.getTotalSeconds());
         long minutesDifference = offsetDifference.toMinutes();
-        //double hoursDifference = offsetDifference.toHours();
 
-        // LocalTime to determine end of loop that populates timesList
-        LocalTime end;
-
-        /* Set times in list based on difference between time of User's local time and EST */
-
-        // Determine start time of timeList loop by using the user's current time and rounding to the next quarter hour
-        LocalTime ltNow = userZDT.toLocalDateTime().toLocalTime();
-        int minutesToNextQuarterHour = 15 - ltNow.getMinute() % 15;
-
-        LocalTime roundedLocalTimeNow = ltNow.plusMinutes(minutesToNextQuarterHour).truncatedTo(ChronoUnit.MINUTES);
-        //System.out.println("RoundedTime: " + roundedTime);
+        // Determine user equivalent of 8am EST
         LocalTime localStartTime = LocalTime.of(8, 0).plusMinutes(minutesDifference);
         LocalTime localEndTime = LocalTime.of(22, 0).plusMinutes(minutesDifference);
-        LocalDate estStartDate = estZDT.toLocalDate();
-        LocalDate localStartDate = userZDT.toLocalDate();
-        if(localStartDate.compareTo(estStartDate) > 0){
-            localStartTime = roundedLocalTimeNow;
-        }
-        boolean noAppointmentsLeftToday = false;
-        if(localStartDate.compareTo(estStartDate) < 0){
-            noAppointmentsLeftToday = true;
-        }
 
+        // If userTime greater than user equivalent of 10pm -> show full list
+        if(userTime.compareTo(localEndTime) > 0){
+            LocalTime time = localStartTime;
 
-
-
-        /* Below loop only works if startDateDp is the current day (EST); startDateDp is next day or later, need to
-        * return full list based on initial localStartTime and localEndTime */
-
-
-
-
-        LocalTime time = localStartTime;
-        if(!noAppointmentsLeftToday) {
             for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
-                if (time.compareTo(localEndTime) == 0) {
+                if (time.compareTo(localEndTime) == 0) { // Exit loop when time = user equivalent of 10pm EST
                     String timeString = time.format(formatter);
                     timesList.add(timeString);
                     break;
@@ -281,13 +254,31 @@ public class Appointment {
                 timesList.add(timeString);
                 time = time.plusMinutes(15); // add appointment times in 15 minute increments
             }
-        }
-        if(!noAppointmentsLeftToday) {
-            // Add last time of day
+            // Add last appointment time of the day
+            String timeString = time.format(formatter);
+            timesList.add(timeString);
+        }else{
+
+            // if userTime less than user equiv. of 10pm EST -> show list from userTimeRounded to equiv. of 10pm EST
+            int minutesToNextQuarterHour = 15 - userTime.getMinute() % 15;
+            LocalTime time = userTime.plusMinutes(minutesToNextQuarterHour).truncatedTo(ChronoUnit.MINUTES);
+            for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
+                if (time.compareTo(localEndTime) == 0) { // Stop loop when time = user equivalent of 10pm EST
+                    String timeString = time.format(formatter);
+                    timesList.add(timeString);
+                    break;
+                }
+                // Format time for timesList
+                String timeString = time.format(formatter);
+                timesList.add(timeString);
+                time = time.plusMinutes(15); // add appointment times in 15 minute increments
+            }
+
+            // Add last appointment time of the day
             String timeString = time.format(formatter);
             timesList.add(timeString);
         }
-        System.out.println(timesList);
+
         return timesList;
     }
 

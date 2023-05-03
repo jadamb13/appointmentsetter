@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 /** A Controller class for the MainView. */
 public class MainViewController implements Initializable {
 
+
     /* Control elements for MainView/Appointment Tab */
     @FXML
     private ComboBox<String> byMonthCb;
@@ -123,6 +124,14 @@ public class MainViewController implements Initializable {
     @FXML
     private TableColumn<AppointmentMonth, Integer> numberByMonthCol;
 
+    /* Appointments by Day of Week on Reports Tab */
+    @FXML
+    private TableView<AppointmentDay> appointmentsByDayOfWeek;
+    @FXML
+    private TableColumn<AppointmentDay, String> dayOfWeekCol;
+    @FXML
+    private TableColumn<AppointmentDay, Integer> numberByDayCol;
+
     @FXML
     private static Stage mainViewStage;
     @FXML
@@ -217,10 +226,13 @@ public class MainViewController implements Initializable {
         // Set up columns for  Appointments By Month table
         byMonthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         numberByMonthCol.setCellValueFactory(new PropertyValueFactory<>("CountByMonth"));
-        populateTables();
+
 
         // Initialize Appointments By Day of Week table
+        dayOfWeekCol.setCellValueFactory(new PropertyValueFactory<>("dayOfWeek"));
+        numberByDayCol.setCellValueFactory(new PropertyValueFactory<>("numberOfAppointmentsOnDay"));
 
+        populateTables();
 
         // Alert customer to whether there is an appointment in the next 15 minutes or not
         Utility.alertUpcomingAppointments();
@@ -356,6 +368,7 @@ public class MainViewController implements Initializable {
     /**
      * Updates Appointments tableView to show appointments by week selected.
      *
+     * LAMBDA
      */
     public void displayAppointmentsByWeek(String weekSelected) {
         String weekStart = weekSelected.substring(0,10);
@@ -365,15 +378,12 @@ public class MainViewController implements Initializable {
         int startYear = Integer.parseInt(weekStart.substring(6,8));
         int endDay = Integer.parseInt(weekEnd.substring(3,5));
         ObservableList<Appointment> appointments = DBAppointment.getAllAppointmentsFromDb();
-        ObservableList<Appointment> filteredAppointments = FXCollections.observableArrayList();
-        for (Appointment a : appointments){
+        ObservableList<Appointment> filteredAppointments = appointments.filtered(a -> {
             int apptStartMonth = Integer.parseInt(a.getStartDate().substring(0,2));
             int apptStartDay = Integer.parseInt(a.getStartDate().substring(3,5));
             int apptStartYear = Integer.parseInt(a.getStartDate().substring(6,8));
-            if(apptStartMonth == startMonth &&  (apptStartDay >= startDay && apptStartDay <= endDay) && apptStartYear == startYear){
-                filteredAppointments.add(a);
-            }
-        }
+            return apptStartMonth == startMonth && (apptStartDay >= startDay && apptStartDay <= endDay) && apptStartYear == startYear;
+        });
         appointmentsTable.setItems(filteredAppointments);
     }
 
@@ -425,6 +435,7 @@ public class MainViewController implements Initializable {
         appointmentsTable.setItems(DBAppointment.getAllAppointmentsFromDb());
         appointmentsByTypeTable.setItems(DBAppointment.getAppointmentsByType());
         appointmentsByMonthTable.setItems(Appointment.getAppointmentsByMonth());
+        appointmentsByDayOfWeek.setItems(Appointment.getAppointmentsByDayOfWeek());
         customerTable.setItems(DBCustomer.getAllCustomersFromDb());
 
         // Reset Contact combo box when tables are refreshed
@@ -460,7 +471,6 @@ public class MainViewController implements Initializable {
         List<String> months = new ArrayList<>();
         for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
             String monthNumber = a.getStartDate().substring(0, 2);
-            //String year = a.getStartDate().substring(7, 11);
             String monthName = String.valueOf(Month.of(Integer.parseInt(monthNumber)));
             months.add(monthName);
         }

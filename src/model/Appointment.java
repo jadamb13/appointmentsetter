@@ -203,6 +203,33 @@ public class Appointment {
         return appointmentsByMonth;
     }
 
+    public static ObservableList<AppointmentDay> getAppointmentsByDayOfWeek(){
+        ObservableList<AppointmentDay> appointmentsByDay = FXCollections.observableArrayList();
+        List<String> days = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        for (Appointment a : DBAppointment.getAllAppointmentsFromDb()){
+            LocalDate date = LocalDate.parse(a.getStartDate(), formatter);
+            String dayName = date.getDayOfWeek().toString();
+            days.add(dayName);
+        }
+        List<String> uniqueDays = new ArrayList<>();
+        for (int i = 0; i < days.size(); i++){
+            if (!uniqueDays.contains(days.get(i))){
+                uniqueDays.add(days.get(i));
+            }
+        }
+        List<Integer> frequencies = new ArrayList<>();
+        for (int i = 0; i < uniqueDays.size(); i++){
+            frequencies.add(Collections.frequency(days, uniqueDays.get(i)));
+        }
+        for (int i = 0; i < uniqueDays.size(); i++){
+            AppointmentDay ad = new AppointmentDay(uniqueDays.get(i), frequencies.get(i));
+            appointmentsByDay.add(ad);
+        }
+
+        return appointmentsByDay;
+    }
+
     /**
      Determines appointments times available based on user ZonedDateTime and EST business hours.
 

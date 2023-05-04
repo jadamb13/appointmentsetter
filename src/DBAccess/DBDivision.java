@@ -33,9 +33,9 @@ public class DBDivision {
                 divisionList.add(d);
             }
         }catch (SQLException e){
-            System.out.println("Caught ye div: " + e.getMessage());
-            }
-                return divisionList;
+            e.printStackTrace();
+        }
+        return divisionList;
     }
 
     /**
@@ -61,7 +61,7 @@ public class DBDivision {
             countryName = rs.getString("Country");
 
         } catch(SQLException e){
-            System.out.println("Caught you DBDivision: " + e.getMessage());
+            e.printStackTrace();
         }
         return countryName;
     }

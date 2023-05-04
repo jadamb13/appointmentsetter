@@ -63,7 +63,6 @@ public class AddAppointmentController implements Initializable {
             typeCb.setItems(Appointment.getAppointmentTypes());
             customerCb.setItems(Customer.getAllCustomerNames());
 
-
             // Get user's LocalDate to perform logic check against date selected
             ZoneId userZoneId = ZoneId.systemDefault();
             LocalDate userDate = LocalDate.now(userZoneId);

@@ -37,10 +37,6 @@ public class Utility {
         if (apptStart.getYear() == userZDT.getYear() && (apptStart.isBefore(LocalDateTime.of(userDate, fifteenMinutesFromNow))
         && apptStart.isAfter(LocalDateTime.of(userDate, userTime)))) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            System.out.println("apptStart: " + apptStart);
-            System.out.println("userDate: " + userDate);
-            System.out.println("fifteenMinutesFromNow: " + fifteenMinutesFromNow);
-            System.out.println("LocalDateTime.of(userDate, fifteenMinutesFromNow): " + LocalDateTime.of(userDate, fifteenMinutesFromNow));
             alert.setTitle("Information");
             alert.setHeaderText("Appointment soon");
             alert.setContentText("Appointment (ID: " + apptId + ") with " + customer + " starts within the next 15 minutes.");

@@ -154,7 +154,7 @@ public class DBAppointment {
                         alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
                                 "overlaps with an appointment already scheduled for this customer.");
                         alert.show();
-                    } else if (newApptEndTime.compareTo(thisApptStart) > 0) { // or end of new appt goes beyond the start of this already scheduled appt
+                    } else if (newApptEndTime.compareTo(thisApptStart) > 0 && newApptEndTime.compareTo(thisApptEnd) < 0) { // or end of new appt goes beyond the start of this already scheduled appt
                         alertFlag = true;
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setHeaderText("Overlapping appointments");
@@ -171,23 +171,6 @@ public class DBAppointment {
                         alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
                                 "overlaps with an appointment already scheduled for this customer.");
                         alert.show();
-
-                        /* Test Statements
-                        System.out.println("or start of new appt is equal to the start of this already scheduled appt:");
-                        System.out.println();
-                        // Test statements
-                        System.out.println("a.getCustomerId: " + a.getCustomerId());
-                        System.out.println("Param customer ID: " + customerId);
-                        System.out.println();
-                        System.out.println("newApptStartTime: " + newApptStartTime);
-                        System.out.println("thisApptStart: " + thisApptStart);
-                        System.out.println("newApptEndTime: " + newApptEndTime);
-                        System.out.println("thisApptEnd: " + thisApptEnd);
-                        System.out.println();
-                        System.out.println("newApptStartTime.isAfter(thisApptStart): " + newApptStartTime.isAfter(thisApptStart));
-                        System.out.println("newApptStartTime.isBefore(thisApptEnd): " + newApptStartTime.isBefore(thisApptEnd));
-                        System.out.println("newApptEndTime.isAfter(thisApptStart): " + newApptEndTime.isAfter(thisApptStart));
-                         */
                     }else{
                         alertFlag = false;
                     }
@@ -262,7 +245,7 @@ public class DBAppointment {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
        }catch (SQLException e){
-           System.out.println("Caught ye boi: " + e.getMessage());;
+           e.printStackTrace();
        }
     }
 
@@ -332,7 +315,7 @@ public class DBAppointment {
                 appointmentsByType.add(at);
             }
         }catch (SQLException e){
-            System.out.println("Caught you DBAppointment: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return appointmentsByType;

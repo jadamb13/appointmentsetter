@@ -109,6 +109,7 @@ public class Contact {
                 }
             }
             if(contact != null){
+                // If appointment is associated with this Contact, add to contactAppointments
                 for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
                     if (a.getContact().equals(contact.getContactName())) {
                         contactAppointments.add(a);

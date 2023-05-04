@@ -162,7 +162,9 @@ public class Appointment {
         appointmentTypes.add("De-Briefing");
         appointmentTypes.add("Planning Session");
         appointmentTypes.add("Strategy Session");
+        appointmentTypes.add("Meet and Greet");
         appointmentTypes.add("Brainstorm Session");
+        appointmentTypes.add("Performance Review");
         appointmentTypes.add("Other");
         return appointmentTypes;
     }
@@ -249,13 +251,13 @@ public class Appointment {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a"); // formatter for times added to timesList
         ObservableList<String> timesList = FXCollections.observableArrayList();
 
-        // Get the current ZoneId, Date, and Time in the user's time zone and created ZonedDateTime
+        // Get the current ZoneId, Date, and Time in the user's time zone and create ZonedDateTime
         ZoneId userZoneId = ZoneId.systemDefault();
         LocalDate userDate = LocalDate.now(userZoneId);
         LocalTime userTime = LocalTime.now(userZoneId);
         ZonedDateTime userZDT = ZonedDateTime.of(userDate, userTime, userZoneId).truncatedTo(ChronoUnit.SECONDS);
 
-        // Get the current ZoneId, Date, and Time in the EST time zone and created ZonedDateTime
+        // Get the current ZoneId, Date, and Time in the EST time zone and create ZonedDateTime
         ZoneId estZoneId = ZoneId.of("America/New_York");
         LocalDate estDate = LocalDate.now(estZoneId);
         LocalTime estTime = LocalTime.now(estZoneId);
@@ -274,8 +276,9 @@ public class Appointment {
         LocalTime localStartTime = LocalTime.of(8, 0).plusMinutes(minutesDifference);
         LocalTime localEndTime = LocalTime.of(22, 0).plusMinutes(minutesDifference);
 
-        // If user selects current day (locally), list populated based on time of day (in EST equivalent)
+        // If user selects current day (locally), timesList populated based on time of day (in EST equivalent)
         if(selectedDate.compareTo(userDate) == 0){
+
             // If before or equal to the equivalent of 8am EST, show full list for the day
             if(userTime.compareTo(localStartTime) <= 0){
                 LocalTime time = localStartTime;
@@ -286,10 +289,10 @@ public class Appointment {
                         timesList.add(timeString);
                         break;
                     }
-                    // Format time for timesList
+                    // Format time for timesList, add to list, increment to next time to be added
                     String timeString = time.format(formatter);
                     timesList.add(timeString);
-                    time = time.plusMinutes(15); // add appointment times in 15 minute increments
+                    time = time.plusMinutes(15);
                 }
                 // Add last time of day
                 String timeString = time.format(formatter);
@@ -297,8 +300,8 @@ public class Appointment {
                     timesList.add(timeString);
                 }
             }
-            // If between equivalent of 8am-10pm EST, show partial list based on rounded time
-            if(userTime.compareTo(localStartTime) > 0 && userTime.compareTo(localEndTime) < 0){
+            // If between equivalent of 8am-10pm EST, show partial list starting with next local quarter hour
+            if(userTime.compareTo(localStartTime) > 0 && userTime.compareTo(localEndTime.minusMinutes(14)) < 0){
                 int minutesToNextQuarterHour = 15 - userTime.getMinute() % 15;
                 LocalTime time = userTime.plusMinutes(minutesToNextQuarterHour).truncatedTo(ChronoUnit.MINUTES);
                 for (int i = 0; i < 56; i++) { // 56 possible appointment times between 8am-10pm EST
@@ -307,10 +310,10 @@ public class Appointment {
                         timesList.add(timeString);
                         break;
                     }
-                    // Format time for timesList
+                    // Format time for timesList, add to list, increment to next time to be added
                     String timeString = time.format(formatter);
                     timesList.add(timeString);
-                    time = time.plusMinutes(15); // add appointment times in 15 minute increments
+                    time = time.plusMinutes(15);
                 }
                 // Add last time of day
                 String timeString = time.format(formatter);
@@ -339,13 +342,12 @@ public class Appointment {
                 timesList.add(timeString);
                 time = time.plusMinutes(15); // add appointment times in 15 minute increments
             }
-            // Add last time of day
+            // Format time for timesList, add to list, increment to next time to be added
             String timeString = time.format(formatter);
             if(!timesList.contains(timeString)){
                 timesList.add(timeString);
             }
         }
-
         return timesList;
     }
 

@@ -178,8 +178,7 @@ public class DBCustomer {
                             ps2.setInt(1, a.getAppointmentId());
                             ps2.execute();
                         }catch (SQLException e){
-                            System.out.println(e.getMessage());
-                            System.out.println(e.getCause());
+                            e.printStackTrace();
                         }
                     }
 

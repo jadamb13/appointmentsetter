@@ -32,7 +32,7 @@ public class DBUser {
                 userList.add(userToAdd);
             }
         } catch (SQLException e) {
-            System.out.println("Caught you " + e.getMessage() + e.getCause());
+            e.printStackTrace();
         }
         return userList;
     }

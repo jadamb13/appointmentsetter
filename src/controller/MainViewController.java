@@ -189,14 +189,6 @@ public class MainViewController implements Initializable {
         setByMonthListener();
         setByWeekListener();
 
-        // Set the items of the byMonth Combo Box with months of year that have appointments
-        setByMonthItems();
-
-        // Set the items of the byWeek Combo Box with weeks that have appointments
-        setByWeekItems();
-
-
-
         /* Customers Tab */
         // Set values in Customers Table
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -220,7 +212,6 @@ public class MainViewController implements Initializable {
         contactApptEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
         contactApptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         contactCb.setItems(Contact.getAllContactNames());
-
 
         // Set up columns for Appointments By Type table
         byTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -451,6 +442,11 @@ public class MainViewController implements Initializable {
         appointmentsByMonthTable.setItems(Appointment.getAppointmentsByMonth());
         appointmentsByDayOfWeek.setItems(Appointment.getAppointmentsByDayOfWeek());
         customerTable.setItems(DBCustomer.getAllCustomersFromDb());
+        setByMonthItems();
+        setByWeekItems();
+
+        // Sort Appointments Table by Appointment ID
+        appointmentsTable.getSortOrder().add(apptIdCol);
 
         // Reset Contact combo box when tables are refreshed
         contactCb.setValue(null);

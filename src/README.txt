@@ -35,7 +35,7 @@ Similarly, reports for the application can be viewed by clicking the "Reports" t
 application window.
 
 A login_activity.txt file is located at the root ("src") of the application file structure and javadocs are
-located in the package: src/javadocs.
+located in the package: src/javadoc.
 
 Additional Report Description:
 

@@ -346,11 +346,11 @@ public class MainViewController implements Initializable {
      * @param actionEvent represents user clicking "All Appointments" Radio Button
      */
     public void displayAllAppointments(ActionEvent actionEvent) {
-        populateTables();
-
         // Set remaining filter options to null to prevent confusion when "All Appointments" selected
         byMonthCb.setValue(null);
         byWeekCb.setValue(null);
+        allAppointmentsRBtn.setSelected(true);
+        populateTables();
     }
 
     /**

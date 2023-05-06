@@ -199,7 +199,7 @@ public class DBAppointment {
      @param end end Timestamp of appointment
 
      */
-    public static void updateAppointmentInDb(int appointmentId, int customerId, int contactId, int userId, String title, String description,
+    public static boolean updateAppointmentInDb(int appointmentId, int customerId, int contactId, int userId, String title, String description,
                                              String location, String type, Timestamp start, Timestamp end){
        boolean alertFlag = false;
        try {
@@ -278,6 +278,7 @@ public class DBAppointment {
        }catch (SQLException e){
            e.printStackTrace();
        }
+       return alertFlag;
     }
 
     /**

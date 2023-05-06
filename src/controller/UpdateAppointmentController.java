@@ -141,8 +141,11 @@ public class UpdateAppointmentController implements Initializable {
 
             if(!logicFlag) {
                 if (MainViewController.validateAppointmentInput(title, description, location, type, customerId, contactId)) {
-                    DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location, type, start, end);
-                    MainViewController.getMainViewStage().close();
+                    // If the update is successful (no conflicting/overlapping customer appointments)
+                    if(!DBAppointment.updateAppointmentInDb(appointmentId, customerId, contactId, userId, title, description, location, type, start, end)){
+                        MainViewController.getMainViewStage().close();
+                    }
+
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setContentText("No fields can be empty. Please enter text for all fields and try again.");

@@ -240,7 +240,7 @@ public class DBAppointment {
                LocalDateTime thisApptStart = LocalDateTime.parse(a.getStartTime() + " " + a.getStartDate(), formatter);
                LocalDateTime thisApptEnd = LocalDateTime.parse(a.getEndTime() + " " + a.getEndDate(), formatter);
                // if this appointment belongs to the same customer
-               if (a.getCustomerId() == customerId && thisApptStart.getYear() == newApptStartTime.getYear()) {
+               if (a.getCustomerId() == customerId && thisApptStart.getYear() == newApptStartTime.getYear() && a.getAppointmentId() != appointmentId) {
                    // and new appt would start during this already scheduled appt
                    if ((newApptStartTime.compareTo(thisApptStart) > 0) && (newApptStartTime.compareTo(thisApptEnd) < 0)) {
                        alertFlag = true;

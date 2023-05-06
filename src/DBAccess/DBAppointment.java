@@ -201,6 +201,7 @@ public class DBAppointment {
      */
     public static void updateAppointmentInDb(int appointmentId, int customerId, int contactId, int userId, String title, String description,
                                              String location, String type, Timestamp start, Timestamp end){
+       boolean alertFlag = false;
        try {
 
             String sql = "Update appointments SET Appointment_ID = ?, Title = ?, Description = ?, Location = ?, " +
@@ -229,21 +230,51 @@ public class DBAppointment {
             ps.setInt(13, userId);
             ps.setInt(14, contactId);
             ps.setInt(15, appointmentId);
-            ps.execute();
 
+           // Checks for overlapping appointments
+           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a MM-dd-yyyy");
+           LocalDateTime newApptStartTime = start.toLocalDateTime();
+           LocalDateTime newApptEndTime = end.toLocalDateTime();
 
-        String contact = Contact.getContactNameById(contactId);
+           for(Appointment a : getAllAppointmentsFromDb()) {
+               LocalDateTime thisApptStart = LocalDateTime.parse(a.getStartTime() + " " + a.getStartDate(), formatter);
+               LocalDateTime thisApptEnd = LocalDateTime.parse(a.getEndTime() + " " + a.getEndDate(), formatter);
+               // if this appointment belongs to the same customer
+               if (a.getCustomerId() == customerId && thisApptStart.getYear() == newApptStartTime.getYear()) {
+                   // and new appt would start during this already scheduled appt
+                   if ((newApptStartTime.compareTo(thisApptStart) > 0) && (newApptStartTime.compareTo(thisApptEnd) < 0)) {
+                       alertFlag = true;
+                       Alert alert = new Alert(Alert.AlertType.ERROR);
+                       alert.setHeaderText("Overlapping appointments");
+                       alert.setTitle("Error scheduling appointment");
+                       alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
+                               "overlaps with an appointment already scheduled for this customer.");
+                       alert.show();
+                   } else if (newApptEndTime.compareTo(thisApptStart) > 0 && newApptEndTime.compareTo(thisApptEnd) < 0) { // or end of new appt goes beyond the start of this already scheduled appt
+                       alertFlag = true;
+                       Alert alert = new Alert(Alert.AlertType.ERROR);
+                       alert.setHeaderText("Overlapping appointments");
+                       alert.setTitle("Error scheduling appointment");
+                       alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
+                               "overlaps with an appointment already scheduled for this customer.");
+                       alert.show();
 
-        // Convert Timestamp to LocalDate and LocalTime
-        LocalDate startDate = start.toLocalDateTime().toLocalDate();
-        LocalDate endDate = end.toLocalDateTime().toLocalDate();
-        LocalTime startTime = start.toLocalDateTime().toLocalTime();
-        LocalTime endTime = end.toLocalDateTime().toLocalTime();
-
-        // Convert LD and LT to DateTimeFormatter strings for display in UI
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-
+                   } else if (newApptStartTime.compareTo(thisApptStart) == 0) { // or start of new appt is equal to the start of this already scheduled appt
+                       alertFlag = true;
+                       Alert alert = new Alert(Alert.AlertType.ERROR);
+                       alert.setHeaderText("Overlapping appointments");
+                       alert.setTitle("Error scheduling appointment");
+                       alert.setContentText("An appointment cannot be scheduled at the specified time because it " +
+                               "overlaps with an appointment already scheduled for this customer.");
+                       alert.show();
+                   }else{
+                       alertFlag = false;
+                   }
+               } // end 1st 'if' statement
+           } // end for loop
+           if (!alertFlag) {
+               ps.execute();
+           }
        }catch (SQLException e){
            e.printStackTrace();
        }

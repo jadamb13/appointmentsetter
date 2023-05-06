@@ -29,17 +29,21 @@ public class Utility {
         LocalDateTime apptStart = null;
         int apptId = 0;
         String customer = "";
+        String apptDate = "";
+        String apptTime = "";
         for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
             apptStart = LocalDateTime.parse(a.getStartTime() + " " + a.getStartDate(), formatter);
             apptId = a.getAppointmentId();
             customer = Customer.getCustomerNameById(a.getCustomerId());
+            apptDate = a.getStartDate();
+            apptTime = a.getStartTime();
         }
         if (apptStart.getYear() == userZDT.getYear() && (apptStart.isBefore(LocalDateTime.of(userDate, fifteenMinutesFromNow))
         && apptStart.isAfter(LocalDateTime.of(userDate, userTime)))) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("Appointment soon");
-            alert.setContentText("Appointment (ID: " + apptId + ") with " + customer + " starts within the next 15 minutes.");
+            alert.setContentText("You have an upcoming appointment with " + customer + " on " + apptDate + " at " + apptTime + ".");
             alert.show();
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

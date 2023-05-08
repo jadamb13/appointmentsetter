@@ -17,6 +17,7 @@ public class Utility {
      *
      * */
     public static void alertUpcomingAppointments() {
+        boolean apptFlag = false;
         // Get the current ZoneId, Date, and Time in the user's time zone and created ZonedDateTime
         ZoneId userZoneId = ZoneId.systemDefault();
         LocalDate userDate = LocalDate.now(userZoneId);
@@ -32,25 +33,29 @@ public class Utility {
         String apptDate = "";
         String apptTime = "";
         for (Appointment a : DBAppointment.getAllAppointmentsFromDb()) {
+
             apptStart = LocalDateTime.parse(a.getStartTime() + " " + a.getStartDate(), formatter);
             apptId = a.getAppointmentId();
             customer = Customer.getCustomerNameById(a.getCustomerId());
             apptDate = a.getStartDate();
             apptTime = a.getStartTime();
+            if (apptStart.getYear() == userZDT.getYear() && (apptStart.isBefore(LocalDateTime.of(userDate, fifteenMinutesFromNow))
+                    && apptStart.isAfter(LocalDateTime.of(userDate, userTime)))) {
+                apptFlag = true;
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("Appointment soon");
+                alert.setContentText("You have an upcoming appointment with " + customer + " on " + apptDate + " at " + apptTime + ".");
+                alert.show();
+            }
         }
-        if (apptStart.getYear() == userZDT.getYear() && (apptStart.isBefore(LocalDateTime.of(userDate, fifteenMinutesFromNow))
-        && apptStart.isAfter(LocalDateTime.of(userDate, userTime)))) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText("Appointment soon");
-            alert.setContentText("You have an upcoming appointment with " + customer + " on " + apptDate + " at " + apptTime + ".");
-            alert.show();
-        } else {
+        if(!apptFlag){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("");
             alert.setContentText("No appointments are starting in the next 15 minutes.");
             alert.show();
         }
+
     }
 }

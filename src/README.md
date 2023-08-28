@@ -1,7 +1,8 @@
 # Title: Client Management System
 
 Purpose: The Client Management System application allows users to manage international appointments with customers/clients,
-manage customers, and create reports including individual contact schedules and appointments by type, month, and day of the week.
+manage customer information, and create reports including individual contact schedules and appointments by type, month, 
+and day of the week. The application supports English and French, based on the user's system default locale.
 
 Application Version: 1.0
 

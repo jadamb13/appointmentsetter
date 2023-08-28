@@ -1,4 +1,5 @@
-# Title: Client Management System
+## Appointment Setter
+# International and Multilingual Client and Appointment Management System
 
 Purpose: The Client Management System application allows users to manage international appointments with customers/clients,
 manage customer information, and create reports including individual contact schedules and appointments by type, month, 
@@ -29,11 +30,9 @@ Username: test | Password: test\
 (or)\
 Username: admin | Password: admin
 
-Next, click "Login". From the main
-application window, you are defaulted to the "Appointments" tab of the program where appointments can be
-viewed, added, updated, or deleted. Appointments can also be viewed as "All Appointments" by clicking the All Appointments
-radio button, by week by selecting a week from the "By Week" combo box, or by month by selecting a month from the
-"By Month" combo box.
+Next, click "Login". From the main application window, the user is defaulted to the "Appointments" tab of the program 
+where all currently scheduled appointments are shown and appointments can be viewed, added, updated, or deleted. 
+Appointments can also be viewed by week or by month. 
 
 To view, add, update, or delete Customers, click the "Customer" tab along the top of the application window.
 Similarly, reports for the application can be viewed by clicking the "Reports" tab along the top of the

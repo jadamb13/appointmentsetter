@@ -3,13 +3,11 @@
 Purpose: The Client Management System application allows users to manage international appointments with customers/clients,
 manage customers, and create reports including individual contact schedules and appointments by type, month, and day of the week.
 
-Author: James Bennett
-
-Contact: jben308@wgu.edu
-
 Application Version: 1.0
 
-Date Created: April 30, 2023
+Date Created: 4/30/23
+
+Last Date Modified: 8/28/23
 
 IDE: IntelliJ IDEA 2021.1.3 (Community Edition)
 
@@ -19,7 +17,7 @@ JavaFX: JavaFX SDK 17.0.6 (openjfx-17.0.6_windows-x64_bin-sdk)
 
 MySQL Connector Driver: mysql-connector-java-8.0.25
 
-# How to Run Program:
+# How to Run:
 
 The language/locale of the application can be set manually if needed by uncommenting
 "Locale.setDefault(new Locale("fr", "FR"));" in the main method, or it will be gathered automatically from

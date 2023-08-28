@@ -1,6 +1,7 @@
-# Appointment Setter | <p>International and Multilingual Client and Appointment Management System</p>
+# Appointment Setter 
+### International and Multilingual Client and Appointment Management System
 
-Purpose: The Client Management System application allows users to manage international appointments with customers/clients,
+Purpose: The application allows users to manage international appointments with customers/clients,
 manage customer information, and create reports including individual contact schedules and appointments by type, month, 
 and day of the week. The application supports English and French, based on the user's system default locale.
 
@@ -35,8 +36,7 @@ Appointments can also be viewed by week or by month.
 
 To view, add, update, or delete Customers, click the "Customer" tab along the top of the application window.
 Similarly, reports for the application can be viewed by clicking the "Reports" tab along the top of the
-application window. The Reports tab will allow the user to view detailed schedules for each company contact and the 
-number of appointments by type, month, and day of the week (based on all company appointments). 
+application window. 
 
 A login_activity.txt file is located at the root ("src") of the application file structure. This file keeps track 
 of all login attempts by User ID, time (timestamp), and success or failure of the login. 

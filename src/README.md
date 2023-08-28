@@ -36,11 +36,13 @@ radio button, by week by selecting a week from the "By Week" combo box, or by mo
 
 To view, add, update, or delete Customers, click the "Customer" tab along the top of the application window.
 Similarly, reports for the application can be viewed by clicking the "Reports" tab along the top of the
-application window to view detailed schedules for each company contact and number of appointments by type, month,
-and day of the week.
+application window. The Reports tab will allow the user to view detailed schedules for each company contact and the 
+number of appointments by type, month, and day of the week (based on all company appointments). 
 
-A login_activity.txt file is located at the root ("src") of the application file structure and javadocs are
-located in the package: src/javadoc.
+A login_activity.txt file is located at the root ("src") of the application file structure. This file keeps track 
+of all login attempts by User ID, time (timestamp), and success or failure of the login. 
+
+Javadocs documentation files can be found in the package: src/javadoc.
 
 
 

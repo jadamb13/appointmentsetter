@@ -17,7 +17,7 @@ JavaFX: JavaFX SDK 17.0.6 (openjfx-17.0.6_windows-x64_bin-sdk)
 
 MySQL Connector Driver: mysql-connector-java-8.0.25
 
-# How to Run Program:
+# How to Run:
 
 The language/locale of the application can be set manually if needed by uncommenting
 "Locale.setDefault(new Locale("fr", "FR"));" in the main method, or it will be gathered automatically from

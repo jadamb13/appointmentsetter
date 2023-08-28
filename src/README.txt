@@ -23,8 +23,11 @@ The language/locale of the application can be set manually if needed by uncommen
 "Locale.setDefault(new Locale("fr", "FR"));" in the main method, or it will be gathered automatically from
 the system's default locale.
 
-To run the program, launch the program from the main() method and enter credentials
-Username: test | Password: test (or) Username: admin | Password: admin and click "Login". From the main
+To run the program, launch the program from the main() method and enter credentials:
+Username: test | Password: test (or)
+Username: admin | Password: admin
+
+Next, click "Login". From the main
 application window, you are defaulted to the "Appointments" tab of the program where appointments can be
 viewed, added, updated, or deleted. Appointments can also be viewed as "All Appointments" by clicking the All Appointments
 radio button, by week by selecting a week from the "By Week" combo box, or by month by selecting a month from the
@@ -32,7 +35,8 @@ radio button, by week by selecting a week from the "By Week" combo box, or by mo
 
 To view, add, update, or delete Customers, click the "Customer" tab along the top of the application window.
 Similarly, reports for the application can be viewed by clicking the "Reports" tab along the top of the
-application window.
+application window to view detailed schedules for each company contact and number of appointments by type, month,
+and day of the week.
 
 A login_activity.txt file is located at the root ("src") of the application file structure and javadocs are
 located in the package: src/javadoc.

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+
 public abstract class JDBC {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
@@ -13,7 +14,7 @@ public abstract class JDBC {
     private static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER"; // LOCAL
     private static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
     private static final String userName = "root";
-    private static String password = "[Chang3ItUp!]";
+    private static String password = "password";
     private static Connection connection = null;  // Connection Interface
     private static PreparedStatement preparedStatement;
     public static void makeConnection() {

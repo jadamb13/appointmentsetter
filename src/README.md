@@ -1,4 +1,4 @@
-# Appointment Setter | ### International and Multilingual Client and Appointment Management System
+# Appointment Setter | <p>International and Multilingual Client and Appointment Management System</p>
 
 Purpose: The Client Management System application allows users to manage international appointments with customers/clients,
 manage customer information, and create reports including individual contact schedules and appointments by type, month, 

@@ -24,7 +24,8 @@ The language/locale of the application can be set manually if needed by uncommen
 the system's default locale.
 
 To run the program, launch the program from the main() method and enter credentials:\
-Username: test | Password: test (or)
+Username: test | Password: test\ 
+(or)\
 Username: admin | Password: admin
 
 Next, click "Login". From the main

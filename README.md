@@ -8,7 +8,7 @@
     <li>View reports including individual contact schedules and appointments by type, month, and day of the week.</li>
 </ul>
 
-### Application Information and Development Environment
+### Application Development Environment
 Application Version: 1.0
 
 Date Created: April 30, 2023

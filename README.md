@@ -2,7 +2,7 @@
 ## Integrated appointment scheduling and multilingual customer management application built with JavaFX, Scene Builder, and MySQL database with JDBC integration. 
 
 ### Purpose:  
-The application allows users to manage international appointments with customers/clients, manage customers, and create reports including individual contact schedules and appointments by type, month, and day of the week.
+The application allows users to create, view, update, and delete international appointments between company contacts and clients, create, view, update, and delete customers and customer information, and create reports including individual contact schedules and appointments by type, month, and day of the week.
 
 Application Version: 1.0
 

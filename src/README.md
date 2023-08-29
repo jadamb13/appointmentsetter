@@ -1,5 +1,4 @@
-# iCAMS | International Customer and Appointment Management Suite
-### International and Multilingual Client and Appointment Management System
+# iCAMS | International Client Appointment Management Suite
 
 Purpose: The application allows users to manage international appointments with customers/clients,
 manage customer information, and create reports including individual contact schedules and appointments by type, month, 

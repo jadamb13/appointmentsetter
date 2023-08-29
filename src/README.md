@@ -1,4 +1,4 @@
-# Appointment Setter 
+# iCAMS | International Customer and Appointment Management Suite
 ### International and Multilingual Client and Appointment Management System
 
 Purpose: The application allows users to manage international appointments with customers/clients,

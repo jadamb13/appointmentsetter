@@ -8,6 +8,7 @@ Integrated appointment scheduling and multilingual customer management applicati
     <li>View reports including individual contact schedules and appointments by type, month, and day of the week.</li>
     <li>Track user login attempts by user id, time (timestamp), and success or failure of the attempt.</li>
     <li>Persistently store data with MySQL database.</li>
+    <li>The application currently supports English or French - determined by the user's system default locale.</li>
 </ul>
 
 ### Application Development Environment

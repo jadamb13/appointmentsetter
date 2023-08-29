@@ -21,10 +21,11 @@ The language/locale of the application can be set manually if needed by uncommen
 "Locale.setDefault(new Locale("fr", "FR"));" in the main method, or it will be gathered automatically from
 the system's default locale.
 
-To run the program, launch the program from the main() method and enter credentials\
-Username: test | Password: test\ 
-(or)\
-Username: admin | Password: admin\ 
+To run the program, launch the program from the main() method and enter credentials  
+Username: test | Password: test  
+(or)  
+Username: admin | Password: admin  
+
 
 Then, click "Login". From the main
 application window, you are defaulted to the "Appointments" tab of the program where appointments can be

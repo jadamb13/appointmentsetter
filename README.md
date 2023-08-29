@@ -1,5 +1,5 @@
 # iCAMS | Internationalized Client and Appointment Management Suite
-## Integrated appointment scheduling and multilingual customer management application built with JavaFX, Scene Builder, and MySQL database with JDBC integration. 
+Integrated appointment scheduling and multilingual customer management application built with JavaFX, Scene Builder, and MySQL database with JDBC integration. 
 
 ### The application allows users to:
 <ul>

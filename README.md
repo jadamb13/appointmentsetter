@@ -1,7 +1,8 @@
 # iCAMS | Internationalized Client and Appointment Management Suite
 ## Integrated appointment scheduling and multilingual customer management application built with JavaFX, Scene Builder, and MySQL database with JDBC integration. 
 
-Purpose: The application allows users to manage international appointments with customers/clients, manage customers, and create reports including individual contact schedules and appointments by type, month, and day of the week.
+#Purpose: 
+The application allows users to manage international appointments with customers/clients, manage customers, and create reports including individual contact schedules and appointments by type, month, and day of the week.
 
 Application Version: 1.0
 

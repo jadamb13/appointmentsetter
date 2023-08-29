@@ -2,10 +2,11 @@
 ## Integrated appointment scheduling and multilingual customer management application built with JavaFX, Scene Builder, and MySQL database with JDBC integration. 
 
 ### The application allows users to:
+<ul>
     <li>Create, view, update, and delete international appointments between company contacts and clients</li> 
     <li>Create, view, update, and delete customers and customer information</li>
     <li>View reports including individual contact schedules and appointments by type, month, and day of the week.</li>
-
+</ul>
 
 ### Application Information and Development Environment
 Application Version: 1.0

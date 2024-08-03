@@ -1,5 +1,5 @@
 # International Client and Appointment Management System
-Multilingual and global appointment scheduling application with integrated customer management. Built with JavaFX, Scene Builder, and MySQL database with Java Database Connectivity (JDBC) API integration. 
+Multilingual and global appointment scheduling application with integrated customer management. Built with JavaFX, Scene Builder, and MySQL database with Java Database Connectivity (JDBC), Localization, and Time/Date API integration. 
 
 ### The application allows users to:
 <ul>

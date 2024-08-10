@@ -27,7 +27,10 @@ MySQL Connector Driver: mysql-connector-java-8.0.25
 ### How to Run:
 
 The language/locale of the application can be set manually if needed by uncommenting
-```Locale.setDefault(new Locale("fr", "FR"));``` in the main method, or it will be gathered automatically from
+```
+Locale.setDefault(new Locale("fr", "FR"));
+``` 
+in the main method, or it will be gathered automatically from
 the system's default locale.
 
 To run the program, launch the program from the main() method and enter credentials  

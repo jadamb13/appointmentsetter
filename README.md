@@ -44,7 +44,7 @@ To view, add, update, or delete Customers, click the "Customer" tab along the to
 Similarly, reports for the application can be viewed by clicking the "Reports" tab along the top of the
 application window.
 
-A `login_activity.txt` file is located at the root ("src") of the application file structure and Javadoc documentation files are 
+A `login_activity.txt` file is located at the root of the project file structure and Javadoc documentation files are 
 located in the `javadocs` file of the `src` directory.
 
 

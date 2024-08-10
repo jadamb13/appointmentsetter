@@ -27,7 +27,7 @@ MySQL Connector Driver: mysql-connector-java-8.0.25
 ### How to Run:
 
 The language/locale of the application can be set manually if needed by uncommenting
-"Locale.setDefault(new Locale("fr", "FR"));" in the main method, or it will be gathered automatically from
+```Locale.setDefault(new Locale("fr", "FR"));``` in the main method, or it will be gathered automatically from
 the system's default locale.
 
 To run the program, launch the program from the main() method and enter credentials  
@@ -44,7 +44,7 @@ To view, add, update, or delete Customers, click the "Customer" tab along the to
 Similarly, reports for the application can be viewed by clicking the "Reports" tab along the top of the
 application window.
 
-A login_activity.txt file is located at the root ("src") of the application file structure and Javadoc documentation files are 
-located in the package: src/javadocs.
+A `login_activity.txt` file is located at the root ("src") of the application file structure and Javadoc documentation files are 
+located in the `javadocs` file of the `src` directory.
 
 
